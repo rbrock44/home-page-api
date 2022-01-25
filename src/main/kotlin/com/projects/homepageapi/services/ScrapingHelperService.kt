@@ -84,7 +84,7 @@ class ScrapingHelperService(
                         val opponentLink: String = Game.getTeamLink(game, 0)
                         val home: String = Game.getBasketballName(game, 1)
                         val homeImage: String = Game.getImage(game, 1)
-                        val homeLink: String = Game.getTeamLink(game, 1)
+                        val homeLink: String = Game.getTeamLink(game, 2)
 
                         //search google for time since espn has a script run over the webpage
                         val search = "$formattedDate $opponent vs $home"
