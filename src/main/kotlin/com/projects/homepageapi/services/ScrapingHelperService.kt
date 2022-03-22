@@ -63,7 +63,9 @@ class ScrapingHelperService(
             val tables: Elements =
                 if (isBasketball) Game.getBasketballData(doc)
                 else Game.getFootballData(doc)
-            val tableDates: Elements = Game.getDates(doc)
+            val tableDates: Elements =
+                if (isBasketball) Game.getDates(doc)
+                else Game.getFootballDates(doc)
             val listOfGames: MutableList<Game> = mutableListOf()
 
             val pair = getIndexAndDate(
@@ -76,7 +78,7 @@ class ScrapingHelperService(
 
             if (index != -1) {
                 if (isBasketball) {
-                    val games = tables[index].getElementsByAttribute("data-is-neutral-site")
+                    val games = tables[index].getElementsByClass("Table__TR--sm")
 
                     for (game in games) {
                         val opponent: String = Game.getBasketballName(game, 0)
@@ -95,7 +97,6 @@ class ScrapingHelperService(
                             game = game,
                             otherGameTime = gameTime.substring(gameTime.indexOf(",") + 1).trim()
                         )
-
 
                         listOfGames.add(
                             Game(

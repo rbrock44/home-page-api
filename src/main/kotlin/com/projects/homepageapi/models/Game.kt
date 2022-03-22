@@ -18,7 +18,7 @@ data class Game(
     companion object {
         @JvmStatic
         fun getImage(elements: Element, index: Int): String {
-            return elements.getElementsByTag("img")[index].attr("src")
+            return elements.getElementsByClass("team__logo")[index].attr("src")
         }
 
         @JvmStatic
@@ -38,6 +38,11 @@ data class Game(
 
         @JvmStatic
         fun getDates(doc: Document): Elements {
+            return doc.getElementsByClass("Table__Title")
+        }
+
+        @JvmStatic
+        fun getFootballDates(doc: Document): Elements {
             return doc.getElementsByClass("table-caption")
         }
 
@@ -58,17 +63,17 @@ data class Game(
 
         @JvmStatic
         fun getBasketballName(elements: Element, index: Int): String {
-            return elements.getElementsByTag("abbr")[index].attr("title")
+            return elements.getElementsByClass("Table__Team")[index].children()[1].text()
         }
 
         @JvmStatic
         fun getBasketballTime(elements: Element): String {
-            return elements.getElementsByClass("imso_mh__lr-dt-ds").text()
+            return elements.getElementsByClass("date__col").text()
         }
 
         @JvmStatic
         fun getBasketballData(doc: Document): Elements {
-            return doc.getElementsByClass("responsive-table-wrap")
+            return doc.getElementsByClass("ResponsiveTable")
         }
     }
 }

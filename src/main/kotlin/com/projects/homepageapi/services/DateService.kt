@@ -26,7 +26,7 @@ class DateService {
 
     companion object {
         val nbaFormat = "EEEE, MMMM dd"
-        val nflFormat = nbaFormat
+        val nflFormat = "EEEE, MMMM dd"
         val mmaFormat = "MMMM dd, yyyy"
     }
 }
