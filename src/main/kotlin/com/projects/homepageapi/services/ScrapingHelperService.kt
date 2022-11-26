@@ -1,5 +1,7 @@
 package com.projects.homepageapi.services
 
+import com.projects.homepageapi.models.Fight
+import com.projects.homepageapi.models.FightCard
 import com.projects.homepageapi.models.Game
 import com.projects.homepageapi.models.GamesPerDate
 import org.jsoup.Jsoup
@@ -10,48 +12,54 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.io.IOException
 import java.net.URLEncoder
-
 @Repository
 class ScrapingHelperService(
-    @Autowired private val dateService: DateService
+    @Autowired private val dateService: DateService,
+    @Autowired private val jsoupService: JsoupService
 ) {
-    fun getIndexAndDate(
-        formattedDate: String,
-        tableDates: Elements,
-        isMmaFormat: Boolean = false
-    ): Pair<Int, String> {
-        if (formattedDate != "") {
-            tableDates.forEachIndexed { i, element ->
-                if (element.text() == formattedDate) {
-                    return Pair(i, formattedDate)
-                }
-            }
-            return Pair(-1, formattedDate)
-        } else {
-            val dateFormat = if (isMmaFormat) DateService.mmaFormat else DateService.nbaFormat
-            tableDates.forEachIndexed { i, element ->
-                if (dateService.isAfterOrEqualToToday(element.text(), dateFormat)) {
-                    return Pair(i, element.text())
-                }
-            }
-            return Pair(-1, "")
-        }
-    }
-
     fun getCurrentDate(): String {
         return dateService.getCurrentDate()
     }
 
-    fun errorGamePerDate(message: String): GamesPerDate {
-        return GamesPerDate(
-            games = emptyList(),
-            date = "Error Parsing: $message"
-        )
-    }
+    fun parseMmaWebsite(formattedDate: String = ""): FightCard {
+        val doc: Document = jsoupService.connect("https://www.mmafighting.com/schedule")
+        val fightCard: Elements = FightCard.getCards(doc)
+        val cardDates: Elements = FightCard.getDates(doc)
+        val cardTitles: Elements = FightCard.getTitles(doc)
 
-    fun getGameTime(game: Element, otherGameTime: String): String {
-        val time = game.getElementsByTag("a")[4].text()
-        return time.ifEmpty { otherGameTime }
+        val listOfMainFights: MutableList<Fight> = mutableListOf()
+        val listOfUnderFights: MutableList<Fight> = mutableListOf()
+        var title = ""
+        var titleLink = ""
+
+        val pair = getIndexAndDate(
+            formattedDate = formattedDate,
+            tableDates = cardDates,
+            isMmaFormat = true
+        )
+
+        val index = pair.first
+        val date = if (index == 0) cardDates[index].text() else pair.second
+
+        if (index != -1) {
+            title = cardTitles[index].text()
+            titleLink = cardTitles[index].getElementsByTag("a").attr("href")
+
+            val card = fightCard[index]
+            val mainCard = FightCard.getCard(card, 0).getElementsByTag("li")
+            val underCard = FightCard.getCard(card, 1).getElementsByTag("li")
+
+            addFightsToList(listOfMainFights, mainCard)
+            addFightsToList(listOfUnderFights, underCard)
+        }
+
+        return FightCard(
+            main = listOfMainFights,
+            under = listOfUnderFights,
+            date = date,
+            title = title,
+            titleLink = titleLink
+        )
     }
 
     fun parseGamesPerDateWebsite(formattedDate: String, isBasketball: Boolean = true): GamesPerDate {
@@ -59,7 +67,7 @@ class ScrapingHelperService(
             val url =
                 if (isBasketball) "https://www.espn.com/nba/schedule"
                 else "https://www.espn.com/nfl/schedule"
-            val doc: Document = Jsoup.connect(url).get()
+            val doc: Document = jsoupService.connect(url)
             val tables: Elements =
                 if (isBasketball) Game.getBasketballData(doc)
                 else Game.getFootballData(doc)
@@ -154,6 +162,57 @@ class ScrapingHelperService(
             // In case of any IO errors, we want the messages written to the console
         } catch (e: IOException) {
             return errorGamePerDate(message = e.printStackTrace().toString())
+        }
+    }
+
+    private fun getIndexAndDate(
+        formattedDate: String,
+        tableDates: Elements,
+        isMmaFormat: Boolean = false
+    ): Pair<Int, String> {
+        if (formattedDate != "") {
+            tableDates.forEachIndexed { i, element ->
+                if (element.text() == formattedDate) {
+                    return Pair(i, formattedDate)
+                }
+            }
+            return Pair(-1, formattedDate)
+        } else {
+            val dateFormat = if (isMmaFormat) DateService.mmaFormat else DateService.nbaFormat
+            tableDates.forEachIndexed { i, element ->
+                if (dateService.isAfterOrEqualToToday(element.text(), dateFormat)) {
+                    return Pair(i, element.text())
+                }
+            }
+            return Pair(-1, "")
+        }
+    }
+
+    private fun errorGamePerDate(message: String): GamesPerDate {
+        return GamesPerDate(
+            games = emptyList(),
+            date = "Error Parsing: $message"
+        )
+    }
+
+    private fun getGameTime(game: Element, otherGameTime: String): String {
+        val time = game.getElementsByTag("a")[4].text()
+        return time.ifEmpty { otherGameTime }
+    }
+
+    private fun addFightsToList(list: MutableList<Fight>, card: Elements) {
+        for (fight in card) {
+            val fightTitle: String = Fight.getTitle(fight)
+            val fightLink: String = Fight.getLink(fight)
+            val isTitle: Boolean = Fight.isTitleFight(fight)
+
+            list.add(
+                Fight(
+                    title = fightTitle,
+                    link = fightLink,
+                    isTitleFight = isTitle
+                )
+            )
         }
     }
 }

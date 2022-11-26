@@ -1,0 +1,38 @@
+package com.projects.homepageapi.services
+
+import org.springframework.stereotype.Repository
+import java.io.File
+
+@Repository
+class FileDirectoryService {
+    fun getFiles(directories: List<String>): List<String> {
+        val fileList = mutableListOf<String>()
+        val dirList = mutableListOf<String>()
+        dirList.addAll(directories)
+        while (dirList.isNotEmpty()) {
+            val directory = dirList[0]
+            val files = File(directory).list { dir, name -> !File(dir, name).isDirectory}
+            files?.forEach {
+                fileList.add(it)
+            }
+            val newDirectories = File(directory).list { dir, name -> File(dir, name).isDirectory}
+            newDirectories?.forEach {
+                dirList.add("$directory/$it")
+            }
+            dirList.removeAt(0)
+        }
+        return fileList
+    }
+
+    fun getFiles(directory: String): List<String> {
+        return getFiles(listOf(directory))
+    }
+
+    fun writeToFile(outputList: List<String>, path: String) {
+        File(path).writeText(outputList.joinToString(separator = "\n"))
+    }
+
+    fun getLinesFromFile(path: String): List<String> {
+        return File(path).readLines()
+    }
+}

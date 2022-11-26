@@ -2,14 +2,15 @@ package com.projects.homepageapi.services
 
 import org.springframework.stereotype.Repository
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
 @Repository
-class DateService {
+class DateService(
+    private var localDateTimeService: LocalDateTimeService
+) {
     fun getCurrentDate(format: String = nbaFormat): String {
-        val current = LocalDateTime.now()
+        val current = localDateTimeService.now()
 
         val formatter = DateTimeFormatter.ofPattern(format)
         return current.format(formatter)
