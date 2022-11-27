@@ -16,11 +16,22 @@ class HomeMediaService(
     @Scheduled(cron = "0 6 * * *")
     fun saveFilenames() {
         val files = fileDirectoryService.getFiles(sources)
-        fileDirectoryService.writeToFile(files, outputFile)
+        if (files.isNotEmpty())
+            fileDirectoryService.writeToFile(files, outputFile)
     }
 
     fun getFilenamesThatContain(criteria: String): List<String> {
         val list = fileDirectoryService.getLinesFromFile(outputFile)
-        return list.filter { it.uppercase().contains(criteria.uppercase()) }.sorted()
+        val filenames = mutableListOf<String>()
+        list.forEach {
+            var hasEveryCriteria = true
+            criteria.split(" ").forEach { item ->
+                hasEveryCriteria = hasEveryCriteria && it.uppercase().contains(item.uppercase())
+            }
+
+            if (hasEveryCriteria)
+                filenames.add(it)
+        }
+        return filenames.sorted()
     }
 }

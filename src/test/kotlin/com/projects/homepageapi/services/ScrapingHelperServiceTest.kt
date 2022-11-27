@@ -1,9 +1,7 @@
 package com.projects.homepageapi.services
 
 import com.projects.homepageapi.Constants
-import com.projects.homepageapi.models.FightCard
 import com.projects.homepageapi.models.GamesPerDate
-import org.jsoup.nodes.Document
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -24,12 +22,13 @@ internal class ScrapingHelperServiceTest {
     @InjectMocks
     lateinit var helper: ScrapingHelperService
 
-    private val date = ""
+    private val date = "Wednesday, November 23, 2022"
 
     @BeforeEach
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         whenever(service.getCurrentDate()).thenReturn(date)
+        whenever(service.isAfterOrEqualToToday(any(), any())).thenReturn(true)
     }
 
     @Test
@@ -41,15 +40,8 @@ internal class ScrapingHelperServiceTest {
 
     @Test
     fun `should parse mma website for fights`() {
-        val expected = FightCard(
-            emptyList(),
-            emptyList(),
-            date,
-            "",
-            ""
-        )
-
-        val value = Constants.mmaDocument as Document
+        val expected = Constants.mmaExpected
+        val value = Constants.mmaDocument
         whenever(jsoupService.connect(any())).thenReturn(value)
         assertEquals(expected, helper.parseMmaWebsite())
         verify(jsoupService).connect("https://www.mmafighting.com/schedule")
@@ -59,22 +51,19 @@ internal class ScrapingHelperServiceTest {
     fun `should parse nfl website for games`() {
         val expected = GamesPerDate(
             emptyList(),
-            date,
+            "",
         )
 
-        whenever(jsoupService.connect(any())).thenReturn(Constants.nflDocument as Document)
+        whenever(jsoupService.connect(any())).thenReturn(Constants.nflDocument)
         assertEquals(expected, helper.parseGamesPerDateWebsite("", false))
         verify(jsoupService).connect("https://www.espn.com/nfl/schedule")
     }
 
     @Test
     fun `should parse nba website for games`() {
-        val expected = GamesPerDate(
-            emptyList(),
-            date,
-        )
+        val expected = Constants.nbaExpected
 
-        val value = Constants.nbaDocument as Document
+        val value = Constants.nbaDocument
         whenever(jsoupService.connect(any())).thenReturn(value)
         assertEquals(expected, helper.parseGamesPerDateWebsite(""))
         verify(jsoupService).connect("https://www.espn.com/nba/schedule")

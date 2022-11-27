@@ -4,7 +4,6 @@ import com.projects.homepageapi.models.Fight
 import com.projects.homepageapi.models.FightCard
 import com.projects.homepageapi.models.Game
 import com.projects.homepageapi.models.GamesPerDate
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.io.IOException
 import java.net.URLEncoder
+
 @Repository
 class ScrapingHelperService(
     @Autowired private val dateService: DateService,
@@ -99,7 +99,7 @@ class ScrapingHelperService(
                         //search google for time since espn has a script run over the webpage
                         val search = "$formattedDate $opponent vs $home"
                         val gameUrl = "https://www.google.com/search?q=${URLEncoder.encode(search, "UTF-8")}"
-                        val searchDoc: Document = Jsoup.connect(gameUrl).get()
+                        val searchDoc: Document = jsoupService.connect(gameUrl)
                         val gameTime = Game.getBasketballTime(searchDoc)
                         val time: String = getGameTime(
                             game = game,

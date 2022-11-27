@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -46,6 +47,14 @@ internal class HomeMediaServiceTest {
     }
 
     @Test
+    fun `should not write empty file list to source`() {
+        val expected = emptyList<String>()
+        whenever(fileDirectoryService.getFiles(sources)).thenReturn(expected)
+        service.saveFilenames()
+        verify(fileDirectoryService, never()).writeToFile(expected, path)
+    }
+
+    @Test
     fun `should get filenames that contain criteria`() {
         val list = listOf(
             "lisT",
@@ -59,6 +68,24 @@ internal class HomeMediaServiceTest {
         )
         whenever(fileDirectoryService.getLinesFromFile(path)).thenReturn(list)
         val result = service.getFilenamesThatContain("st")
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should get filenames that contain each word in criteria`() {
+        val list = listOf(
+            "The Lord of the",
+            "The Lord Underpass",
+            "Lord Underpass Who",
+            "Digging into the Lord",
+            "Of The Keep"
+        )
+        val expected = listOf(
+            "Of The Keep",
+            "The Lord of the"
+        )
+        whenever(fileDirectoryService.getLinesFromFile(path)).thenReturn(list)
+        val result = service.getFilenamesThatContain("The Of")
         assertEquals(expected, result)
     }
 }
