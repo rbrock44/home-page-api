@@ -1,7 +1,6 @@
 package com.projects.homepageapi.services
 
 import com.projects.homepageapi.Constants
-import com.projects.homepageapi.models.GamesPerDate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -49,10 +48,7 @@ internal class ScrapingHelperServiceTest {
 
     @Test
     fun `should parse nfl website for games`() {
-        val expected = GamesPerDate(
-            emptyList(),
-            "",
-        )
+        val expected = Constants.nflExpected
 
         whenever(jsoupService.connect(any())).thenReturn(Constants.nflDocument)
         assertEquals(expected, helper.parseGamesPerDateWebsite("", false))

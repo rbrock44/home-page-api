@@ -33,7 +33,7 @@ data class Game(
 
         @JvmStatic
         fun getFootballData(doc: Document): Elements {
-            return doc.getElementsByTag("table")
+            return  doc.getElementsByClass("table")
         }
 
         @JvmStatic
@@ -43,12 +43,12 @@ data class Game(
 
         @JvmStatic
         fun getFootballDates(doc: Document): Elements {
-            return doc.getElementsByClass("table-caption")
+            return doc.getElementsByClass("Table__Title")
         }
 
         @JvmStatic
         fun getFootballName(elements: Element, index: Int): String {
-            return elements.getElementsByTag("abbr")[index].attr("title")
+            return elements.getElementsByClass("table__team")[index].getElementsByTag("a")[1].text()
         }
 
         @JvmStatic

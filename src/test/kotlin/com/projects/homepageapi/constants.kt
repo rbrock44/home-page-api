@@ -16,6 +16,45 @@ internal class Constants {
 
         val nflDocument: Document = Jsoup.parse(File("src/test/resources/espn-nfl.html").readText())
 
+        val nflExpected: GamesPerDate = GamesPerDate(
+            listOf(
+                Game(
+                    opponent = "Buffalo",
+                    opponentImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/buf/buffalo-bills",
+                    opponentRecord = "",
+                    home = "Detroit",
+                    homeImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/det/detroit-lions",
+                    homeRecord = "",
+                    time = "12:30 PM"
+                ),
+                Game(
+                    opponent = "New York",
+                    opponentImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/nyg/new-york-giants",
+                    opponentRecord = "",
+                    home = "Dallas",
+                    homeImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/dal/dallas-cowboys",
+                    homeRecord = "",
+                    time = "4:30 PM"
+                ),
+                Game(
+                    opponent = "New England",
+                    opponentImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/ne/new-england-patriots",
+                    opponentRecord = "",
+                    home = "Minnesota",
+                    homeImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/min/minnesota-vikings",
+                    homeRecord = "",
+                    time = "8:20 PM"
+                )
+            ),
+            "Thursday, November 24, 2022"
+        )
+
         val mmaExpected: FightCard = FightCard(
             listOf(
                 Fight(

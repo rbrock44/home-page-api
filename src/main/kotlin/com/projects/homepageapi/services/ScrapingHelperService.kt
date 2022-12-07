@@ -86,71 +86,9 @@ class ScrapingHelperService(
 
             if (index != -1) {
                 if (isBasketball) {
-                    val games = tables[index].getElementsByClass("Table__TR--sm")
-
-                    for (game in games) {
-                        val opponent: String = Game.getBasketballName(game, 0)
-                        val opponentImage: String = Game.getImage(game, 0)
-                        val opponentLink: String = Game.getTeamLink(game, 0)
-                        val home: String = Game.getBasketballName(game, 1)
-                        val homeImage: String = Game.getImage(game, 1)
-                        val homeLink: String = Game.getTeamLink(game, 2)
-
-                        //search google for time since espn has a script run over the webpage
-                        val search = "$formattedDate $opponent vs $home"
-                        val gameUrl = "https://www.google.com/search?q=${URLEncoder.encode(search, "UTF-8")}"
-                        val searchDoc: Document = jsoupService.connect(gameUrl)
-                        val gameTime = Game.getBasketballTime(searchDoc)
-                        val time: String = getGameTime(
-                            game = game,
-                            otherGameTime = gameTime.substring(gameTime.indexOf(",") + 1).trim()
-                        )
-
-                        listOfGames.add(
-                            Game(
-                                opponent = opponent,
-                                opponentImageLink = opponentImage,
-                                opponentTeamLink = opponentLink,
-                                opponentRecord = "",
-                                home = home,
-                                homeImageLink = homeImage,
-                                homeTeamLink = homeLink,
-                                homeRecord = "",
-                                time = time
-                            )
-                        )
-                    }
+                    listOfGames.addAll(this.parseBasketball(tables, index, formattedDate))
                 } else {
-                    val games = tables[index].getElementsByClass("has-results")
-
-                    for (game in games) {
-                        val time: String = this.getGameTime(
-                            game = game,
-                            otherGameTime = Game.getFootballTime(game)
-                        )
-
-                        val opponent: String = Game.getFootballName(game, 0)
-                        val opponentImage: String = Game.getFootballImageLink(game, 0)
-                        val opponentLink: String = Game.getTeamLink(game, 0)
-
-                        val home: String = Game.getFootballName(game, 1)
-                        val homeImage: String = Game.getFootballImageLink(game, 1)
-                        val homeLink: String = Game.getTeamLink(game, 2)
-
-                        listOfGames.add(
-                            Game(
-                                opponent = opponent,
-                                opponentImageLink = opponentImage,
-                                opponentTeamLink = opponentLink,
-                                opponentRecord = "",
-                                home = home,
-                                homeTeamLink = homeLink,
-                                homeImageLink = homeImage,
-                                homeRecord = "",
-                                time = time,
-                            )
-                        )
-                    }
+                    listOfGames.addAll(this.parseFootball(tables, index))
                 }
             }
 
@@ -214,5 +152,77 @@ class ScrapingHelperService(
                 )
             )
         }
+    }
+
+    private fun parseBasketball(tables: Elements, index: Int, formattedDate: String): MutableList<Game> {
+        val list = mutableListOf<Game>()
+        val games = tables[index].getElementsByClass("Table__TR--sm")
+
+        for (game in games) {
+            val opponent: String = Game.getBasketballName(game, 0)
+            val home: String = Game.getBasketballName(game, 1)
+
+            //search google for time since espn has a script run over the webpage
+            val search = "$formattedDate $opponent vs $home"
+            val gameUrl = "https://www.google.com/search?q=${URLEncoder.encode(search, "UTF-8")}"
+            val searchDoc: Document = jsoupService.connect(gameUrl)
+            val gameTime = Game.getBasketballTime(searchDoc)
+            val time: String = getGameTime(
+                game = game,
+                otherGameTime = gameTime.substring(gameTime.indexOf(",") + 1).trim()
+            )
+
+            list.add(
+                Game(
+                    opponent = opponent,
+                    opponentImageLink = Game.getImage(game, 0),
+                    opponentTeamLink = Game.getTeamLink(game, 0),
+                    opponentRecord = "",
+                    home = home,
+                    homeImageLink = Game.getImage(game, 1),
+                    homeTeamLink = Game.getTeamLink(game, 2),
+                    homeRecord = "",
+                    time = time
+                )
+            )
+        }
+
+        return list
+    }
+
+    private fun parseFootball(tables: Elements, index: Int): MutableList<Game> {
+        val list = mutableListOf<Game>()
+        val games = tables[index].getElementsByClass("Table__TR--sm")
+
+        for (game in games) {
+            val time: String = this.getGameTime(
+                game = game,
+                otherGameTime = Game.getFootballTime(game)
+            )
+
+            val opponent: String = Game.getFootballName(game, 0)
+            val opponentImage: String = Game.getFootballImageLink(game, 0)
+            val opponentLink: String = Game.getTeamLink(game, 0)
+
+            val home: String = Game.getFootballName(game, 1)
+            val homeImage: String = Game.getFootballImageLink(game, 1)
+            val homeLink: String = Game.getTeamLink(game, 2)
+
+            list.add(
+                Game(
+                    opponent = opponent,
+                    opponentImageLink = opponentImage,
+                    opponentTeamLink = opponentLink,
+                    opponentRecord = "",
+                    home = home,
+                    homeTeamLink = homeLink,
+                    homeImageLink = homeImage,
+                    homeRecord = "",
+                    time = time,
+                )
+            )
+        }
+
+        return list
     }
 }
