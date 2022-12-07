@@ -11,7 +11,7 @@ class HomeMediaService(
         "//10.0.0.50/usbc/Media/TV Shows",
         "//10.0.0.50/usbc/Media/Movies"
     )
-    private val outputFile = "src/main/resources/files.txt"
+    private val outputFile = "files.txt"
 
     @Scheduled(cron = "0 6 * * *")
     fun saveFilenames() {
@@ -26,7 +26,7 @@ class HomeMediaService(
         list.forEach {
             var hasEveryCriteria = true
             criteria.split(" ").forEach { item ->
-                hasEveryCriteria = hasEveryCriteria && it.uppercase().contains(item.uppercase())
+                hasEveryCriteria = hasEveryCriteria && it.uppercase().contains(item.trim().uppercase())
             }
 
             if (hasEveryCriteria)

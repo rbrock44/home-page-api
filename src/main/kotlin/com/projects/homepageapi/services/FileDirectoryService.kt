@@ -1,5 +1,6 @@
 package com.projects.homepageapi.services
 
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Repository
 import java.io.File
 
@@ -32,7 +33,8 @@ class FileDirectoryService {
         File(path).writeText(outputList.joinToString(separator = "\n"))
     }
 
-    fun getLinesFromFile(path: String): List<String> {
-        return File(path).readLines()
+    fun getLinesFromFile(file: String): List<String> {
+        val resource = ClassPathResource(file)
+        return File(resource.uri).readLines()
     }
 }

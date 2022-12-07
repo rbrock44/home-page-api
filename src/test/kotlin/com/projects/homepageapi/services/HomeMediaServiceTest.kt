@@ -27,7 +27,7 @@ internal class HomeMediaServiceTest {
         "//10.0.0.50/usbc/Media/Movies"
     )
 
-    private val path = "src/main/resources/files.txt"
+    private val path = "files.txt"
 
     @Test
     fun `should get files from the two sources`() {
