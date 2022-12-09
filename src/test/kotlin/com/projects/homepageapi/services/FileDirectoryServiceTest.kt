@@ -22,6 +22,7 @@ internal class FileDirectoryServiceTest {
         val expected = listOf(
             "espn-nba.html",
             "espn-nfl.html",
+            "example.txt",
             "mma.html",
             "example.txt",
             "example2.txt",
@@ -60,7 +61,7 @@ internal class FileDirectoryServiceTest {
             "2",
             "3"
         )
-        val path = "src/test/resources/example/example.txt"
+        val path = "example.txt"
         File(path).writeText("")
 
         service.writeToFile(list, path)

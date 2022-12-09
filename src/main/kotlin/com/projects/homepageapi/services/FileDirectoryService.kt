@@ -30,7 +30,8 @@ class FileDirectoryService {
     }
 
     fun writeToFile(outputList: List<String>, path: String) {
-        File(path).writeText(outputList.joinToString(separator = "\n"))
+        val resource = ClassPathResource(path)
+        File(resource.uri).writeText(outputList.joinToString(separator = "\n"))
     }
 
     fun getLinesFromFile(file: String): List<String> {

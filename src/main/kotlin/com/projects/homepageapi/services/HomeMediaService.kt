@@ -8,8 +8,8 @@ class HomeMediaService(
     private val fileDirectoryService: FileDirectoryService
 ) {
     private val sources = listOf(
-        "//10.0.0.50/usbc/Media/TV Shows",
-        "//10.0.0.50/usbc/Media/Movies"
+        """\\10.0.0.50\usbc\TV Shows""",
+        """\\10.0.0.50\usbc\Movies"""
     )
     private val outputFile = "files.txt"
 
