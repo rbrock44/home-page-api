@@ -21,6 +21,7 @@ internal class HomeMediaServiceTest {
     @BeforeEach
     fun setUp() {
         MockitoAnnotations.openMocks(this)
+        whenever(fileDirectoryService.isWindows()).thenReturn(true)
     }
 
     private val sources = listOf(

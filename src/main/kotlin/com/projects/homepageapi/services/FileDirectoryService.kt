@@ -38,4 +38,8 @@ class FileDirectoryService {
         val resource = ClassPathResource(file)
         return File(resource.uri).readLines()
     }
+
+    fun isWindows(): Boolean {
+        return System.getProperty("os.name").uppercase().contains("WIN")
+    }
 }

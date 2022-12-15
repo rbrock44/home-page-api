@@ -11,11 +11,16 @@ class HomeMediaService(
         """\\10.0.0.50\usbc\TV Shows""",
         """\\10.0.0.50\usbc\Movies"""
     )
+
+    private val linuxSources = listOf(
+        """smb://10.0.0.50/usbc/TV Shows""",
+        """smb://10.0.0.50/usbc/Movies"""
+    )
     private val outputFile = "files.txt"
 
     @Scheduled(cron = "0 6 * * *")
     fun saveFilenames() {
-        val files = fileDirectoryService.getFiles(sources)
+        val files = fileDirectoryService.getFiles(getSources())
         if (files.isNotEmpty())
             fileDirectoryService.writeToFile(files, outputFile)
     }
@@ -26,7 +31,7 @@ class HomeMediaService(
 
         while (loopCount < 2 && list.isEmpty()) {
             list = fileDirectoryService.getLinesFromFile(outputFile)
-            if(list.isEmpty()) {
+            if (list.isEmpty()) {
                 saveFilenames()
             }
             loopCount++
@@ -48,5 +53,9 @@ class HomeMediaService(
         }
 
         return filenames.sorted()
+    }
+
+    fun getSources(): List<String> {
+        return if (fileDirectoryService.isWindows()) sources else linuxSources
     }
 }
