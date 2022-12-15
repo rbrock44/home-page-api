@@ -21,7 +21,17 @@ class HomeMediaService(
     }
 
     fun getFilenamesThatContain(criteria: String): List<String> {
-        val list = fileDirectoryService.getLinesFromFile(outputFile)
+        var loopCount = 0
+        var list: List<String> = emptyList()
+
+        while (loopCount < 2 && list.isEmpty()) {
+            list = fileDirectoryService.getLinesFromFile(outputFile)
+            if(list.isEmpty()) {
+                saveFilenames()
+            }
+            loopCount++
+        }
+
         val filenames = mutableListOf<String>()
         if (criteria.trim() == "") {
             filenames.addAll(list)

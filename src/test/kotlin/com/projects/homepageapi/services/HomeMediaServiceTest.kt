@@ -7,6 +7,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.never
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -23,8 +24,8 @@ internal class HomeMediaServiceTest {
     }
 
     private val sources = listOf(
-        "//10.0.0.50/usbc/Media/TV Shows",
-        "//10.0.0.50/usbc/Media/Movies"
+        """\\10.0.0.50\usbc\TV Shows""",
+        """\\10.0.0.50\usbc\Movies"""
     )
 
     private val path = "files.txt"
@@ -101,5 +102,15 @@ internal class HomeMediaServiceTest {
         whenever(fileDirectoryService.getLinesFromFile(path)).thenReturn(expected)
         val result = service.getFilenamesThatContain(" ")
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should scrap filenames when none are found in file`() {
+        val expected = emptyList<String>()
+        whenever(fileDirectoryService.getLinesFromFile(path)).thenReturn(expected)
+        whenever(fileDirectoryService.getFiles(sources)).thenReturn(expected)
+        val result = service.getFilenamesThatContain(" ")
+        assertEquals(expected, result)
+        verify(fileDirectoryService, times(2)).getFiles(sources)
     }
 }
