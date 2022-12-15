@@ -88,4 +88,18 @@ internal class HomeMediaServiceTest {
         val result = service.getFilenamesThatContain("The Of")
         assertEquals(expected, result)
     }
+
+    @Test
+    fun `should get all filenames when search is blank`() {
+        val expected = listOf(
+            "Digging into the Lord",
+            "Lord Underpass Who",
+            "Of The Keep",
+            "The Lord Underpass",
+            "The Lord of the"
+        )
+        whenever(fileDirectoryService.getLinesFromFile(path)).thenReturn(expected)
+        val result = service.getFilenamesThatContain(" ")
+        assertEquals(expected, result)
+    }
 }

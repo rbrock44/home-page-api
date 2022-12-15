@@ -23,15 +23,20 @@ class HomeMediaService(
     fun getFilenamesThatContain(criteria: String): List<String> {
         val list = fileDirectoryService.getLinesFromFile(outputFile)
         val filenames = mutableListOf<String>()
-        list.forEach {
-            var hasEveryCriteria = true
-            criteria.split(" ").forEach { item ->
-                hasEveryCriteria = hasEveryCriteria && it.uppercase().contains(item.trim().uppercase())
-            }
+        if (criteria.trim() == "") {
+            filenames.addAll(list)
+        } else {
+            list.forEach {
+                var hasEveryCriteria = true
+                criteria.split(" ").forEach { item ->
+                    hasEveryCriteria = hasEveryCriteria && it.uppercase().contains(item.trim().uppercase())
+                }
 
-            if (hasEveryCriteria)
-                filenames.add(it)
+                if (hasEveryCriteria)
+                    filenames.add(it)
+            }
         }
+
         return filenames.sorted()
     }
 }
