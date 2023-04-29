@@ -2,9 +2,9 @@ package com.projects.homepageapi.services
 
 import com.projects.homepageapi.models.GamesPerDate
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 
-@Repository
+@Service
 class BasketballService(
     @Autowired private val helper: ScrapingHelperService
 ) {

@@ -1,10 +1,10 @@
 package com.projects.homepageapi.services
 
 import org.springframework.core.io.ClassPathResource
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import java.io.File
 
-@Repository
+@Service
 class FileDirectoryService {
     fun getFiles(directories: List<String>): List<String> {
         val fileList = mutableListOf<String>()

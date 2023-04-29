@@ -8,17 +8,30 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import java.io.IOException
 import java.net.URLEncoder
 
-@Repository
+@Service
 class ScrapingHelperService(
     @Autowired private val dateService: DateService,
     @Autowired private val jsoupService: JsoupService
 ) {
     fun getCurrentDate(): String {
         return dateService.getCurrentDate()
+    }
+
+    fun parseMediaFile(): List<String> {
+        val doc: Document = jsoupService.connect("https://github.com/rbrock44/home-page-media-file/blob/main/media.txt")
+        val htmlLines: Elements = doc.getElementsByClass("blob-code");
+
+        val lines: MutableList<String> = mutableListOf();
+
+        for (html in htmlLines) {
+            lines.add(html.text());
+        }
+
+        return lines;
     }
 
     fun parseMmaWebsite(formattedDate: String = ""): FightCard {

@@ -1,11 +1,11 @@
 package com.projects.homepageapi.services
 
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
 
-@Repository
+@Service
 class DateService(
     private var localDateTimeService: LocalDateTimeService
 ) {

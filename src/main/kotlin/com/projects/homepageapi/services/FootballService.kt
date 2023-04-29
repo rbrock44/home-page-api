@@ -2,11 +2,11 @@ package com.projects.homepageapi.services
 
 import com.projects.homepageapi.models.GamesPerDate
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 
-@Repository
+@Service
 class FootballService(
-    @Autowired private val helper: ScrapingHelperService
+    @Autowired private val helper: ScrapingHelperService,
 ) {
     fun getGamesToday(): GamesPerDate {
         return parseWebsite(formattedDate = helper.getCurrentDate())

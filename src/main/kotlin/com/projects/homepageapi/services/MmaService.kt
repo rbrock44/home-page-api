@@ -2,9 +2,9 @@ package com.projects.homepageapi.services
 
 import com.projects.homepageapi.models.FightCard
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 
-@Repository
+@Service
 class MmaService(
     @Autowired private val helper: ScrapingHelperService
 ) {
@@ -16,5 +16,3 @@ class MmaService(
         return helper.parseMmaWebsite()
     }
 }
-
-

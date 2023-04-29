@@ -1,10 +1,9 @@
 package com.projects.homepageapi.services
 
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
-
-@Repository
+@Service
 class LocalDateTimeService {
     fun now(): LocalDateTime {
         return LocalDateTime.now()

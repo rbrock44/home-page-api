@@ -1,11 +1,12 @@
 package com.projects.homepageapi.services
 
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 
-@Repository
+@Service
 class HomeMediaService(
-    private val fileDirectoryService: FileDirectoryService
+    private val fileDirectoryService: FileDirectoryService,
+    private val scraperService: ScrapingHelperService
 ) {
     private val sources = listOf(
         """\\10.0.0.50\usbc\TV Shows""",
@@ -16,13 +17,13 @@ class HomeMediaService(
         """smb://10.0.0.50/usbc/TV Shows""",
         """smb://10.0.0.50/usbc/Movies"""
     )
-    private val outputFile = "files.txt"
+    private val outputFile = "media.txt"
 
     @Scheduled(cron = "0 6 * * *")
     fun saveFilenames() {
-        val files = fileDirectoryService.getFiles(getSources())
-        if (files.isNotEmpty())
-            fileDirectoryService.writeToFile(files, outputFile)
+        val lines = scraperService.parseMediaFile();
+        if (lines.isNotEmpty())
+            fileDirectoryService.writeToFile(lines, outputFile)
     }
 
     fun getFilenamesThatContain(criteria: String): List<String> {
@@ -53,9 +54,5 @@ class HomeMediaService(
         }
 
         return filenames.sorted()
-    }
-
-    fun getSources(): List<String> {
-        return if (fileDirectoryService.isWindows()) sources else linuxSources
     }
 }
