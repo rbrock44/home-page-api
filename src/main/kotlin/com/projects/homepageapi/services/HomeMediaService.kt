@@ -8,15 +8,6 @@ class HomeMediaService(
     private val fileDirectoryService: FileDirectoryService,
     private val scraperService: ScrapingHelperService
 ) {
-    private val sources = listOf(
-        """\\10.0.0.50\usbc\TV Shows""",
-        """\\10.0.0.50\usbc\Movies"""
-    )
-
-    private val linuxSources = listOf(
-        """smb://10.0.0.50/usbc/TV Shows""",
-        """smb://10.0.0.50/usbc/Movies"""
-    )
     private val outputFile = "media.txt"
 
     @Scheduled(cron = "0 6 * * *")
