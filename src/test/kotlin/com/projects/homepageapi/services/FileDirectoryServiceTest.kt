@@ -17,44 +17,6 @@ internal class FileDirectoryServiceTest {
     }
 
     @Test
-    fun `should get file names from all directories inside source`() {
-        val source = "src/test/resources"
-        val expected = listOf(
-            "espn-nba.html",
-            "espn-nfl.html",
-            "example.txt",
-            "mma.html",
-            "example.txt",
-            "example2.txt",
-            "another-example.txt",
-        )
-        val result = service.getFiles(source)
-        assertEquals(expected, result)
-    }
-
-    @Test
-    fun `should return empty list when given bad path`() {
-        val expected = emptyList<String>()
-        val result = service.getFiles("bad-path")
-        assertEquals(expected, result)
-    }
-
-    @Test
-    fun `should get file names from multiple directories`() {
-        val sources = listOf(
-            "src/test/resources/example",
-            "src/test/resources/example2"
-        )
-        val expected = listOf(
-            "example.txt",
-            "example2.txt",
-            "another-example.txt",
-        )
-        val result = service.getFiles(sources)
-        assertEquals(expected, result)
-    }
-
-    @Test
     fun `should write out to file`() {
         val list = listOf(
             "1",
