@@ -6,8 +6,9 @@ plugins {
     kotlin("plugin.spring") version "1.6.10"
 }
 
-group = "home"
-//version = "1.0-SNAPSHOT"
+//baseName = "home-page-api"
+group = "com.projects"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
