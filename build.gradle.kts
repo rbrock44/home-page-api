@@ -39,11 +39,3 @@ tasks.test {
 tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "1.8"
 }
-
-tasks.jar {
-    manifest {
-        attributes(
-            mapOf("Main-Class" to "com.projects.homepageapi.HomePageApiApplicationKt")
-        )
-    }
-}
