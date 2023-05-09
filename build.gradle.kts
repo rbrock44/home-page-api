@@ -43,7 +43,7 @@ tasks.withType<KotlinCompile>() {
 tasks.jar {
     manifest {
         attributes(
-            mapOf("Main-Class" to "com.projects.homepageapi.HomePageApiApplication")
+            mapOf("Main-Class" to "com.projects.homepageapi.HomePageApiApplicationKt")
         )
     }
 }
