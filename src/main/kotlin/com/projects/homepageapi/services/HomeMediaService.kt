@@ -1,5 +1,6 @@
 package com.projects.homepageapi.services
 
+import com.projects.homepageapi.mediaFilepath
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 
@@ -8,13 +9,11 @@ class HomeMediaService(
     private val fileDirectoryService: FileDirectoryService,
     private val scraperService: ScrapingHelperService
 ) {
-    private val outputFile = "media.txt"
-
     @Scheduled(cron = "0 6 * * *")
     fun saveFilenames() {
         val lines = scraperService.parseMediaFile();
         if (lines.isNotEmpty())
-            fileDirectoryService.writeToFile(lines, outputFile)
+            fileDirectoryService.writeToFile(lines, mediaFilepath)
     }
 
     fun getFilenamesThatContain(criteria: String): List<String> {
@@ -22,7 +21,7 @@ class HomeMediaService(
         var list: List<String> = emptyList()
 
         while (loopCount < 2 && list.isEmpty()) {
-            list = fileDirectoryService.getLinesFromFile(outputFile)
+            list = fileDirectoryService.getLinesFromFile(mediaFilepath)
             if (list.isEmpty()) {
                 saveFilenames()
             }
