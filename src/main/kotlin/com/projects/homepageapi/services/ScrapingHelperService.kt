@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
 import java.net.URLEncoder
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @Service
 class ScrapingHelperService(
@@ -151,6 +153,17 @@ class ScrapingHelperService(
         return time.ifEmpty { otherGameTime }
     }
 
+    private fun shiftGameTimeBack(gameTime: String, hours: Long = 1): String {
+        return try {
+            val timeFormatter = DateTimeFormatter.ofPattern("h:mm a")
+            val localTime = LocalTime.parse(gameTime, timeFormatter)
+            val newLocalTime = localTime.minusHours(hours)
+            newLocalTime.format(timeFormatter)
+        } catch (e: Exception) {
+            gameTime
+        }
+    }
+
     private fun addFightsToList(list: MutableList<Fight>, card: Elements) {
         for (fight in card) {
             val fightTitle: String = Fight.getTitle(fight)
@@ -195,7 +208,7 @@ class ScrapingHelperService(
                     homeImageLink = Game.getImage(game, 1),
                     homeTeamLink = Game.getTeamLink(game, 2),
                     homeRecord = "",
-                    time = time
+                    time = shiftGameTimeBack(time)
                 )
             )
         }
@@ -231,7 +244,7 @@ class ScrapingHelperService(
                     homeTeamLink = homeLink,
                     homeImageLink = homeImage,
                     homeRecord = "",
-                    time = time,
+                    time = shiftGameTimeBack(time),
                 )
             )
         }

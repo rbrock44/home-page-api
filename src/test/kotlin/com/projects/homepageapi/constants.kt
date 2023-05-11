@@ -27,7 +27,7 @@ internal class Constants {
                     homeImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/det/detroit-lions",
                     homeRecord = "",
-                    time = "12:30 PM"
+                    time = "11:30 AM"
                 ),
                 Game(
                     opponent = "New York",
@@ -38,7 +38,7 @@ internal class Constants {
                     homeImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/dal/dallas-cowboys",
                     homeRecord = "",
-                    time = "4:30 PM"
+                    time = "3:30 PM"
                 ),
                 Game(
                     opponent = "New England",
@@ -49,7 +49,7 @@ internal class Constants {
                     homeImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/min/minnesota-vikings",
                     homeRecord = "",
-                    time = "8:20 PM"
+                    time = "7:20 PM"
                 )
             ),
             "Thursday, November 24, 2022"
