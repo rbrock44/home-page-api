@@ -24,7 +24,7 @@ class ScrapingHelperService(
     }
 
     fun parseMediaFile(): List<String> {
-        val doc: Document = jsoupService.connect("https://github.com/rbrock44/home-page-media-file/blob/main/media.txt")
+        val doc: Document = jsoupService.connect("https://github.com/rbrock44/home-page-media-file/blob/master/media.txt")
         val htmlLines: Elements = doc.getElementsByClass("blob-code");
 
         val lines: MutableList<String> = mutableListOf();
