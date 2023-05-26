@@ -1,9 +1,6 @@
 package com.projects.homepageapi.services
 
-import com.projects.homepageapi.models.Fight
-import com.projects.homepageapi.models.FightCard
-import com.projects.homepageapi.models.Game
-import com.projects.homepageapi.models.GamesPerDate
+import com.projects.homepageapi.models.*
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -75,6 +72,19 @@ class ScrapingHelperService(
             title = title,
             titleLink = titleLink
         )
+    }
+
+    fun parseGdqWebsite(): Event {
+        val url = "https://gamesdonequick.com/"
+        val doc: Document = jsoupService.connect(url)
+       
+        val items = doc.select("div ul.list-group li")
+        val item = items[0]
+
+        val title = item.getElementsByTag("h5").text()
+        val dates = item.getElementsByTag("p").text()
+
+        return Event(dates = dates, name = title, url = url)
     }
 
     fun parseGamesPerDateWebsite(formattedDate: String, isBasketball: Boolean = true): GamesPerDate {
