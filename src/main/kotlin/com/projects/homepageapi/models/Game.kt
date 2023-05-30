@@ -74,7 +74,21 @@ data class Game(
 
         @JvmStatic
         fun getBasketballName(elements: Element, index: Int): String {
-            return elements.getElementsByClass("Table__Team")[index].children()[1].text()
+            val teams = elements.getElementsByClass("Table__Team")
+            val value = teams[index]
+            return if (value != null) {
+                val children = value.children()
+                if (children.size >= 1) {
+                    if (children.size == 1) {
+                        children[0].text()
+                    }
+                    children[1].text()
+                } else {
+                    ""
+                }
+            } else {
+                ""
+            }
         }
 
         @JvmStatic
