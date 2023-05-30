@@ -48,7 +48,18 @@ data class Game(
 
         @JvmStatic
         fun getFootballName(elements: Element, index: Int): String {
-            return elements.getElementsByClass("table__team")[index].getElementsByTag("a")[1].text()
+            val teams = elements.getElementsByClass("table__team")
+            val value = teams[index]
+            return if (value != null) {
+                val a = value.getElementsByTag("a")
+                if (a.size >= 2) {
+                    a[1].text()
+                } else {
+                    ""
+                }
+            } else {
+                ""
+            }
         }
 
         @JvmStatic
