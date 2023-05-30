@@ -21,7 +21,8 @@ class ScrapingHelperService(
     }
 
     fun parseMediaFile(): List<String> {
-        val doc: Document = jsoupService.connect("https://github.com/rbrock44/home-page-media-file/blob/master/media.txt")
+        val doc: Document =
+            jsoupService.connect("https://github.com/rbrock44/home-page-media-file/blob/master/media.txt")
         val htmlLines: Elements = doc.getElementsByClass("blob-code");
 
         val lines: MutableList<String> = mutableListOf();
@@ -77,7 +78,7 @@ class ScrapingHelperService(
     fun parseGdqWebsite(): Event {
         val url = "https://gamesdonequick.com/"
         val doc: Document = jsoupService.connect(url)
-       
+
         val items = doc.select("div ul.list-group li")
         return if (items.size == 0) {
             val title = doc.getElementsByTag("title").text().trim()
@@ -166,8 +167,14 @@ class ScrapingHelperService(
     }
 
     private fun getGameTime(game: Element, otherGameTime: String): String {
-        val time = game.getElementsByTag("a")[4].text()
-        return time.ifEmpty { otherGameTime }
+        val a = game.getElementsByTag("a")
+        return if (a.size >= 4) {
+            val time = game.getElementsByTag("a")[4].text()
+            time.ifEmpty { otherGameTime }
+        } else {
+            otherGameTime
+        }
+
     }
 
     private fun shiftGameTimeBack(gameTime: String, hours: Long = 1): String {
