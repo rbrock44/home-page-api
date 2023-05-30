@@ -79,12 +79,19 @@ class ScrapingHelperService(
         val doc: Document = jsoupService.connect(url)
        
         val items = doc.select("div ul.list-group li")
-        val item = items[0]
+        return if (items.size == 0) {
+            val title = doc.getElementsByTag("title").text().trim()
+            val dates = "LIVE"
+            Event(dates = dates, name = title, url = url)
+        } else {
+            val item = items[0]
 
-        val title = item.getElementsByTag("h5").text()
-        val dates = item.getElementsByTag("p").text()
+            val title = item.getElementsByTag("h5").text()
+            val dates = item.getElementsByTag("p").text()
 
-        return Event(dates = dates, name = title, url = url)
+            Event(dates = dates, name = title, url = url)
+        }
+
     }
 
     fun parseGamesPerDateWebsite(formattedDate: String, isBasketball: Boolean = true): GamesPerDate {
