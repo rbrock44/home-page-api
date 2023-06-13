@@ -13,8 +13,11 @@ internal class Constants {
         val mmaDocument: Document = Jsoup.parse(File("src/test/resources/mma.html").readText())
 
         val nbaDocument: Document = Jsoup.parse(File("src/test/resources/espn-nba.html").readText())
+        val nbaDocument20230613: Document = Jsoup.parse(File("src/test/resources/espn-nba_20230613.html").readText())
 
         val nflDocument: Document = Jsoup.parse(File("src/test/resources/espn-nfl.html").readText())
+
+        val gdqDocument: Document = Jsoup.parse(File("src/test/resources/gdq.html").readText())
 
         val nflExpected: GamesPerDate = GamesPerDate(
             listOf(

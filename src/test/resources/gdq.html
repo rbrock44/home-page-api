@@ -1,0 +1,310 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Games Done Quick</title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/static/res/css/main.css">
+    <script src="/static/res/js/mains2.min.js"></script>
+    <link rel="shortcut icon" href="/static/res/img/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="/static/res/img/favicon/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/res/img/favicon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/res/img/favicon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/static/res/img/favicon/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/static/res/img/favicon/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/res/img/favicon/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/res/img/favicon/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/static/res/img/favicon/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/res/img/favicon/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/static/res/img/favicon/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/static/res/img/favicon/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/static/res/img/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/static/res/img/favicon/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/static/res/img/favicon/favicon-32x32.png" sizes="32x32">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileImage" content="/static/res/img/favicon/mstile-144x144.png">
+    <meta name="msapplication-config" content="/static/res/img/favicon/browserconfig.xml">
+</head>
+<body>
+<div id="battlescene" style="display: none;">
+    <p id="inputscene" style="color: #aaff33; font-family: Arial, sans-serif; font-weight: 500; font-size: 56px; position: absolute; top: 6%; right: 10%; text-shadow: 0 0 5px #22ff22;">
+        Input 1 </p>
+    <a href="#" title="Click to return whence you came, Harrier." onclick="location.reload();">
+        <video id="battlevideo" preload="none" loop="" style="position: fixed; height: 100%; width: 100%; right: 0; left: 0; bottom: 0; margin-left: auto; margin-right: auto;">
+            <source id="battlesource1" type="video/webm" src="/static/res/video/harrierverylow.webm">
+            <source src="/static/res/video/harrierverylow.mp4" type="video/mp4">
+        </video>
+    </a>
+</div>
+<div id="scene">
+    <div id="white-bg">
+        <nav id="top" class="navbar navbar-default navbar-static-top navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button> <a class="navbar-brand" href="/"><img src="/static/res/img/gdqlogo.png" style="height: 100%" alt="Games Done Quick"></a>
+                </div>
+                <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Event Info
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="https://gamesdonequick.com/prize-guide"><i class="fa fa-gift fa-fw"></i> Prize
+                                    Submissions Guide</a></li>
+                                <li><a href="https://gamesdonequick.com/attend"><i class="fa fa-ticket fa-fw"></i> Attendance Guide +
+                                    Hotel Booking</a></li>
+                                <li><a href="https://gamesdonequick.com/rules"><i class="fa fa-gavel fa-fw"></i> Event/Broadcast
+                                    Rules</a></li>
+                                <li><a href="https://gamesdonequick.com/volunteer/faq"><i class="fa fa-question fa-fw"></i>
+                                    Volunteering FAQ</a></li>
+                                <li><a href="https://gamesdonequick.com/submission-guide"><i class="fa fa-book fa-fw"></i> Game
+                                    Submission Guide</a></li>
+                                <li class="divider"></li>
+                                <li><a href="https://gamesdonequick.com/schedule"><i class="fa fa-clock-o fa-fw"></i> SGDQ2023 Schedule</a></li>
+                                <li><a href="https://gamesdonequick.com/activities"><i class="fa fa-puzzle-piece fa-fw"></i> SGDQ2023 Activities</a></li>
+                                <li class="divider"></li>
+                                <li><a href="https://gamesdonequick.com/framefatales"><i class="fa fa-gamepad fa-fw"></i> Frost
+                                    Fatales Information</a></li>
+                                <li><a href="https://gamesdonequick.com/schedule/42"><i class="fa fa-clock-o fa-fw"></i> Frost Fatales Schedule</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Community Info <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation" class="dropdown-header">Games Done Quick</li>
+                                <li><a href="https://photos.gamesdonequick.com"><i class="fa fa-camera fa-fw"></i> Event
+                                    Photos</a></li>
+                                <li><a href="https://twitch.tv/gamesdonequick"><i class="fa fa-twitch fa-fw"></i> Twitch
+                                    Channel</a></li>
+                                <li><a href="https://twitter.com/GamesDoneQuick"><i class="fa fa-twitter fa-fw"></i>
+                                    Twitter</a></li>
+                                <li role="presentation" class="dropdown-header">Speedrunning Guides</li>
+                                <li><a href="/mod-guide"><i class="fa fa-gavel fa-fw"></i> Guide to Automated Moderation</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li role="presentation" class="dropdown-header">Speedrunning Communities</li>
+                                <li><a href="http://speeddemosarchive.com"><i class="fa fa-archive fa-fw"></i> Speed
+                                    Demos Archive</a></li>
+                                <li><a href="http://speedrunslive.com"><i class="fa fa-video-camera fa-fw"></i> Speed
+                                    Runs Live</a></li>
+                                <li><a href="http://speedrun.com"><i class="fa fa-clock-o fa-fw"></i> Speedrun.com</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">About Us <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="https://gamesdonequick.com/privacy"><i class="fa fa-eye-slash fa-fw"></i> Privacy
+                                    Policy</a></li>
+                                <li><a href="https://gamesdonequick.com/jobs"><i class="fa fa-group fa-fw"></i> Jobs at GDQ</a>
+                                </li>
+                                <li><a href="https://gamesdonequick.com/contact"><i class="fa fa-pencil fa-fw"></i> Contact Us</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="https://discord.gg/gamesdonequick"><i class="fa fa-fw fa-comments" aria-hidden="true"></i> Discord</a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/user/gamesdonequick/playlists"><i class="fa fa-fw fa-youtube-play" aria-hidden="true"></i> VODS</a>
+                        </li>
+                        <li>
+                            <a href="/hotfix"><i class="fa fa-fw fa-bolt" aria-hidden="true"></i> HOTFIX</a>
+                        </li>
+                    </ul>
+                    <a href="https://gamesdonequick.com/auth/login" role="button" class="btn btn-primary btn-sm navbar-btn navbar-right extra-button-space">Login</a>
+                    <a href="https://gamesdonequick.com/auth/register" role="button" class="btn btn-danger btn-sm navbar-btn navbar-right extra-button-space">Register</a> </div>
+            </div>
+        </nav>
+        <div class="jumbotron hidden-xs">
+            <div class="container">
+                <img src="/static/res/img/gdqlogo.png" id="gdqlogo" class="img-responsive">
+                <h1 class="hidden-sm hidden-xs">Speedrunning Marathons<br> for Charity</h1>
+            </div>
+            <video id="header-video" autoplay="" loop="" style="opacity: 0.5;">
+                <source src="/static/res/video/headerbg.webm" type="video/webm">
+                <source src="/static/res/video/headerbg.mp4" type="video/mp4">
+            </video>
+            <script>
+
+
+            </script>
+        </div>
+        <div class="container">
+            <br>
+        </div>
+        <div class="container">
+            <h4 class="text-center">Missed Summer Games Done Quick 2023? Be sure to check
+                out our <a href="https://www.youtube.com/watch?v=pDDIv7udzOQ&amp;list=PLz8YL4HVC87XSfJy7JSWQvlUgK2NGAJu4">SGDQ2023 VODs</a>
+                on YouTube!</h4>
+            <div class="col-md-7">
+                <iframe style="width: 100%; height: 360px;" src="https://player.twitch.tv/?channel=gamesdonequick&amp;parent=gamesdonequick.com&amp;parent=localhost&amp;muted=true" frameborder="0" scrolling="no"></iframe>
+            </div>
+            <div class="col-md-5">
+                <img class="img-rounded center-block" style="width: 80%;" src="/static/res/img/hotfix/hotfixlogo_lightbg.png" alt="GDQ Hotfix Logo">
+                <p>Want more after SGDQ2023? Every day, there's fresh new speedrunning content for you to
+                    enjoy!</p>
+                <p>GDQ HOTFIX promotes various communities in speedrunning. We offer up our channel and resources to help
+                    communities reach a wider audience.</p>
+                <p>Find the schedule and learn more, or even
+                    suggest a run from your community on the <a href="/hotfix">GDQ HOTFIX's site</a>!</p>
+            </div>
+        </div>
+        <div class="container">
+        </div>
+        <div class="clearfix"><br><br></div>
+        <div class="container-fluid">
+            <div class="col-md-4 col-lg-3 col-lg-push-1 timer">
+                <h3 class="">Upcoming Event Dates</h3>
+                <p>
+                    <small>All deadlines end at 11:59PM Pacific Time unless otherwise specified.</small>
+                </p>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <h5 class="list-group-item-heading text-gdq-black">Juneteenth 2023</h5>
+                        <p class="list-group-item-text">June 17th - 18th</p>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <h5 class="list-group-item-heading text-ff-purple" style="color: #4C3973">Flame Fatales 2023</h5>
+                        <p class="list-group-item-text">August 13th - 20th</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h5 class="list-group-item-heading text-ff-purple" style="color: #4C3973">Flame Fatales 2023 Game Submissions</h5>
+                        <p class="list-group-item-text">Now Closed</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h5 class="list-group-item-heading text-ff-purple" style="color: #4C3973">Flame Fatales 2023 Studio and Remote Volunteer Submissions</h5>
+                        <p class="list-group-item-text">June 9th - 17th</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9 col-lg-7 col-lg-push-1">
+                <div class="panel panel-default col-sm-10 col-sm-push-1 clearfix">
+                    <div class="panel-body">
+                        <h3 class="text-gdq-red text-center">Summer Games Done Quick 2023 <br>Concludes!</h3>
+                        <p>SGDQ2023 finished with a grand total of $2,267,932.67 for Doctors Without Borders!</p>
+                        <p>Thank you to all the staff, volunteers, runners, and attendees who helped make the event successful and safe.</p>
+                        <p>We are currently planning Awesome Games Done Quick 2024, and hope to have an announcement soon.
+                            Check back on the website or keep an eye on our <a href="https://twitter.com/GamesDoneQuick">Twitter</a> for updates!</p><p>
+                    </p></div>
+                </div>
+                <div class="panel panel-default col-sm-10 col-sm-push-1 clearfix">
+                    <div class="panel-body">
+                        <h3 class="text-ff-purple text-center" style="color: #4C3973">Frost Fatales 2023 Reaches a New Frame Fatales Donation Record!</h3>
+                        <p>Frost Fatales 2023 concluded with a record total of $153, 352.28 raised for Malala Fund! Thank you to all who participated and watched the event,
+                            especially all those working at the GDQ Studio. You can watch all of the Frame Fatales speedruns at the Frost Fatales 2023 playlist on our <a href="https://youtube.com/playlist?list=PLz8YL4HVC87WkbVdHGQggA-EbsX-NT6PS">Youtube</a>.
+                        </p>
+                        <p>If you enjoyed watching the event and want to join the Frame Fatales Discord,
+                            head on over to our <a href="/framefatales">Frame Fatales page</a> for information on how to join.</p>
+                        <p>Our next charity event will be Flame Fatales 2023 from August 13-20. For information about run submissions and volunteering,
+                            be sure to stay up to date with the <a href="https://twitter.com/GamesDoneQuick">Games Done Quick Twitter</a> and
+                            <a href="https://twitter.com/framefatales">Frame Fatales Twitter</a> for updates, or join our Discord.
+                        </p>
+                    </div>
+                </div>
+                <div class="panel panel-default col-sm-10 col-sm-push-1 clearfix">
+                    <div class="panel-body">
+                        <h3 class="text-gdq-blue text-center">Awesome Games Done Quick 2023 Returns in Online Form</h3>
+                        <h4 class="text-center">AGDQ2023 schedule is <a href="/schedule">Now Live</a>!</h4>
+                        <p>AGDQ2023 returns live, online from January 8th to the 15th, 2023, benefiting the Prevent Cancer
+                            Foundation!</p>
+                        <p>While we would love to return in-person, we've determined that to provide a safe and welcoming
+                            event to all it was best that we move away from our originally planned location in Florida.
+                        </p>
+                        <p>Given the state's continued disregard for COVID-19's dangers (including anti-mandate vaccination
+                            policies)
+                            and an increased aggression towards LGBTQ+ individuals, including the law colloquially known as
+                            "Don't Say Gay," we do not believe it is a safe place for our community at this time.
+                        </p>
+                        <p>Immediately after the success of AGDQ 2020, we secured a contract with a venue in Florida to
+                            return in 2021. Since the global pandemic was declared, we postponed in-person events until it
+                            was safe to return.
+                        </p>
+                        <p>We've explored multiple options which would allow us to remain in-person by relocating to a safer
+                            location. Unfortunately, the cost required to cancel our contract is too great to justify
+                            relocating AGDQ while paying the cancellation fee, and we are no longer able to delay our
+                            contract. This ultimately led us to move AGDQ 2023 online.
+                        </p>
+                        <p>While the move to online will allow us to save some on expenses, we still have considerable costs
+                            to recover. We are looking to recover that money where possible, including with community
+                            support
+                            via Twitch subs. We thank the community for their support!
+                        </p>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="fa-stack center-block medium-icon-blue big-icon">
+                    <i class="fa fa-circle fa-stack-2x"></i> <i class="fa fa-gamepad fa-stack-1x fa-inverse"></i>
+                </div>
+                <h2 class="text-center extra-spacing">What is Games Done Quick?</h2>
+                <p class="larger extra-spacing text-justify"><strong>Games Done Quick</strong> is a series of charity video
+                    game marathons. These events feature high-level gameplay
+                    by speedrunners raising money for charity. Games Done Quick has teamed up with several charities in its
+                    nine-year
+                    history, including
+                    <strong><a href="https://www.doctorswithoutborders.org/" target="_blank">Doctors Without
+                        Borders</a></strong> and the
+                    <strong><a href="https://preventcancer.org" target="_blank">Prevent Cancer Foundation</a></strong>. We
+                    are currently
+                    <strong>the largest
+                        fundraising event globally for both charities</strong>!
+                </p>
+                <p class="larger extra-spacing text-justify">To date, Games Done Quick has raised over <a href="https://gamesdonequick.com/tracker/"><strong>45 million</strong></a> dollars for charity.
+                    We also average over 3000 people in attendance at our events, including staff, volunteers,
+                    runners, and attendees just looking to have fun and support the event!</p>
+            </div>
+        </div>
+        <div id="rainbow-home"></div>
+        <div class="container">
+            <div class="">
+                <div class="row extra-spacing">
+                    <h2 class="text-center text-gdq-black extra-spacing"><i class="fa fa-calendar fa-fw"></i> Two Events
+                        Annually
+                    </h2>
+                    <div class="col-xs-6 larger text-right col-border-left">
+                        <h3 class="text-gdq-blue">Awesome Games Done Quick</h3>
+                        <p>Winter</p>
+                        <p><strong>2023</strong>: January 8-15</p>
+                    </div>
+                    <div class="col-xs-6 larger col-border-right">
+                        <h3 class="text-gdq-red">Summer Games Done Quick</h3>
+                        <p>Summer</p>
+                        <p><strong>2024</strong></p>
+                    </div>
+                </div>
+                <div class="fa-stack fa-lg fa-4x center-block medium-icon-black">
+                    <i class="fa fa-circle fa-stack-2x"></i> <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                </div>
+                <h2 class="text-center text-gdq-black">Questions? Media inquiries? Looking for a job?</h2>
+                <div class="row extra-spacing">
+                    <p class="larger text-justify">Our staff can be reached on our <a href="contact">contact page</a>. A
+                        list
+                        of open positions can be found on <a href="/jobs">our jobs page</a>.</p>
+                </div>
+            </div>
+        </div>
+        <script>
+        $('.difftime').each(function () {
+            this.innerHTML = moment(this.innerHTML).add(22, 'hours').fromNow();
+        });
+    </script>
+        <br><br>
+        <div id="foot" class="text-center">
+            <a href="#top"><i class="fa fa-chevron-circle-up text-gdq-white fa-2x" style="padding-top: 5px"></i></a>
+            <p style="padding-top: 10px"><a id="battle" href="#" onclick="document.getElementById('battlevideo').play();">
+                Many more battle scenes will soon be available!</a>
+            </p>
+            <br><br>
+        </div>
+    </div>
+</div>
+
+
+</body></html>
