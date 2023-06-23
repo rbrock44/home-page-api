@@ -7,9 +7,9 @@ import org.mockito.InjectMocks
 import org.mockito.MockitoAnnotations
 import java.io.File
 
-internal class FileDirectoryServiceTest {
+internal class FileServiceTest {
     @InjectMocks
-    lateinit var service: FileDirectoryService
+    lateinit var service: FileService
 
     @BeforeEach
     fun setUp() {

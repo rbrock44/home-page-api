@@ -79,18 +79,20 @@ class ScrapingHelperService(
         val url = "https://gamesdonequick.com/"
         val doc: Document = jsoupService.connect(url)
 
-        val items = doc.select("div ul.list-group li")
+        val items = doc.select("div div.col-xs-6")
         return if (items.size == 0) {
             val title = doc.getElementsByTag("title").text().trim()
             val dates = "LIVE"
             Event(dates = dates, name = title, url = url)
         } else {
-            val item = items[0]
-
-            val title = item.getElementsByTag("h5").text()
-            val dates = item.getElementsByTag("p").text()
-
-            Event(dates = dates, name = title, url = url)
+            val names = mutableListOf<String>()
+            val dates = mutableListOf<String>()
+            for (item in items) {
+                val ptags = item.getElementsByTag("p")
+                names.add(ptags[0].text())
+                dates.add(ptags[1].text())
+            }
+            Event(dates = dates, name = names, url = url)
         }
 
     }

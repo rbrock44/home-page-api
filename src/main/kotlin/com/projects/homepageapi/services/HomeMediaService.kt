@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service
 
 @Service
 class HomeMediaService(
-    private val fileDirectoryService: FileDirectoryService,
+    private val fileService: FileService,
     private val scraperService: ScrapingHelperService
 ) {
     @Scheduled(cron = "0 6 * * *")
     fun saveFilenames() {
         val lines = scraperService.parseMediaFile();
         if (lines.isNotEmpty())
-            fileDirectoryService.writeToFile(lines, mediaFilepath)
+            fileService.writeToFile(lines, mediaFilepath)
     }
 
     fun getFilenamesThatContain(criteria: String): List<String> {
@@ -21,7 +21,7 @@ class HomeMediaService(
         var list: List<String> = emptyList()
 
         while (loopCount < 2 && list.isEmpty()) {
-            list = fileDirectoryService.getLinesFromFile(mediaFilepath)
+            list = fileService.getLinesFromFile(mediaFilepath)
             if (list.isEmpty()) {
                 saveFilenames()
             }

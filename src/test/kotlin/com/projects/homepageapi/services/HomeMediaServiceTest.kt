@@ -7,13 +7,12 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.never
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 internal class HomeMediaServiceTest {
     @Mock
-    lateinit var fileDirectoryService: FileDirectoryService
+    lateinit var fileService: FileService
 
     @InjectMocks
     lateinit var service: HomeMediaService
@@ -23,17 +22,11 @@ internal class HomeMediaServiceTest {
         MockitoAnnotations.openMocks(this)
     }
 
-    private val sources = listOf(
-        """\\10.0.0.50\usbc\TV Shows""",
-        """\\10.0.0.50\usbc\Movies"""
-    )
-
     private val path = "files.txt"
 
     @Test
     fun `should get files from the two sources`() {
         service.saveFilenames()
-//        verify(fileDirectoryService).writeToFile(sources)
     }
 
     @Test
@@ -42,17 +35,15 @@ internal class HomeMediaServiceTest {
             "list",
             "another list"
         )
-//        whenever(fileDirectoryService.getFiles(sources)).thenReturn(expected)
         service.saveFilenames()
-        verify(fileDirectoryService).writeToFile(expected, path)
+        verify(fileService).writeToFile(expected, path)
     }
 
     @Test
     fun `should not write empty file list to source`() {
         val expected = emptyList<String>()
-//        whenever(fileDirectoryService.getFiles(sources)).thenReturn(expected)
         service.saveFilenames()
-        verify(fileDirectoryService, never()).writeToFile(expected, path)
+        verify(fileService, never()).writeToFile(expected, path)
     }
 
     @Test
@@ -67,7 +58,7 @@ internal class HomeMediaServiceTest {
             "iSt",
             "lisT"
         )
-        whenever(fileDirectoryService.getLinesFromFile(path)).thenReturn(list)
+        whenever(fileService.getLinesFromFile(path)).thenReturn(list)
         val result = service.getFilenamesThatContain("st")
         assertEquals(expected, result)
     }
@@ -85,7 +76,7 @@ internal class HomeMediaServiceTest {
             "Of The Keep",
             "The Lord of the"
         )
-        whenever(fileDirectoryService.getLinesFromFile(path)).thenReturn(list)
+        whenever(fileService.getLinesFromFile(path)).thenReturn(list)
         val result = service.getFilenamesThatContain("The Of")
         assertEquals(expected, result)
     }
@@ -99,7 +90,7 @@ internal class HomeMediaServiceTest {
             "The Lord Underpass",
             "The Lord of the"
         )
-        whenever(fileDirectoryService.getLinesFromFile(path)).thenReturn(expected)
+        whenever(fileService.getLinesFromFile(path)).thenReturn(expected)
         val result = service.getFilenamesThatContain(" ")
         assertEquals(expected, result)
     }
@@ -107,10 +98,8 @@ internal class HomeMediaServiceTest {
     @Test
     fun `should scrap filenames when none are found in file`() {
         val expected = emptyList<String>()
-        whenever(fileDirectoryService.getLinesFromFile(path)).thenReturn(expected)
-//        whenever(fileDirectoryService.getFiles(sources)).thenReturn(expected)
+        whenever(fileService.getLinesFromFile(path)).thenReturn(expected)
         val result = service.getFilenamesThatContain(" ")
         assertEquals(expected, result)
-//        verify(fileDirectoryService, times(2)).getFiles(sources)
     }
 }

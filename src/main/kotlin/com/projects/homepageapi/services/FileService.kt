@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import java.io.File
 
 @Service
-class FileDirectoryService {
+class FileService {
     fun writeToFile(outputList: List<String>, path: String) {
         getFile(path).writeText(outputList.joinToString(separator = "\n"))
     }
