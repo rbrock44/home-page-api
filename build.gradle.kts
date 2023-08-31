@@ -23,6 +23,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:2.6.2")
     implementation("org.springframework.boot:spring-boot-starter-cache:2.6.2")
 
+    implementation("org.eclipse.jgit:org.eclipse.jgit:6.6.0.202305301015-r")
+
     testImplementation(kotlin("test"))
     testImplementation("org.springframework.boot:spring-boot-starter-test:2.6.2") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")

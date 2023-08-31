@@ -3,15 +3,26 @@ package com.projects.homepageapi.services
 import com.projects.homepageapi.mediaFilepath
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import java.nio.file.Files
+import org.eclipse.jgit.api.Git
 
 @Service
 class HomeMediaService(
-    private val fileService: FileService,
-    private val scraperService: ScrapingHelperService
+    private val fileService: FileService
 ) {
     @Scheduled(cron = "0 6 * * *")
     fun saveFilenames() {
-        val lines = scraperService.parseMediaFile();
+        val repoUrl = "https://github.com/rbrock44/home-page-media-file"
+        val filePath = "media.txt"
+        val cloneDirectory = Files.createTempDirectory("git-clone")
+        Git.cloneRepository()
+            .setURI(repoUrl)
+            .setDirectory(cloneDirectory.toFile())
+            .call()
+
+        val fileUrl = cloneDirectory.resolve(filePath).toString()
+
+        val lines = fileService.getLinesFromFile(fileUrl)
         if (lines.isNotEmpty())
             fileService.writeToFile(lines, mediaFilepath)
     }

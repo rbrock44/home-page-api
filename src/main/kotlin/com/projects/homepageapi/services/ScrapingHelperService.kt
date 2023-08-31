@@ -20,41 +20,6 @@ class ScrapingHelperService(
         return dateService.getCurrentDate()
     }
 
-    fun parseMediaFile(): List<String> {
-        val doc: Document =
-            jsoupService.connect("https://github.com/rbrock44/home-page-media-file/blob/master/media.txt")
-        val frame: Elements = doc.getElementsByTag("turbo-frame")
-
-        val script: Element? = doc.selectFirst("script[data-target=react-app.embeddedData]")
-        var lines: List<String> = emptyList();
-
-        script?.let {
-            val jsonData: String = script.data()
-            lines = parseJsonAndGetRawLines(jsonData)
-        }
-
-        return lines;
-    }
-
-    fun parseJsonAndGetRawLines(jsonData: String): List<String> {
-        // You can use any JSON parsing library you prefer (e.g., Gson, kotlinx.serialization)
-        // For simplicity, let's assume the JSON structure and parsing using Kotlin's built-in JSON support:
-
-        // Extracting the JSON object from the "payload" property
-        val jsonObject = jsonData.substringAfter("{").substringBefore("}").trim()
-
-        // Splitting the JSON object by commas to create individual key-value pairs
-        val keyValuePairs = jsonObject.split(",")
-
-        // Extracting the value of the "rawLines" property
-        val rawLines = keyValuePairs.find { it.contains("\"rawLines\"") }?.substringAfter(":")?.trim()
-
-        // Convert the rawLines string to a list of strings (assuming the elements are surrounded by quotes)
-        return rawLines?.let {
-            it.trim().removePrefix("[").removeSuffix("]").split(",").map { line -> line.trim().removeSurrounding("\"") }
-        } ?: emptyList()
-    }
-
     fun parseMmaWebsite(formattedDate: String = ""): FightCard {
         val doc: Document = jsoupService.connect("https://www.mmafighting.com/schedule")
         val fightCard: Elements = FightCard.getCards(doc)
