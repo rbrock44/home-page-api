@@ -1,4 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
 plugins {
     id("org.springframework.boot") version "2.6.2"
@@ -37,8 +40,4 @@ dependencies {
 
 tasks.test {
     useJUnit()
-}
-
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "1.8"
 }
