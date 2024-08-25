@@ -10,7 +10,7 @@ import org.eclipse.jgit.api.Git
 class HomeMediaService(
     private val fileService: FileService
 ) {
-    @Scheduled(cron = "0 6 * * *")
+    @Scheduled(cron = "0 6 * * * *")
     fun saveFilenames() {
         val repoUrl = "https://github.com/rbrock44/home-page-media-file"
         val filePath = "media.txt"
