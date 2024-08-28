@@ -29,15 +29,15 @@ class CleaningScheduleController(
     @PostMapping("/add")
     fun addMeeting(
         @RequestBody meeting: Meeting
-    ) {
-        service.addMeeting(meeting)
+    ): Meeting {
+        return service.addMeeting(meeting)
     }
 
     @PostMapping("/edit")
     fun updateMeeting(
         @RequestBody meeting: Meeting
-    ) {
-        service.updateMeeting(meeting)
+    ): Meeting {
+       return service.updateMeeting(meeting)
     }
 
     @DeleteMapping("")

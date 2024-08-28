@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+    compileOnly("com.h2database:h2:1.4.200")
+
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.6.10"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10")
 
@@ -25,6 +27,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator:2.6.2")
     implementation("org.springframework.boot:spring-boot-starter-web:2.6.2")
     implementation("org.springframework.boot:spring-boot-starter-cache:2.6.2")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.6.2")
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.6.0.202305301015-r")
 
