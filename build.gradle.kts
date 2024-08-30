@@ -21,6 +21,10 @@ dependencies {
     compileOnly("com.h2database:h2:1.4.200")
     runtimeOnly("com.h2database:h2:1.4.200")
 
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
+    implementation("org.glassfish.jaxb:jaxb-runtime:2.3.1")
+    implementation("javax.activation:activation:1.1.1")
+
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.6.10"))
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10")
