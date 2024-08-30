@@ -19,6 +19,7 @@ repositories {
 
 dependencies {
     compileOnly("com.h2database:h2:1.4.200")
+    runtimeOnly("com.h2database:h2:1.4.200")
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.6.10"))
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
