@@ -1,11 +1,10 @@
 package com.projects.homepageapi.services
 
-import com.projects.homepageapi.mediaFilepath
 import com.projects.homepageapi.models.Meeting
 import com.projects.homepageapi.repositories.MeetingRepository
+import org.eclipse.jgit.api.Git
 import org.springframework.stereotype.Service
 import java.nio.file.Files
-import org.eclipse.jgit.api.Git
 
 @Service
 class CleaningScheduleService(
@@ -26,7 +25,8 @@ class CleaningScheduleService(
         val lines = fileService.getLinesFromFile(fileUrl)
 
         lines.forEach { line ->
-            val meeting = Meeting(line)
+            val meeting = Meeting.fromLine(line)
+            println(meeting)
             meetingRepository.save(meeting)
         }
     }

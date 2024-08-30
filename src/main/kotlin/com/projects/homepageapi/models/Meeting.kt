@@ -15,8 +15,10 @@ data class Meeting(
     val title: String = "",
     val person: String = ""
 ) {
-    constructor(line: String) : this() {
-        val items = line.split("|")
-        Meeting(items[0].toInt(), items[1], items[2], items[3], items[4], items[5])
+    companion object {
+        fun fromLine(line: String): Meeting {
+            val items = line.split("|")
+            return Meeting(items[0].toInt(), items[1], items[2], items[3], items[4], items[5])
+        }
     }
 }
