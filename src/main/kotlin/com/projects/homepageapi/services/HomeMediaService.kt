@@ -1,17 +1,19 @@
 package com.projects.homepageapi.services
 
-import com.projects.homepageapi.mediaFilepath
+import com.projects.homepageapi.models.MediaFile
+import com.projects.homepageapi.repositories.MediaFileRepository
+import org.eclipse.jgit.api.Git
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.nio.file.Files
-import org.eclipse.jgit.api.Git
 
 @Service
 class HomeMediaService(
-    private val fileService: FileService
+    private val fileService: FileService,
+    private val mediaFileRepository: MediaFileRepository
 ) {
     @Scheduled(cron = "0 6 * * * *")
-    fun saveFilenames() {
+    fun getMediaFilesFromRepo() {
         val repoUrl = "https://github.com/rbrock44/home-page-media-file"
         val filePath = "media.txt"
         val cloneDirectory = Files.createTempDirectory("git-clone")
@@ -23,34 +25,28 @@ class HomeMediaService(
         val fileUrl = cloneDirectory.resolve(filePath).toString()
 
         val lines = fileService.getLinesFromFile(fileUrl)
-        if (lines.isNotEmpty())
-            fileService.writeToFile(lines, mediaFilepath)
+        val mediaFiles = lines.map { MediaFile(it) }
+
+        if (lines.isNotEmpty()) {
+            mediaFileRepository.deleteAll()
+            mediaFileRepository.saveAll(mediaFiles)
+        }
     }
 
     fun getFilenamesThatContain(criteria: String): List<String> {
-        var loopCount = 0
-        var list: List<String> = emptyList()
-
-        while (loopCount < 2 && list.isEmpty()) {
-            list = fileService.getLinesFromFile(mediaFilepath)
-            if (list.isEmpty()) {
-                saveFilenames()
-            }
-            loopCount++
-        }
-
+        val mediaFiles: List<MediaFile> = mediaFileRepository.findAll();
         val filenames = mutableListOf<String>()
         if (criteria.trim() == "") {
-            filenames.addAll(list)
+            filenames.addAll(mediaFiles.map { it.name })
         } else {
-            list.forEach {
+            mediaFiles.forEach {
                 var hasEveryCriteria = true
                 criteria.split(" ").forEach { item ->
-                    hasEveryCriteria = hasEveryCriteria && it.uppercase().contains(item.trim().uppercase())
+                    hasEveryCriteria = hasEveryCriteria && it.name.uppercase().contains(item.trim().uppercase())
                 }
 
                 if (hasEveryCriteria)
-                    filenames.add(it)
+                    filenames.add(it.name)
             }
         }
 
