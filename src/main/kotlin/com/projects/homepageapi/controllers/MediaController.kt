@@ -17,6 +17,6 @@ class MediaController(
 ) {
     @GetMapping("/update")
     fun updateMedia() {
-        mediaService.saveFilenames();
+        mediaService.getMediaFilesFromRepo();
     }
 }
