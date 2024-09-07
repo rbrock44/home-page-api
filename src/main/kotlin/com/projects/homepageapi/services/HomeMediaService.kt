@@ -25,7 +25,7 @@ class HomeMediaService(
         val fileUrl = cloneDirectory.resolve(filePath).toString()
 
         val lines = fileService.getLinesFromFile(fileUrl)
-        val mediaFiles = lines.map { MediaFile(it) }
+        val mediaFiles = lines.map { MediaFile(0, it) }
 
         if (lines.isNotEmpty()) {
             mediaFileRepository.deleteAll()
@@ -34,7 +34,7 @@ class HomeMediaService(
     }
 
     fun getFilenamesThatContain(criteria: String): List<String> {
-        val mediaFiles: List<MediaFile> = mediaFileRepository.findAll();
+        val mediaFiles: List<MediaFile> = mediaFileRepository.findAll()
         val filenames = mutableListOf<String>()
         if (criteria.trim() == "") {
             filenames.addAll(mediaFiles.map { it.name })
