@@ -33,23 +33,10 @@ class HomeMediaService(
         }
     }
 
-    fun getFilenamesThatContain(criteria: String): List<String> {
-        val mediaFiles: List<MediaFile> = mediaFileRepository.findAll()
-        val filenames = mutableListOf<String>()
-        if (criteria.trim() == "") {
-            filenames.addAll(mediaFiles.map { it.name })
-        } else {
-            mediaFiles.forEach {
-                var hasEveryCriteria = true
-                criteria.split(" ").forEach { item ->
-                    hasEveryCriteria = hasEveryCriteria && it.name.uppercase().contains(item.trim().uppercase())
-                }
-
-                if (hasEveryCriteria)
-                    filenames.add(it.name)
-            }
-        }
-
-        return filenames.sorted()
+   return if (criteria.trim().isEmpty()) {
+        mediaFileRepository.findAll().map { it.name }.sorted()
+    } else {
+        val formattedCriteria = "%" + criteria.trim().uppercase().replace(" ", "%") + "%"
+        mediaFileRepository.findByCriteria(formattedCriteria).sorted()
     }
 }
