@@ -33,10 +33,12 @@ class HomeMediaService(
         }
     }
 
-   return if (criteria.trim().isEmpty()) {
-        mediaFileRepository.findAll().map { it.name }.sorted()
-    } else {
-        val formattedCriteria = "%" + criteria.trim().uppercase().replace(" ", "%") + "%"
-        mediaFileRepository.findByCriteria(formattedCriteria).sorted()
+    fun getFilenamesThatContain(criteria: String): List<String> {
+        return if (criteria.trim().isEmpty()) {
+            mediaFileRepository.findAll().map { it.name }.sorted()
+        } else {
+            val formattedCriteria = "%" + criteria.trim().uppercase().replace(" ", "%") + "%"
+            mediaFileRepository.findByCriteria(formattedCriteria).sorted()
+        }
     }
 }
