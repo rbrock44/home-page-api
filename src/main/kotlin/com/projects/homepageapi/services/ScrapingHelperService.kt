@@ -263,4 +263,67 @@ class ScrapingHelperService(
 
         return list
     }
+
+    private fun parseAuctions(auctions: Elements, isHibid: Boolean, formattedDate: String): MutableList<Auction> {
+        val list = mutableListOf<Auction>()
+
+        for (auction in auctions) {
+            val name = if (isHibid) Auction.getHibidName(auction) else Auction.getZipName(auction)
+            val service = if (isHibid) Auction.getHibidService(auction) else Auction.getZipService(auction)
+            val url = if (isHibid) Auction.getHibidUrl(auction) else Auction.getZipUrl(auction)
+            val startDate = if (isHibid) Auction.getHibidStartDate(auction) else Auction.getZipStartDate(auction)
+            val endDate = if (isHibid) Auction.getHibidEndDate(auction) else ""
+            val location = if (isHibid) Auction.getHibidLocation(auction) else Auction.getZipLocation(auction)
+            val closingTime = if (isHibid) Auction.getHibidClosingTime(auction) else ""
+            val internetBidding = if (isHibid) Auction.getHibidInternetBidding(auction) else false
+
+            list.add(
+                Auction(
+                    service = service,
+                    name = name,
+                    internetBidding = internetBidding,
+                    url = url,
+                    startDate = startDate,
+                    endDate = endDate,
+                    location = location,
+                    closingTime = closingTime,
+                )
+            )
+        }
+
+        return list
+    }
+
+    fun parseAuctionWebsites(formattedDate: String): List<Auction> {
+        try {
+            val urls =
+                listOf("https://www.auctionzip.com/MO-Auctioneers/65208.html", "https://hibid.com/auctions?zip=63701")
+            val listOfAuctions: MutableList<Auction> = mutableListOf()
+
+            urls.forEach {
+                val isHibid = it.containsHibid()
+                val doc: Document = jsoupService.connect(it)
+
+                val auctions: Elements = if (isHibid) Auction.getHibidAuctions(doc) else Auction.getZipAuctions(doc)
+
+                listOfAuctions.addAll(
+                    this.parseAuctions(
+                        auctions = auctions,
+                        isHibid = isHibid,
+                        formattedDate = formattedDate
+                    )
+                )
+            }
+
+            return listOfAuctions
+            // In case of any IO errors, we want the messages written to the console
+        } catch (e: IOException) {
+            return emptyList()
+        }
+    }
+
+    fun String.containsHibid(): Boolean {
+        return this.contains("hibid", ignoreCase = true)
+    }
+
 }
