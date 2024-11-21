@@ -41,7 +41,7 @@ data class Auction(
         fun getHibidUrl(element: Element): String {
             val title = element.getElementsByClass("auction-header-title")[0]
             val url = title.getElementsByTag("a")
-            return if (url.isNullOrEmpty()) "" else url.attr("href")
+            return if (url.isNullOrEmpty()) "" else "www.hibid.com${url.attr("href")}"
         }
 
         @JvmStatic
@@ -97,7 +97,7 @@ data class Auction(
         @JvmStatic
         fun getHibidInternetBidding(element: Element): Boolean {
             val name = element.getElementsByClass("auction-type")
-            return (if (name.isNullOrEmpty()) "" else name.text()).contains(
+            return !(if (name.isNullOrEmpty()) "" else name.text()).contains(
                 "No internet bidding",
                 ignoreCase = true
             )
@@ -105,18 +105,14 @@ data class Auction(
 
         @JvmStatic
         fun getHibidClosingTime(element: Element): String {
-            val col = element.getElementsByClass("col")[0]
-            val hovertext = col.getElementsByClass("hovertext")[0]
-
             // second p element
-            return getHibidPlainText(hovertext, 1)
+            return getHibidPlainText(element, 1)
         }
 
         private fun getHibidPlainText(element: Element, index: Int): String {
             val col = element.getElementsByClass("col")[0]
-            val hovertext = col.getElementsByClass("hovertext")[0]
 
-            val p = hovertext.getElementsByTag("p")[index]
+            val p = col.getElementsByTag("p")[index]
             return if (p == null) "" else p.text()
         }
 

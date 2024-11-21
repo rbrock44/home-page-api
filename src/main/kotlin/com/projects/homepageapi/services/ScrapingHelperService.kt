@@ -296,13 +296,14 @@ class ScrapingHelperService(
 
     fun parseAuctionWebsites(formattedDate: String): List<Auction> {
         try {
+//            "https://www.auctionzip.com/MO-Auctioneers/65208.html"
             val urls =
-                listOf("https://www.auctionzip.com/MO-Auctioneers/65208.html", "https://hibid.com/auctions?zip=63701")
+                listOf("https://hibid.com/auctions?zip=63701")
             val listOfAuctions: MutableList<Auction> = mutableListOf()
 
-            urls.forEach {
-                val isHibid = it.containsHibid()
-                val doc: Document = jsoupService.connect(it)
+            urls.forEach { url ->
+                val isHibid = url.containsHibid()
+                val doc: Document = jsoupService.connect(url)
 
                 val auctions: Elements = if (isHibid) Auction.getHibidAuctions(doc) else Auction.getZipAuctions(doc)
 
@@ -311,13 +312,14 @@ class ScrapingHelperService(
                         auctions = auctions,
                         isHibid = isHibid,
                         formattedDate = formattedDate
-                    )
+                    ).filter { if (isHibid) it.internetBidding else true }
                 )
             }
 
             return listOfAuctions
             // In case of any IO errors, we want the messages written to the console
         } catch (e: IOException) {
+            println(e.message);
             return emptyList()
         }
     }
