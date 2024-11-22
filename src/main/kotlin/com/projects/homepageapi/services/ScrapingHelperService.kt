@@ -274,7 +274,7 @@ class ScrapingHelperService(
             val startDate = if (isHibid) Auction.getHibidStartDate(auction) else Auction.getZipStartDate(auction)
             val endDate = if (isHibid) Auction.getHibidEndDate(auction) else ""
             val location = if (isHibid) Auction.getHibidLocation(auction) else Auction.getZipLocation(auction)
-            val closingTime = if (isHibid) Auction.getHibidClosingTime(auction) else ""
+            val note = if (isHibid) Auction.getHibidNote(auction) else ""
             val internetBidding = if (isHibid) Auction.getHibidInternetBidding(auction) else false
 
             list.add(
@@ -286,7 +286,7 @@ class ScrapingHelperService(
                     startDate = startDate,
                     endDate = endDate,
                     location = location,
-                    closingTime = closingTime,
+                    note = note,
                 )
             )
         }
@@ -295,14 +295,18 @@ class ScrapingHelperService(
     }
 
     fun parseAuctionWebsites(formattedDate: String): List<Auction> {
-        try {
-//            "https://www.auctionzip.com/MO-Auctioneers/65208.html"
-            val urls =
-                listOf("https://hibid.com/auctions?zip=63701")
-            val listOfAuctions: MutableList<Auction> = mutableListOf()
+        val listOfAuctions: MutableList<Auction> = mutableListOf()
 
-            urls.forEach { url ->
-                val isHibid = url.containsHibid()
+
+        val urls = listOf(
+            "https://www.auctionzip.com/MO-Auctioneers/65208.html",
+            "https://hibid.com/auctions?zip=63701"
+        )
+
+        urls.forEach { url ->
+            val isHibid = url.containsHibid()
+
+            try {
                 val doc: Document = jsoupService.connect(url)
 
                 val auctions: Elements = if (isHibid) Auction.getHibidAuctions(doc) else Auction.getZipAuctions(doc)
@@ -314,14 +318,22 @@ class ScrapingHelperService(
                         formattedDate = formattedDate
                     ).filter { if (isHibid) it.internetBidding else true }
                 )
+            } catch (e: IOException) {
+                listOfAuctions.add(Auction(
+                    service = "Check website for list of auctions",
+                    name = "Failed to fetch auctions from: ${url}",
+                    internetBidding = false,
+                    url = url,
+                    startDate = "",
+                    endDate = "",
+                    location = "",
+                    note = "",
+                ))
+                println(e.message)
             }
-
-            return listOfAuctions
-            // In case of any IO errors, we want the messages written to the console
-        } catch (e: IOException) {
-            println(e.message);
-            return emptyList()
         }
+
+        return listOfAuctions
     }
 
     fun String.containsHibid(): Boolean {

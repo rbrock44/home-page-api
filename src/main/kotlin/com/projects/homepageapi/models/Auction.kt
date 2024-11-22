@@ -12,7 +12,7 @@ data class Auction(
     val startDate: String,
     val endDate: String,
     val location: String,
-    val closingTime: String,
+    val note: String,
 ) {
     companion object {
         @JvmStatic
@@ -41,7 +41,7 @@ data class Auction(
         fun getHibidUrl(element: Element): String {
             val title = element.getElementsByClass("auction-header-title")[0]
             val url = title.getElementsByTag("a")
-            return if (url.isNullOrEmpty()) "" else "www.hibid.com${url.attr("href")}"
+            return if (url.isNullOrEmpty()) "" else "https://www.hibid.com${url.attr("href")}"
         }
 
         @JvmStatic
@@ -65,7 +65,7 @@ data class Auction(
         @JvmStatic
         fun getHibidStartDate(element: Element): String {
             val date = getHibidPlainText(element, 0)
-            return getDateFromRange(date, 0)
+            return getDateByIndex(date, 0)
         }
 
         @JvmStatic
@@ -76,7 +76,7 @@ data class Auction(
         @JvmStatic
         fun getHibidEndDate(element: Element): String {
             val date = getHibidPlainText(element, 0)
-            return getDateFromRange(date, 1)
+            return getDateByIndex(date, 1)
         }
 
         @JvmStatic
@@ -104,7 +104,7 @@ data class Auction(
         }
 
         @JvmStatic
-        fun getHibidClosingTime(element: Element): String {
+        fun getHibidNote(element: Element): String {
             // second p element
             return getHibidPlainText(element, 1)
         }
@@ -116,12 +116,12 @@ data class Auction(
             return if (p == null) "" else p.text()
         }
 
-        private fun getDateFromRange(dateRange: String, index: Int): String {
-            val regex = Regex("\\d{2}/\\d{2}/\\d{4}")
-            val matches = regex.findAll(dateRange).toList()
-            return matches.getOrNull(index)?.value ?: "Invalid index or date range"
-        }
+        private fun getDateByIndex(input: String, index: Int): String {
+            val datePart = input.removePrefix("Date(s)").trim()
+            val dates = datePart.split(" - ")
 
+            return dates.getOrNull(index) ?: "Invalid index"
+        }
         private fun getZipEventDetail(element: Element, index: Int): String {
             val input = element.getElementsByClass("az-ListOfLlisting__date")[0].text()
             val splitParts = input.split(" - ", limit = 3)

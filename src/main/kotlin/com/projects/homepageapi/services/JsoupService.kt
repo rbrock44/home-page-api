@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service
 @Service
 class JsoupService() {
     fun connect(url: String): Document {
-        return Jsoup.connect(url).get()
+        return Jsoup.connect(url)
+            .get()
+
     }
 }
