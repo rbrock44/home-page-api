@@ -14,7 +14,8 @@ import java.time.format.DateTimeFormatter
 @Service
 class ScrapingHelperService(
     @Autowired private val dateService: DateService,
-    @Autowired private val jsoupService: JsoupService
+    @Autowired private val jsoupService: JsoupService,
+    @Autowired private val seleniumService: SeleniumService
 ) {
     fun getCurrentDate(): String {
         return dateService.getCurrentDate()
@@ -307,6 +308,10 @@ class ScrapingHelperService(
             val isHibid = url.containsHibid()
 
             try {
+                if (!isHibid) {
+                    println(seleniumService.connect(url))
+                }
+
                 val doc: Document = jsoupService.connect(url)
 
                 val auctions: Elements = if (isHibid) Auction.getHibidAuctions(doc) else Auction.getZipAuctions(doc)

@@ -4,7 +4,6 @@ import com.projects.homepageapi.angularOrigin
 import com.projects.homepageapi.maxAge
 import com.projects.homepageapi.models.Meeting
 import com.projects.homepageapi.services.CleaningScheduleService
-import com.projects.homepageapi.services.HomeMediaService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 

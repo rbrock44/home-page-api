@@ -21,6 +21,10 @@ dependencies {
     compileOnly("com.h2database:h2:1.4.200")
     runtimeOnly("com.h2database:h2:1.4.200")
 
+    implementation("org.seleniumhq.selenium:selenium-java:4.27.0")
+    implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.27.0")
+    implementation("io.github.bonigarcia:webdrivermanager:5.9.2")
+
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("org.glassfish.jaxb:jaxb-runtime:2.3.1")
     implementation("javax.activation:activation:1.1.1")
