@@ -7,6 +7,7 @@ plugins {
     id("org.springframework.boot") version "2.6.2"
     kotlin("jvm") version "1.5.10"
     kotlin("plugin.spring") version "1.6.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0" // If using kotlinx.serialization
 }
 
 //baseName = "home-page-api"

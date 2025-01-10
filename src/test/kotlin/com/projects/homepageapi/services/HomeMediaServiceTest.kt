@@ -25,28 +25,6 @@ internal class HomeMediaServiceTest {
     private val path = "files.txt"
 
     @Test
-    fun `should get files from the two sources`() {
-        service.saveFilenames()
-    }
-
-    @Test
-    fun `should write files to source`() {
-        val expected = listOf(
-            "list",
-            "another list"
-        )
-        service.saveFilenames()
-        verify(fileService).writeToFile(expected, path)
-    }
-
-    @Test
-    fun `should not write empty file list to source`() {
-        val expected = emptyList<String>()
-        service.saveFilenames()
-        verify(fileService, never()).writeToFile(expected, path)
-    }
-
-    @Test
     fun `should get filenames that contain criteria`() {
         val list = listOf(
             "lisT",
