@@ -13,6 +13,10 @@ class FileService {
         return getFile(path).readLines()
     }
 
+    fun getTextFromFile(path: String): String {
+        return getFile(path).readText()
+    }
+
     private fun getFile(path: String): File {
         val file = File(path)
         file.createNewFile()
