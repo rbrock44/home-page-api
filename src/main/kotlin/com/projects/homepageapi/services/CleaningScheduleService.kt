@@ -2,27 +2,17 @@ package com.projects.homepageapi.services
 
 import com.projects.homepageapi.models.Meeting
 import com.projects.homepageapi.repositories.MeetingRepository
-import org.eclipse.jgit.api.Git
 import org.springframework.stereotype.Service
-import java.nio.file.Files
+import java.net.URL
 
 @Service
 class CleaningScheduleService(
-    private val fileService: FileService,
     private val meetingRepository: MeetingRepository
 ) {
     fun getMeetingsFromRepo() {
-        val repoUrl = "https://github.com/rbrock44/cleaning-schedule-database"
+        val rawFileUrl = "https://raw.githubusercontent.com/rbrock44/cleaning-schedule-database/master/meetings.txt"
 
-        val filePath = "meetings.txt"
-        val cloneDirectory = Files.createTempDirectory("git-clone")
-        Git.cloneRepository()
-            .setURI(repoUrl)
-            .setDirectory(cloneDirectory.toFile())
-            .call()
-
-        val fileUrl = cloneDirectory.resolve(filePath).toString()
-        val lines = fileService.getLinesFromFile(fileUrl)
+        val lines: List<String> = URL(rawFileUrl).openStream().bufferedReader().use { it.readLines() }
 
         lines.forEach { line ->
             val meeting = Meeting.fromLine(line)
