@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class FlashCard(
     val id: String,
     val question: String,
-    val answer: String
+    val answer: String,
+    val example: String? = ""
 ) {
 }
