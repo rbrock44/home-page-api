@@ -7,6 +7,7 @@ data class FlashCard(
     val id: String,
     val question: String,
     val answer: String,
-    val example: String? = ""
+    val example: String? = "",
+    val type: String? = ""
 ) {
 }
