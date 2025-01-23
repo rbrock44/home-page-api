@@ -82,9 +82,12 @@ data class Auction(
         @JvmStatic
         fun getHibidLocation(element: Element): String {
             val col = element.getElementsByClass("col")[0]
-            val hovertext = col.getElementsByClass("hovertext")[0]
+            val hovertexts = col.getElementsByClass("hovertext")
 
-            val address = hovertext.getElementsByTag("strong")[0]
+            if (hovertexts.length == 0) {
+                return ""
+            }
+            val address = hovertexts[0].getElementsByTag("strong")[0]
             return if (address == null) "" else address.text()
         }
 
