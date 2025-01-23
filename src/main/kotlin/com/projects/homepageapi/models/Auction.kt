@@ -64,7 +64,7 @@ data class Auction(
 
         @JvmStatic
         fun getHibidStartDate(element: Element): String {
-            val date = getHibidPlainText(element, 0)
+            val date = getHibidPlainText(element, 2)
             return getDateByIndex(date, 0)
         }
 
@@ -75,19 +75,19 @@ data class Auction(
 
         @JvmStatic
         fun getHibidEndDate(element: Element): String {
-            val date = getHibidPlainText(element, 0)
+            val date = getHibidPlainText(element, 2)
             return getDateByIndex(date, 1)
         }
 
         @JvmStatic
         fun getHibidLocation(element: Element): String {
             val col = element.getElementsByClass("col")[0]
-            val hovertexts = col.getElementsByClass("hovertext")
+            val addresses = col.getElementsByClass("company-address")
 
-            if (hovertexts.size == 0) {
+            if (addresses.size == 0) {
                 return ""
             }
-            val address = hovertexts[0].getElementsByTag("strong")[0]
+            val address = addresses[0].getElementsByTag("strong")[1]
             return if (address == null) "" else address.text()
         }
 
@@ -109,7 +109,7 @@ data class Auction(
         @JvmStatic
         fun getHibidNote(element: Element): String {
             // second p element
-            return getHibidPlainText(element, 1)
+            return getHibidPlainText(element, 3)
         }
 
         private fun getHibidPlainText(element: Element, index: Int): String {
