@@ -84,7 +84,7 @@ data class Auction(
             val col = element.getElementsByClass("col")[0]
             val hovertexts = col.getElementsByClass("hovertext")
 
-            if (hovertexts.length == 0) {
+            if (hovertexts.size == 0) {
                 return ""
             }
             val address = hovertexts[0].getElementsByTag("strong")[0]
