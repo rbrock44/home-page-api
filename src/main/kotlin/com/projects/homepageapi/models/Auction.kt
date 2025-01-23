@@ -47,7 +47,7 @@ data class Auction(
         @JvmStatic
         fun getZipUrl(element: Element): String {
             val url = element.getElementsByClass("az_title_href")
-            return if (url.isNullOrEmpty()) "" else url.attr("href")
+            return if (url.isNullOrEmpty()) "" else "https://www.auctionzip.com${url.attr("href")}"
         }
 
         @JvmStatic

@@ -297,7 +297,6 @@ class ScrapingHelperService(
     fun parseAuctionWebsites(formattedDate: String): List<Auction> {
         val listOfAuctions: MutableList<Auction> = mutableListOf()
 
-
         val urls = listOf(
             "https://www.auctionzip.com/MO-Auctioneers/65208.html",
             "https://hibid.com/auctions?zip=63701"
