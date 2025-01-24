@@ -1,8 +1,6 @@
 package com.projects.homepageapi.controllers
 
-import com.projects.homepageapi.angularOrigin
-import com.projects.homepageapi.domainOrigin
-import com.projects.homepageapi.maxAge
+import com.projects.homepageapi.*
 import com.projects.homepageapi.models.GamesPerDate
 import com.projects.homepageapi.services.BasketballService
 import com.projects.homepageapi.services.FootballService
@@ -14,7 +12,16 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("games-per-date")
-@CrossOrigin(origins = [angularOrigin, domainOrigin], maxAge = maxAge)
+@CrossOrigin(
+    origins = [
+        angularOrigin,
+        wildcardOrigin,
+        cleaningScheduleOrigin,
+        flashCardsOrigin,
+        homePageOrigin,
+    ],
+    maxAge = maxAge
+)
 class GamesPerDateController(
     @Autowired private val basketballService: BasketballService,
     @Autowired private val footballService: FootballService

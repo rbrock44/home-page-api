@@ -1,8 +1,6 @@
 package com.projects.homepageapi.controllers
 
-import com.projects.homepageapi.angularOrigin
-import com.projects.homepageapi.domainOrigin
-import com.projects.homepageapi.maxAge
+import com.projects.homepageapi.*
 import com.projects.homepageapi.models.Meeting
 import com.projects.homepageapi.services.CleaningScheduleService
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,7 +8,16 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("cleaning-schedule")
-@CrossOrigin(origins = [angularOrigin, domainOrigin], maxAge = maxAge)
+@CrossOrigin(
+    origins = [
+        angularOrigin,
+        wildcardOrigin,
+        cleaningScheduleOrigin,
+        flashCardsOrigin,
+        homePageOrigin,
+    ],
+    maxAge = maxAge
+)
 class CleaningScheduleController(
     @Autowired private val service: CleaningScheduleService
 ) {

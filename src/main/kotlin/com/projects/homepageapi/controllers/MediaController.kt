@@ -1,8 +1,6 @@
 package com.projects.homepageapi.controllers
 
-import com.projects.homepageapi.angularOrigin
-import com.projects.homepageapi.domainOrigin
-import com.projects.homepageapi.maxAge
+import com.projects.homepageapi.*
 import com.projects.homepageapi.services.HomeMediaService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -12,7 +10,16 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("media")
-@CrossOrigin(origins = [angularOrigin, domainOrigin], maxAge = maxAge)
+@CrossOrigin(
+    origins = [
+        angularOrigin,
+        wildcardOrigin,
+        cleaningScheduleOrigin,
+        flashCardsOrigin,
+        homePageOrigin,
+    ],
+    maxAge = maxAge
+)
 class MediaController(
     @Autowired private val mediaService: HomeMediaService
 ) {
