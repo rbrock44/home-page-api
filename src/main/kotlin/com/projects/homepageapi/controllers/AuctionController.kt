@@ -1,6 +1,7 @@
 package com.projects.homepageapi.controllers
 
 import com.projects.homepageapi.angularOrigin
+import com.projects.homepageapi.domainOrigin
 import com.projects.homepageapi.maxAge
 import com.projects.homepageapi.models.Auction
 import com.projects.homepageapi.services.AuctionService
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("auction")
-@CrossOrigin(origins = [angularOrigin], maxAge = maxAge)
+@CrossOrigin(origins = [angularOrigin, domainOrigin], maxAge = maxAge)
 class AuctionController(
     @Autowired private val auctionService: AuctionService
 ) {

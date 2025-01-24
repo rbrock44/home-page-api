@@ -1,6 +1,7 @@
 package com.projects.homepageapi.controllers
 
 import com.projects.homepageapi.angularOrigin
+import com.projects.homepageapi.domainOrigin
 import com.projects.homepageapi.maxAge
 import com.projects.homepageapi.models.FightCard
 import com.projects.homepageapi.services.MmaService
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("fight-card")
-@CrossOrigin(origins = [angularOrigin], maxAge = maxAge)
+@CrossOrigin(origins = [angularOrigin, domainOrigin], maxAge = maxAge)
 class FightCardController(
     @Autowired private val mmaService: MmaService
 ) {
