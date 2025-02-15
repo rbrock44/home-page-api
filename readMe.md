@@ -1,6 +1,6 @@
 # Home Page Api Readme
 
-This api was built to power the home-page [website](https://rbrock44.github.io/home-page/)/[repo](https://github.com/rbrock44/home-page)
+This api was built to power the [Home Page website](https://home-page.ryan-brock.com/)/[repo](https://github.com/rbrock44/home-page) <br/>
 
 ## Controllers/Handlers
 
@@ -17,13 +17,16 @@ This api was built to power the home-page [website](https://rbrock44.github.io/h
     * scraps gdq website for sessions
 * Home Media Search
   * handles home media search requests
-    * searches text file for matches of home media names
+    * searches h2 database for matches of home media names
 * Media
   * handles syncing home media requests
     * has way to sync with database/source
 
+<br/>
+Scripts used for some syncing data with source - (Scripts repo)[https://github.com/rbrock44/scripts]
 
 ## Deploy
-This application is hosted on heroku: https://home-page-api-34607.herokuapp.com
-
+This application is hosted on heroku: https://home-page-api.ryan-brock.com
 ``git push heroku master``
+
+Heroku automatically manages SSL (that was turned on 2025/02/15)
