@@ -48,6 +48,15 @@ internal class ScrapingHelperServiceTest {
     }
 
     @Test
+    fun `should parse mma2 website for fights`() {
+        val expected = Constants.mma2Expected
+        val value = Constants.mma2Document
+        whenever(jsoupService.connect(any())).thenReturn(value)
+        assertEquals(expected, helper.parseMmaWebsite())
+        verify(jsoupService).connect("https://www.mmafighting.com/schedule")
+    }
+
+    @Test
     fun `should parse nfl website for games`() {
         val expected = Constants.nflExpected
 
