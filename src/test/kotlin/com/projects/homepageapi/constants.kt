@@ -11,6 +11,7 @@ import java.io.File
 internal class Constants {
     companion object {
         val mmaDocument: Document = Jsoup.parse(File("src/test/resources/mma.html").readText())
+        val mma2Document: Document = Jsoup.parse(File("src/test/resources/mma2.html").readText())
 
         val nbaDocument: Document = Jsoup.parse(File("src/test/resources/espn-nba.html").readText())
 
@@ -127,6 +128,85 @@ internal class Constants {
             "November 25, 2022",
             "PFL World Championship 2022",
             "https://www.mmafighting.com/fight-card/1351/pfl-world-championship-2022"
+        )
+        val mma2Expected: FightCard = FightCard(
+            listOf(
+                Fight(
+                    "Merab Dvalishvili vs Petr Yan",
+                    "https://www.mmafighting.com/fight/453879/merab-dvalishvili-vs-petr-yan",
+                    true
+                ),
+                Fight(
+                    "Alexandre Pantoja vs Joshua Van",
+                    "https://www.mmafighting.com/fight/453881/alexandre-pantoja-vs-joshua-van",
+                    true
+                ),
+                Fight(
+                    "Henry Cejudo vs Payton Talbott",
+                    "https://www.mmafighting.com/fight/453883/henry-cejudo-vs-payton-talbott",
+                    false
+                ),
+                Fight(
+                    "Brandon Moreno vs Tatsuro Taira",
+                    "https://www.mmafighting.com/fight/453885/brandon-moreno-vs-tatsuro-taira",
+                    false
+                ),
+                Fight(
+                    "Jan Blachowicz vs Bogdan Guskov",
+                    "https://www.mmafighting.com/fight/453887/jan-blachowicz-vs-bogdan-guskov",
+                    false
+                )
+            ),
+            listOf(
+                Fight(
+                    "Grant Dawson vs Manuel Torres",
+                    "https://www.mmafighting.com/fight/457069/grant-dawson-vs-manuel-torress",
+                    false
+                ),
+                Fight(
+                    "Terrance McKinney vs Chris Duncan",
+                    "https://www.mmafighting.com/fight/457075/david-mckinney-vs-chris-duncan",
+                    false
+                ),
+                Fight(
+                    "Maycee Barber vs Karine Silva",
+                    "https://www.mmafighting.com/fight/457061/maycee-barber-vs-karine-silva",
+                    false
+                ),
+                Fight(
+                    "Nazim Sadykhov vs Fares Ziam",
+                    "https://www.mmafighting.com/fight/457063/nazim-sadykhov-vs-fares-ziam",
+                    false
+                ),
+                Fight(
+                    "Marvin Vettori vs Brunno Ferreira",
+                    "https://www.mmafighting.com/fight/457057/marvin-vettori-vs-brunno-ferreira",
+                    false
+                ),
+                Fight(
+                    "Edson Barboza vs Jalin Turner",
+                    "https://www.mmafighting.com/fight/457065/edson-barboza-vs-jalin-turner",
+                    false
+                ),
+                Fight(
+                    "Iwo Baraniewski vs Ibo Aslan",
+                    "https://www.mmafighting.com/fight/457067/iwo-baraniewski-vs-ibo-aslan",
+                    false
+                ),
+                Fight(
+                    "Mansur Abdul-Malik vs Antonio Trocoli",
+                    "https://www.mmafighting.com/fight/457073/mansur-abdul-malik-vs-antonio-trocoli",
+                    false
+                ),
+                Fight(
+                    "Muhammad Naimov vs Mairon Santos",
+                    "https://www.mmafighting.com/fight/457071/muhammad-naimov-vs-mairon-santos",
+                    false
+                )
+            ),
+            "December 4, 2025",
+            "UFC 323: Dvalishvili vs. Yan 2",
+            "https://www.mmafighting.com/fight-card/453877/ufc-323-dvalishvili-vs-yan-2"
         )
 
         val nbaExpected: GamesPerDate = GamesPerDate(
