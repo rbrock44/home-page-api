@@ -26,7 +26,7 @@ dependencies {
     implementation("org.glassfish.jaxb:jaxb-runtime:2.3.1")
     implementation("javax.activation:activation:1.1.1")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.6.10"))
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")

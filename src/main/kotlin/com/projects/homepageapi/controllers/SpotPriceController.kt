@@ -27,6 +27,6 @@ class SpotPriceController(
 ) {
     @GetMapping("")
     fun getSpotPrices(): SpotPrices {
-        service.getSpotPrices();
+        return service.getSpotPrices();
     }
 }

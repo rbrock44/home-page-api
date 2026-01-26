@@ -353,7 +353,7 @@ class ScrapingHelperService(
 
     fun parsePreciousMetalWebsite(url: String): Double {
         return try {
-            val doc: Document = Jsoup.connect(url).get()
+            val doc: Document = jsoupService.connect(url)
 
             val value: String? = SpotPrices.getElement(doc)
             value?.toDoubleOrNull() ?: -1.0
