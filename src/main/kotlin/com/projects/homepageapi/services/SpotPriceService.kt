@@ -9,9 +9,9 @@ class SpotPriceService(
     @Autowired private val helper: ScrapingHelperService
 ) {
     fun getSpotPrices(): SpotPrices {
-        return {
+        return SpotPrices(
             gold = helper.parseGoldWebsite(),
             silver = helper.parseSilverWebsite()
-        }
+        )
     }
 }

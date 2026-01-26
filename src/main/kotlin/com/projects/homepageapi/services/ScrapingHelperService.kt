@@ -352,14 +352,17 @@ class ScrapingHelperService(
     }
 
     fun parsePreciousMetalWebsite(url: String): Double {
-        try {
-            val doc: Document = jsoupService.connect(url)
+        return try {
+            val doc: Document = Jsoup.connect(url).get()
 
-            val value: String = SpotPrices.getElement(doc)
-            return value.toDouble()
+            val value: String? = SpotPrices.getElement(doc)
+            value?.toDoubleOrNull() ?: -1.0
         } catch (e: IOException) {
-            println(e.message)
-            return -1.0
+            println("IOException: ${e.message}")
+            -1.0
+        } catch (e: Exception) {
+            println("Error parsing value: ${e.message}")
+            -1.0
         }
     }
 }
