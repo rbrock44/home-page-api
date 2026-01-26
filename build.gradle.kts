@@ -5,9 +5,9 @@ java {
 
 plugins {
     id("org.springframework.boot") version "2.6.2"
-    kotlin("jvm") version "1.9.22"
-    kotlin("plugin.spring") version "1.9.22"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22" // If using kotlinx.serialization
+    kotlin("jvm") version "1.6.0"
+    kotlin("plugin.spring") version "1.6.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.0" // If using kotlinx.serialization
 }
 
 //baseName = "home-page-api"
@@ -28,9 +28,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.22"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.6.0"))
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0")
 
     implementation("org.jsoup:jsoup:1.14.3")
     implementation("org.springframework.boot:spring-boot-starter-actuator:2.6.2")
