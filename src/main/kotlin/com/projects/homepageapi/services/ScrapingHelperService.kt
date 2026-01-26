@@ -339,4 +339,27 @@ class ScrapingHelperService(
         return this.contains("hibid", ignoreCase = true)
     }
 
+    fun parseGoldWebsite(): Double  {
+        val url = "https://www.investing.com/currencies/xau-usd"
+
+        return parsePreciousMetalWebsite(url)
+    }
+
+    fun parseSilverWebsite(): Double  {
+        val url = "https://www.investing.com/currencies/xag-usd"
+
+        return parsePreciousMetalWebsite(url)
+    }
+
+    fun parsePreciousMetalWebsite(url: String): Double {
+        try {
+            val doc: Document = jsoupService.connect(url)
+
+            val value: String = SpotPrices.getElement(doc)
+            return value.toDouble()
+        } catch (e: IOException) {
+            println(e.message)
+            return -1.0
+        }
+    }
 }

@@ -1,8 +1,8 @@
 package com.projects.homepageapi.controllers
 
 import com.projects.homepageapi.*
-import com.projects.homepageapi.models.FightCard
-import com.projects.homepageapi.services.MmaService
+import com.projects.homepageapi.models.SpotPrices
+import com.projects.homepageapi.services.SpotPriceService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("fight-card")
+@RequestMapping("spot-price")
 @CrossOrigin(
     origins = [
         angularOrigin,
@@ -22,16 +22,11 @@ import org.springframework.web.bind.annotation.RestController
     ],
     maxAge = maxAge
 )
-class FightCardController(
-    @Autowired private val mmaService: MmaService
+class SpotPriceController(
+    @Autowired private val service: SpotPriceService
 ) {
-    @GetMapping("/today")
-    fun getFightsToday(): FightCard {
-        return mmaService.getFightsToday()
-    }
-
-    @GetMapping("/upcoming")
-    fun getUpcomingCard(): FightCard {
-        return mmaService.getUpcomingCard()
+    @GetMapping("")
+    fun getSpotPrices(): SpotPrices {
+        service.getSpotPrices();
     }
 }

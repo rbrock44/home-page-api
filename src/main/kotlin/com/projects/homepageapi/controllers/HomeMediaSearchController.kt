@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*
         cleaningScheduleOrigin,
         flashCardsOrigin,
         homePageOrigin,
+        utilitiesOrigin,
     ],
     maxAge = maxAge
 )

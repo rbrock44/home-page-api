@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController
         cleaningScheduleOrigin,
         flashCardsOrigin,
         homePageOrigin,
+        utilitiesOrigin,
     ],
     maxAge = maxAge
 )

@@ -5,9 +5,9 @@ java {
 
 plugins {
     id("org.springframework.boot") version "2.6.2"
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0" // If using kotlinx.serialization
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10" // If using kotlinx.serialization
 }
 
 //baseName = "home-page-api"
@@ -46,10 +46,12 @@ dependencies {
     }
     testImplementation("org.mockito:mockito-core:4.8.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.8.0")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
 }
 
 tasks.test {
-    useJUnit()
+    useJUnitPlatform()
 }
