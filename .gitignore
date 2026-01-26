@@ -1,5 +1,9 @@
 /out
 /build
 /.gradle
+.gradle/
+target/
+build/
+*.class
 /src/main/kotlin/com/projects/homepageapi/scratch/
 /src/test/kotlin/com/projects/homepageapi/scratch/
