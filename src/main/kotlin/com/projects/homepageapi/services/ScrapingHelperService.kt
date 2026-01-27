@@ -356,7 +356,7 @@ class ScrapingHelperService(
             val doc: Document = jsoupService.connect(url)
 
             val value: String? = SpotPrices.getElement(doc)
-            value?.toDoubleOrNull() ?: -1.0
+            value!!.replace(",", "").toDoubleOrNull() ?: -1.0
         } catch (e: IOException) {
             println("IOException: ${e.message}")
             -1.0
