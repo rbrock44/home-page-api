@@ -9,6 +9,7 @@ import java.time.Instant
 data class SpotPrices(
     val gold: Double,
     val silver: Double,
+    val description: String = "",
     val timeStamp: String = Instant.now().toString()
 ) {
     companion object {

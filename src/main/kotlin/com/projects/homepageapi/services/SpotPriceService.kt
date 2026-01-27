@@ -9,9 +9,15 @@ class SpotPriceService(
     @Autowired private val helper: ScrapingHelperService
 ) {
     fun getSpotPrices(): SpotPrices {
+        val goldResult = helper.parseGoldWebsite()
+        val silverResult = helper.parseSilverWebsite()
         return SpotPrices(
-            gold = helper.parseGoldWebsite(),
-            silver = helper.parseSilverWebsite()
+            gold = goldResult.price,
+            silver = silverResult.price,
+            description = listOf(
+                "Gold: ${if (goldResult.description.isEmpty()) "good" else goldResult.description}",
+                "Silver: ${if (silverResult.description.isEmpty()) "good" else silverResult.description}"
+            ).joinToString(", ")
         )
     }
 }

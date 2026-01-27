@@ -15,6 +15,13 @@ class JsoupService() {
                 .cookie("az_view", "1")
                 .cookie("h2cload", "A--D-------")
                 .get()
+        } else if (url.contains("investing.com")) {
+            Jsoup.connect(url)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                .referrer("https://www.google.com")
+                .timeout(10000)
+                .get()
         } else {
             Jsoup.connect(url).get()
         }

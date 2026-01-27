@@ -339,30 +339,40 @@ class ScrapingHelperService(
         return this.contains("hibid", ignoreCase = true)
     }
 
-    fun parseGoldWebsite(): Double  {
+    fun parseGoldWebsite(): PreciousMetalResult  {
         val url = "https://www.investing.com/currencies/xau-usd"
 
         return parsePreciousMetalWebsite(url)
     }
 
-    fun parseSilverWebsite(): Double  {
+    fun parseSilverWebsite(): PreciousMetalResult  {
         val url = "https://www.investing.com/currencies/xag-usd"
 
         return parsePreciousMetalWebsite(url)
     }
 
-    fun parsePreciousMetalWebsite(url: String): Double {
-        return try {
+    fun parsePreciousMetalWebsite(url: String): PreciousMetalResult {
+        var price = -1.0
+        var description = ""
+        
+        try {
             val doc: Document = jsoupService.connect(url)
-
             val value: String? = SpotPrices.getElement(doc)
-            value!!.replace(",", "").toDoubleOrNull() ?: -1.0
+            val parsedPrice = value?.replace(",", "")?.toDoubleOrNull()
+            
+            if (parsedPrice != null) {
+                price = parsedPrice
+            } else {
+                description = "value is null"
+            }
         } catch (e: IOException) {
             println("IOException: ${e.message}")
-            -1.0
+            description = "IOException: ${e.message}"
         } catch (e: Exception) {
             println("Error parsing value: ${e.message}")
-            -1.0
+            description = "Error parsing value: ${e.message}"
         }
+        
+        return PreciousMetalResult(price, description)
     }
 }
