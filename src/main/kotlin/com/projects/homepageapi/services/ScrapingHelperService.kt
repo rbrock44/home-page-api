@@ -340,13 +340,13 @@ class ScrapingHelperService(
     }
 
     fun parseGoldWebsite(): PreciousMetalResult  {
-        val url = "https://www.investing.com/currencies/xau-usd"
+        val url = "https://www.kitco.com/charts/gold"
 
         return parsePreciousMetalWebsite(url)
     }
 
     fun parseSilverWebsite(): PreciousMetalResult  {
-        val url = "https://www.investing.com/currencies/xag-usd"
+        val url = "https://www.kitco.com/charts/silver"
 
         return parsePreciousMetalWebsite(url)
     }

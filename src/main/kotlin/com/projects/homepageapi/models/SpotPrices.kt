@@ -15,7 +15,7 @@ data class SpotPrices(
     companion object {
         @JvmStatic
         fun getElement(doc: Document): String? {
-           return doc.selectFirst("div[data-test=instrument-price-last]")?.text()?.trim()
+           return doc.selectFirst("h3")?.text()?.trim()
         }
     }
 }
