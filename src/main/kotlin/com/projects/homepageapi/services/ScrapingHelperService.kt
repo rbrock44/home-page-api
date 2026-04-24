@@ -1,5 +1,6 @@
 package com.projects.homepageapi.services
 
+import com.projects.homepageapi.*
 import com.projects.homepageapi.models.*
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
