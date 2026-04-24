@@ -342,23 +342,19 @@ class ScrapingHelperService(
     fun parseGoldWebsite(): PreciousMetalResult  {
         val url = "https://www.kitco.com/charts/gold"
 
-        return parsePreciousMetalWebsite(url)
+        return parsePreciousMetalWebsite(goldSpotOrigin)
     }
 
     fun parseSilverWebsite(): PreciousMetalResult  {
-        val url = "https://www.kitco.com/charts/silver"
-
-        return parsePreciousMetalWebsite(url)
+        return parsePreciousMetalWebsite(silverSpotOrigin)
     }
 
     fun parseGoldbackWebsite(): PreciousMetalResult {
-        val url = "https://www.goldback.com/exchange-rates/"
-        return parsePreciousMetalWebsiteByCssSelector(url, ".goldback-rate")
+        return parsePreciousMetalWebsiteByCssSelector(goldbackSpotOrigin, ".goldback-rate")
     }
 
     fun parsePlatinumWebsite(): PreciousMetalResult {
-        val url = "https://www.kitco.com/charts/platinum"
-        return parsePreciousMetalWebsite(url)
+        return parsePreciousMetalWebsite(platinumSpotOrigin)
     }
 
     fun parsePreciousMetalWebsite(url: String): PreciousMetalResult {
