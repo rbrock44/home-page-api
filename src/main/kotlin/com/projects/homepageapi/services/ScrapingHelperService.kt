@@ -465,7 +465,7 @@ class ScrapingHelperService(
             if (parsedPrice != null) {
                 price = parsedPrice
             } else {
-                description = "value is null or could not be parsed"
+                description = "value is null or could not be parsed - " + doc
             }
         } catch (e: IOException) {
             println("IOException: ${e.message}")
