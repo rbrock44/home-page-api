@@ -23,7 +23,15 @@ import org.springframework.web.bind.annotation.RestController
         wildcardOrigin,
         addFamilyRecipeOrigin,
         homePageOrigin,
+        "https://github.com/"
     ],
+    methods = [
+        org.springframework.web.bind.annotation.RequestMethod.GET, 
+        org.springframework.web.bind.annotation.RequestMethod.POST, 
+        org.springframework.web.bind.annotation.RequestMethod.DELETE
+    ],
+    allowedHeaders = ["*"],
+    allowCredentials = "true",
     maxAge = maxAge
 )
 class RecipeController(
