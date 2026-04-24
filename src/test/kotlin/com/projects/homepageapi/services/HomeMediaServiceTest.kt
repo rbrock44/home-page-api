@@ -1,18 +1,19 @@
 package com.projects.homepageapi.services
 
+import com.projects.homepageapi.models.MediaFile
+import com.projects.homepageapi.repositories.MediaFileRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 internal class HomeMediaServiceTest {
     @Mock
-    lateinit var fileService: FileService
+    lateinit var mediaFileRepository: MediaFileRepository
 
     @InjectMocks
     lateinit var service: HomeMediaService
@@ -22,41 +23,28 @@ internal class HomeMediaServiceTest {
         MockitoAnnotations.openMocks(this)
     }
 
-    private val path = "files.txt"
-
     @Test
     fun `should get filenames that contain criteria`() {
-        val list = listOf(
-            "lisT",
-            "another one",
-            "iSt",
-            "example"
-        )
         val expected = listOf(
             "iSt",
             "lisT"
         )
-        whenever(fileService.getLinesFromFile(path)).thenReturn(list)
+        whenever(mediaFileRepository.findByCriteria("%ST%")).thenReturn(expected)
         val result = service.getFilenamesThatContain("st")
         assertEquals(expected, result)
+        verify(mediaFileRepository).findByCriteria("%ST%")
     }
 
     @Test
     fun `should get filenames that contain each word in criteria`() {
-        val list = listOf(
-            "The Lord of the",
-            "The Lord Underpass",
-            "Lord Underpass Who",
-            "Digging into the Lord",
-            "Of The Keep"
-        )
         val expected = listOf(
             "Of The Keep",
             "The Lord of the"
         )
-        whenever(fileService.getLinesFromFile(path)).thenReturn(list)
+        whenever(mediaFileRepository.findByCriteria("%THE%OF%")).thenReturn(expected)
         val result = service.getFilenamesThatContain("The Of")
         assertEquals(expected, result)
+        verify(mediaFileRepository).findByCriteria("%THE%OF%")
     }
 
     @Test
@@ -68,16 +56,18 @@ internal class HomeMediaServiceTest {
             "The Lord Underpass",
             "The Lord of the"
         )
-        whenever(fileService.getLinesFromFile(path)).thenReturn(expected)
+        whenever(mediaFileRepository.findAll()).thenReturn(expected.map { MediaFile(name = it) })
         val result = service.getFilenamesThatContain(" ")
         assertEquals(expected, result)
+        verify(mediaFileRepository).findAll()
     }
 
     @Test
     fun `should scrap filenames when none are found in file`() {
         val expected = emptyList<String>()
-        whenever(fileService.getLinesFromFile(path)).thenReturn(expected)
+        whenever(mediaFileRepository.findAll()).thenReturn(expected.map { MediaFile(name = it) })
         val result = service.getFilenamesThatContain(" ")
         assertEquals(expected, result)
+        verify(mediaFileRepository).findAll()
     }
 }

@@ -2,6 +2,8 @@ package com.projects.homepageapi.services
 
 import com.projects.homepageapi.*
 import com.projects.homepageapi.models.*
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -9,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
 import java.net.URLEncoder
+import java.time.OffsetDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Service
 class ScrapingHelperService(
@@ -39,18 +43,23 @@ class ScrapingHelperService(
         )
 
         val index = pair.first
-        val date = if (index == 0) cardDates[index].text() else pair.second
+        val date = if (index in cardDates.indices) cardDates[index].text() else pair.second
 
-        if (index != -1) {
+        if (index in fightCard.indices && index in cardTitles.indices) {
             title = cardTitles[index].text()
             titleLink = cardTitles[index].getElementsByTag("a").attr("href")
 
             val card = fightCard[index]
-            val mainCard = FightCard.getCard(card, 0).getElementsByTag("li")
-            val underCard = FightCard.getCard(card, 1).getElementsByTag("li")
+            val splitCards = card.getElementsByClass("m-mmaf-pte-event-list__split-item")
+            val mainCard = if (splitCards.isNotEmpty()) splitCards[0].getElementsByTag("li") else Elements()
+            val underCard = if (splitCards.size > 1) splitCards[1].getElementsByTag("li") else Elements()
 
             addFightsToList(listOfMainFights, mainCard)
             addFightsToList(listOfUnderFights, underCard)
+        }
+
+        if (listOfMainFights.isEmpty() && listOfUnderFights.isEmpty()) {
+            parseMmaWebsiteFromNextData(doc, formattedDate)?.let { return it }
         }
 
         return FightCard(
@@ -60,6 +69,70 @@ class ScrapingHelperService(
             title = title,
             titleLink = titleLink
         )
+    }
+
+    private fun parseMmaWebsiteFromNextData(doc: Document, formattedDate: String): FightCard? {
+        val nextData = doc.getElementById("__NEXT_DATA__")?.data() ?: return null
+        val root = ObjectMapper().readTree(nextData)
+        val responses = root.path("props").path("pageProps").path("hydration").path("responses")
+        var scheduleResponse: JsonNode? = null
+        val responseIterator = responses.elements()
+        while (responseIterator.hasNext()) {
+            val node = responseIterator.next()
+            if (node.path("operationName").asText() == "MMAScheduleResultsLayoutQuery") {
+                scheduleResponse = node
+                break
+            }
+        }
+        if (scheduleResponse == null) return null
+
+        val events = scheduleResponse.path("data").path("mmaEvents").path("nodes")
+        if (!events.isArray || events.isEmpty) return null
+
+        var targetEvent: JsonNode? = null
+        val eventIterator = events.elements()
+        while (eventIterator.hasNext()) {
+            val event = eventIterator.next()
+            if (formattedDate.isEmpty() || formatMmaEventDate(event.path("eventStartAt").asText()) == formattedDate) {
+                targetEvent = event
+                break
+            }
+        }
+        if (targetEvent == null) return null
+
+        val main = mutableListOf<Fight>()
+        val under = mutableListOf<Fight>()
+        val fightIterator = targetEvent.path("mmaFights").path("nodes").elements()
+        while (fightIterator.hasNext()) {
+            val fight = fightIterator.next()
+            val parsedFight = Fight(
+                title = fight.path("title").asText(),
+                link = fight.path("permalink").asText(),
+                isTitleFight = fight.path("titleFight").asBoolean(false)
+            )
+            if (fight.path("mainCard").asBoolean(false)) {
+                main.add(parsedFight)
+            } else {
+                under.add(parsedFight)
+            }
+        }
+
+        return FightCard(
+            main = main,
+            under = under,
+            date = formatMmaEventDate(targetEvent.path("eventStartAt").asText()),
+            title = targetEvent.path("title").asText(),
+            titleLink = targetEvent.path("permalink").asText()
+        )
+    }
+
+    private fun formatMmaEventDate(value: String): String {
+        return try {
+            OffsetDateTime.parse(value)
+                .format(DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH))
+        } catch (e: Exception) {
+            value
+        }
     }
 
     fun parseGdqWebsite(): Event {

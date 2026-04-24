@@ -160,7 +160,7 @@ internal class Constants {
             listOf(
                 Fight(
                     "Grant Dawson vs Manuel Torres",
-                    "https://www.mmafighting.com/fight/457069/grant-dawson-vs-manuel-torress",
+                    "https://www.mmafighting.com/fight/457069/grant-dawson-vs-manuel-torres",
                     false
                 ),
                 Fight(
@@ -204,7 +204,7 @@ internal class Constants {
                     false
                 )
             ),
-            "December 4, 2025",
+            "December 7, 2025",
             "UFC 323: Dvalishvili vs. Yan 2",
             "https://www.mmafighting.com/fight-card/453877/ufc-323-dvalishvili-vs-yan-2"
         )
