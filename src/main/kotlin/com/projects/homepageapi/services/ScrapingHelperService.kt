@@ -265,7 +265,7 @@ class ScrapingHelperService(
         return list
     }
 
-    private fun parseAuctions(auctions: Elements, isHibid: Boolean, formattedDate: String): MutableList<Auction> {
+    private fun parseAuctions(auctions: Elements, isHibid: Boolean): MutableList<Auction> {
         val list = mutableListOf<Auction>()
 
         for (auction in auctions) {
@@ -314,8 +314,7 @@ class ScrapingHelperService(
                 listOfAuctions.addAll(
                     this.parseAuctions(
                         auctions = auctions,
-                        isHibid = isHibid,
-                        formattedDate = formattedDate
+                        isHibid = isHibid
                     ).filter { if (isHibid) it.internetBidding else true }
                 )
             } catch (e: IOException) {
@@ -341,8 +340,6 @@ class ScrapingHelperService(
     }
 
     fun parseGoldWebsite(): PreciousMetalResult  {
-        val url = "https://www.kitco.com/charts/gold"
-
         return parsePreciousMetalWebsite(goldSpotOrigin)
     }
 
