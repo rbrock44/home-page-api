@@ -9,6 +9,7 @@ import com.projects.homepageapi.*
 data class SpotPrices(
     val gold: Double,
     val silver: Double,
+    val platinum: Double = -1.0,
     val description: String = "",
     val silverSource: String = silverSpotOrigin,
     val goldSource: String = goldSpotOrigin,
