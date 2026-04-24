@@ -1,55 +1,45 @@
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
 plugins {
-    id("org.springframework.boot") version "2.7.18"
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.22" // If using kotlinx.serialization
+    id("org.springframework.boot") version "3.4.5"
+    id("io.spring.dependency-management") version "1.1.7"
+    kotlin("jvm") version "1.9.25"
+    kotlin("plugin.spring") version "1.9.25"
+    kotlin("plugin.jpa") version "1.9.25"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.25"
 }
 
-//baseName = "home-page-api"
 group = "com.projects"
 version = "1.0.0"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly("com.h2database:h2:1.4.200")
-    runtimeOnly("com.h2database:h2:1.4.200")
+    runtimeOnly("com.h2database:h2")
 
-    implementation("javax.xml.bind:jaxb-api:2.3.1")
-    implementation("org.glassfish.jaxb:jaxb-runtime:2.3.1")
-    implementation("javax.activation:activation:1.1.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.7.22"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.22")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.22")
-
-    implementation("org.jsoup:jsoup:1.14.3")
-    implementation("org.springframework.boot:spring-boot-starter-actuator:2.6.2")
-    implementation("org.springframework.boot:spring-boot-starter-web:2.6.2")
-    implementation("org.springframework.boot:spring-boot-starter-cache:2.6.2")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.6.2")
+    implementation("org.jsoup:jsoup:1.17.2")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.6.0.202305301015-r")
 
     testImplementation(kotlin("test"))
-    testImplementation("org.springframework.boot:spring-boot-starter-test:2.6.2") {
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
-    testImplementation("org.mockito:mockito-core:4.8.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.8.0")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.3")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
+    testImplementation("org.mockito:mockito-core:5.14.2")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.14.2")
 }
 
 tasks.test {
