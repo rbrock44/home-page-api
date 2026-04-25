@@ -420,10 +420,6 @@ class ScrapingHelperService(
         return parsePreciousMetalWebsite(silverSpotOrigin)
     }
 
-    fun parseGoldbackWebsite(): PreciousMetalResult {
-        return parsePreciousMetalWebsiteByCssSelector(goldbackSpotOrigin, ".goldback-rate")
-    }
-
     fun parsePlatinumWebsite(): PreciousMetalResult {
         return parsePreciousMetalWebsite(platinumSpotOrigin)
     }
@@ -441,31 +437,6 @@ class ScrapingHelperService(
                 price = parsedPrice
             } else {
                 description = "value is null"
-            }
-        } catch (e: IOException) {
-            println("IOException: ${e.message}")
-            description = "IOException: ${e.message}"
-        } catch (e: Exception) {
-            println("Error parsing value: ${e.message}")
-            description = "Error parsing value: ${e.message}"
-        }
-        
-        return PreciousMetalResult(price, description)
-    }
-
-    fun parsePreciousMetalWebsiteByCssSelector(url: String, cssSelector: String): PreciousMetalResult {
-        var price = -1.0
-        var description = ""
-        
-        try {
-            val doc: Document = jsoupService.connect(url)
-            val value: String? = doc.selectFirst(cssSelector)?.text()?.trim()
-            val parsedPrice = value?.replace(",", "")?.replace("$", "")?.toDoubleOrNull()
-            
-            if (parsedPrice != null) {
-                price = parsedPrice
-            } else {
-                description = "value is null or could not be parsed - " + doc
             }
         } catch (e: IOException) {
             println("IOException: ${e.message}")

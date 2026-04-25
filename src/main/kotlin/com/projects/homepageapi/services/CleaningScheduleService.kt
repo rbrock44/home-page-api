@@ -53,6 +53,8 @@ class CleaningScheduleService(
     }
 
     fun addMeeting(meeting: Meeting): Meeting {
-        return meetingRepository.save(meeting.copy(id = 0))
+        val meetingToSave = meeting.copy(id = 0)
+        val savedMeeting: Meeting? = meetingRepository.save(meetingToSave)
+        return savedMeeting ?: meetingToSave
     }
 }

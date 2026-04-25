@@ -9,8 +9,6 @@ const val addFamilyRecipeOrigin = "https://add-recipe.ryan-brock.com"
 const val utilitiesOrigin = "https://utilities.ryan-brock.com"
 const val maxAge = 3600L
 
-
-const val goldbackSpotOrigin = "https://www.goldback.com/exchange-rates/"
 const val platinumSpotOrigin = "https://www.kitco.com/charts/platinum"
 const val goldSpotOrigin = "https://www.kitco.com/charts/gold"
 const val silverSpotOrigin = "https://www.kitco.com/charts/silver"

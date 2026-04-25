@@ -13,7 +13,6 @@ data class SpotPrices(
     val goldback: Double = -1.0,
     val description: String = "",
     val platinumSource: String = platinumSpotOrigin,
-    val golbackSource: String = goldbackSpotOrigin,
     val silverSource: String = silverSpotOrigin,
     val goldSource: String = goldSpotOrigin,
     val timeStamp: String = Instant.now().toString()
