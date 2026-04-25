@@ -3,22 +3,31 @@ package com.projects.homepageapi.services
 import com.projects.homepageapi.models.Meeting
 import com.projects.homepageapi.repositories.MeetingRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.net.URL
 
 @Service
 class CleaningScheduleService(
     private val meetingRepository: MeetingRepository
 ) {
+    @Transactional
     fun getMeetingsFromRepo() {
         val rawFileUrl = "https://raw.githubusercontent.com/rbrock44/cleaning-schedule-database/master/meetings.txt"
 
         val lines: List<String> = URL(rawFileUrl).openStream().bufferedReader().use { it.readLines() }
 
-        lines.forEach { line ->
-            val meeting = Meeting.fromLine(line)
-            println(meeting)
-            meetingRepository.save(meeting)
-        }
+        replaceMeetings(lines)
+    }
+
+    internal fun replaceMeetings(lines: List<String>) {
+        val meetings = lines
+            .asSequence()
+            .filter { it.isNotBlank() }
+            .map { Meeting.fromLine(it).copy(id = 0) }
+            .toList()
+
+        meetingRepository.deleteAllInBatch()
+        meetingRepository.saveAll(meetings)
     }
 
     fun getAllMeetings(): List<Meeting> = meetingRepository.findAll()
@@ -44,6 +53,6 @@ class CleaningScheduleService(
     }
 
     fun addMeeting(meeting: Meeting): Meeting {
-        return meetingRepository.save(meeting)
+        return meetingRepository.save(meeting.copy(id = 0))
     }
 }
