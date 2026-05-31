@@ -44,7 +44,8 @@ internal class CleaningScheduleServiceTest {
                     startTime = "18:00",
                     endTime = "19:00",
                     title = "Kitchen",
-                    person = "Ryan"
+                    person = "Ryan",
+                    hasBeenPaid = false
                 )
             ),
             meetingsCaptor.firstValue.toList()
@@ -59,7 +60,8 @@ internal class CleaningScheduleServiceTest {
             startTime = "18:00",
             endTime = "19:00",
             title = "Kitchen",
-            person = "Ryan"
+            person = "Ryan",
+            hasBeenPaid = true
         )
 
         service.addMeeting(meeting)
@@ -68,6 +70,7 @@ internal class CleaningScheduleServiceTest {
         verify(meetingRepository).save(meetingCaptor.capture())
 
         assertEquals(0, meetingCaptor.firstValue.id)
-        assertEquals(meeting.copy(id = 0), meetingCaptor.firstValue)
+        assertEquals(false, meetingCaptor.firstValue.hasBeenPaid)
+        assertEquals(meeting.copy(id = 0, hasBeenPaid = false), meetingCaptor.firstValue)
     }
 }

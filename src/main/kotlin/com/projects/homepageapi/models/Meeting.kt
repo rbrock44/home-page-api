@@ -13,12 +13,21 @@ data class Meeting(
     val startTime: String = "",
     val endTime: String = "",
     val title: String = "",
-    val person: String = ""
+    val person: String = "",
+    val hasBeenPaid: Boolean = false
 ) {
     companion object {
         fun fromLine(line: String): Meeting {
             val items = line.split("|")
-            return Meeting(items[0].toInt(), items[1], items[2], items[3], items[4], items[5])
+            return Meeting(
+                id = items[0].toInt(),
+                date = items[1],
+                startTime = items[2],
+                endTime = items[3],
+                title = items[4],
+                person = items[5],
+                hasBeenPaid = false
+            )
         }
     }
 }
