@@ -93,7 +93,7 @@ curl -X POST "http://localhost:8090/recipe/pending" \
 - Language: `Kotlin`
 - Framework: `Spring Boot 3`
 - Build Tool: `Gradle (Kotlin DSL)`
-- Java Version: `17`
+- Java Version: `21`
 - Database: `H2 (in-memory)`
 - Parsing/Scraping: `Jsoup`
 - Testing: `JUnit 5`, `Spring Boot Test`, `Mockito`
@@ -103,7 +103,7 @@ curl -X POST "http://localhost:8090/recipe/pending" \
 
 ## 🚀 Getting Started (Local Setup)
 
-- Install [Java 17](https://adoptium.net/)
+- Install [Java 21](https://adoptium.net/)
 - Clone [repo](https://github.com/rbrock44/home-page-api)
 
 Optional environment variable for protected endpoints:
