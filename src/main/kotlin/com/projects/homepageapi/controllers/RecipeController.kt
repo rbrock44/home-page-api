@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("recipe/pending")
 @CrossOrigin(
-    origins = [
+    originPatterns = [
         angularOrigin,
         wildcardOrigin,
         addFamilyRecipeOrigin,

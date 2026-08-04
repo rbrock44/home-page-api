@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("games-per-date")
 @CrossOrigin(
-    origins = [
+    originPatterns = [
         angularOrigin,
         wildcardOrigin,
         cleaningScheduleOrigin,

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("fight-card")
 @CrossOrigin(
-    origins = [
+    originPatterns = [
         angularOrigin,
         wildcardOrigin,
         cleaningScheduleOrigin,

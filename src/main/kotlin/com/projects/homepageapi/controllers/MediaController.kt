@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("media")
 @CrossOrigin(
-    origins = [
+    originPatterns = [
         angularOrigin,
         wildcardOrigin,
         cleaningScheduleOrigin,

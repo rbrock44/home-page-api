@@ -29,6 +29,6 @@ class ApiKeyInterceptor(
     }
     
     private fun isSecureEndpoint(path: String, method: String): Boolean {
-        return (path.startsWith("/recipe/pending") && (method == "POST" || method == "DELETE"))
+        return path.startsWith("/recipe/pending") && (method == "POST" || method == "DELETE" || method == "GET")
     }
 }

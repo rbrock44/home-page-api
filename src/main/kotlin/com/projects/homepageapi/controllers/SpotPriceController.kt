@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("spot-price")
 @CrossOrigin(
-    origins = [
+    originPatterns = [
         angularOrigin,
         wildcardOrigin,
         cleaningScheduleOrigin,
