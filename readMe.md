@@ -134,7 +134,7 @@ The app runs on `http://localhost:8090` by default.
 ### GitHub Hooks
 
 - No GitHub hook deployment is required for local development
-- Deployment is currently done through Heroku Git push flow
+- Deployment to Heroku happens automatically via GitHub Actions on push to `master`
 
 ---
 
@@ -149,6 +149,10 @@ Build artifacts are generated under `build/libs/`.
 ### Deploy
 
 This application is hosted on Heroku.
+
+Pushing to `master` on GitHub automatically triggers a [GitHub Action](.github/workflows/deploy.yml) that deploys to Heroku - no manual step needed.
+
+To deploy manually instead:
 
 ```bash
 git push heroku master
