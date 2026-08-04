@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 internal class CleaningScheduleServiceTest {
     @Mock
@@ -72,5 +74,29 @@ internal class CleaningScheduleServiceTest {
         assertEquals(0, meetingCaptor.firstValue.id)
         assertEquals(false, meetingCaptor.firstValue.hasBeenPaid)
         assertEquals(meeting.copy(id = 0, hasBeenPaid = false), meetingCaptor.firstValue)
+    }
+
+    @Test
+    fun `should query monday through friday when given a start of week date`() {
+        val expected = listOf(Meeting(date = "2026-04-21", title = "Kitchen"))
+        whenever(meetingRepository.findByDateIn(any())).thenReturn(expected)
+
+        val result = service.getMeetingsByWeek("2026-04-20")
+
+        val datesCaptor = argumentCaptor<List<String>>()
+        verify(meetingRepository).findByDateIn(datesCaptor.capture())
+
+        assertEquals(
+            listOf("2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24"),
+            datesCaptor.firstValue
+        )
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should return empty list for an unparseable start of week date`() {
+        val result = service.getMeetingsByWeek("not-a-date")
+
+        assertEquals(emptyList<Meeting>(), result)
     }
 }

@@ -5,6 +5,8 @@ import com.projects.homepageapi.repositories.MeetingRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.net.URL
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 @Service
 class CleaningScheduleService(
@@ -33,10 +35,14 @@ class CleaningScheduleService(
     fun getAllMeetings(): List<Meeting> = meetingRepository.findAll()
 
     fun getMeetingsByWeek(startOfWeek: String): List<Meeting> {
-        // TODO: Implement logic for filtering meetings by week
-        // make start of week a monday then get the rest of the 4 days
-        // default to this monday YYYY-MM-DD
-        return meetingRepository.findByDate(startOfWeek)
+        val monday = try {
+            LocalDate.parse(startOfWeek)
+        } catch (e: DateTimeParseException) {
+            return emptyList()
+        }
+
+        val weekDates = (0L..4L).map { monday.plusDays(it).toString() }
+        return meetingRepository.findByDateIn(weekDates)
     }
 
     fun deleteMeeting(id: Int): Boolean {

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface MeetingRepository : JpaRepository<Meeting, Int> {
     fun findByDate(date: String): List<Meeting>
+    fun findByDateIn(dates: List<String>): List<Meeting>
 }
