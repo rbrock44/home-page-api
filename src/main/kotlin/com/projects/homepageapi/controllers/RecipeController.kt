@@ -3,6 +3,7 @@ package com.projects.homepageapi.controllers
 import com.projects.homepageapi.*
 import com.projects.homepageapi.models.PendingRecipe
 import com.projects.homepageapi.repositories.PendingRecipeRepository
+import com.projects.homepageapi.services.GithubDispatchService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -35,14 +36,16 @@ import org.springframework.web.bind.annotation.RestController
     maxAge = maxAge
 )
 class RecipeController(
-    @Autowired private val pendingRecipeRepository: PendingRecipeRepository
+    @Autowired private val pendingRecipeRepository: PendingRecipeRepository,
+    @Autowired private val githubDispatchService: GithubDispatchService
 ) {
-    
+
     @PostMapping("")
     fun createPendingRecipe(@RequestBody jsonPayload: Map<String, Any>): ResponseEntity<PendingRecipe> {
         val jsonString = jsonPayload.toString()
         val pendingRecipe = PendingRecipe(jsonPayload = jsonString)
         val saved = pendingRecipeRepository.save(pendingRecipe)
+        githubDispatchService.dispatchRecipeSubmitted()
         return ResponseEntity(saved, HttpStatus.CREATED)
     }
     

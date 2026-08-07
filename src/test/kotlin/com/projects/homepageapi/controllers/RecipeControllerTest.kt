@@ -2,6 +2,7 @@ package com.projects.homepageapi.controllers
 
 import com.projects.homepageapi.models.PendingRecipe
 import com.projects.homepageapi.repositories.PendingRecipeRepository
+import com.projects.homepageapi.services.GithubDispatchService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -17,6 +18,9 @@ import org.springframework.http.HttpStatus
 internal class RecipeControllerTest {
     @Mock
     lateinit var pendingRecipeRepository: PendingRecipeRepository
+
+    @Mock
+    lateinit var githubDispatchService: GithubDispatchService
 
     @InjectMocks
     lateinit var controller: RecipeController
@@ -35,6 +39,7 @@ internal class RecipeControllerTest {
 
         val recipeCaptor = argumentCaptor<PendingRecipe>()
         verify(pendingRecipeRepository).save(recipeCaptor.capture())
+        verify(githubDispatchService).dispatchRecipeSubmitted()
 
         assertEquals(0, recipeCaptor.firstValue.id)
         assertEquals(HttpStatus.CREATED, response.statusCode)
