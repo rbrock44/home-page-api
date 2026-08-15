@@ -39,7 +39,7 @@ data class Auction(
 
         @JvmStatic
         fun getHibidUrl(element: Element): String {
-            val title = element.getElementsByClass("auction-header-title")[0]
+            val title = element.getElementsByClass("auction-header-title").firstOrNull() ?: return ""
             val url = title.getElementsByTag("a")
             return if (url.isNullOrEmpty()) "" else "https://www.hibid.com${url.attr("href")}"
         }
@@ -81,14 +81,18 @@ data class Auction(
 
         @JvmStatic
         fun getHibidLocation(element: Element): String {
-            val col = element.getElementsByClass("col")[0]
-            val addresses = col.getElementsByClass("company-address")
+            val col = element.getElementsByClass("col").firstOrNull() ?: return ""
+            val address = col.getElementsByClass("company-address").firstOrNull() ?: return ""
 
-            if (addresses.size == 0) {
-                return ""
-            }
-            val address = addresses[0].getElementsByTag("strong")[1]
-            return if (address == null) "" else address.text()
+            // The site's markup nests a <div> per address line inside the address
+            // block (street, then city/state/zip); jsoup normalizes the invalid
+            // div-inside-<strong> nesting into direct <div>/<strong> siblings, so
+            // read them by direct-child order rather than by tag/index guesses.
+            val lines = address.children()
+                .filter { (it.tagName() == "div" || it.tagName() == "strong") && it.text().isNotBlank() }
+                .map { it.text() }
+
+            return lines.getOrNull(1) ?: lines.getOrNull(0) ?: ""
         }
 
         @JvmStatic
@@ -108,15 +112,14 @@ data class Auction(
 
         @JvmStatic
         fun getHibidNote(element: Element): String {
-            // second p element
             return getHibidPlainText(element, 3)
         }
 
         private fun getHibidPlainText(element: Element, index: Int): String {
-            val col = element.getElementsByClass("col")[0]
+            val col = element.getElementsByClass("col").firstOrNull() ?: return ""
 
-            val p = col.getElementsByTag("p")[index]
-            return if (p == null) "" else p.text()
+            val p = col.getElementsByTag("p").getOrNull(index)
+            return p?.text() ?: ""
         }
 
         private fun getDateByIndex(input: String, index: Int): String {

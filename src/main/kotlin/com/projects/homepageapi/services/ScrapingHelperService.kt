@@ -390,7 +390,7 @@ class ScrapingHelperService(
                         isHibid = isHibid
                     ).filter { if (isHibid) it.internetBidding else true }
                 )
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 listOfAuctions.add(Auction(
                     service = "Check website for list of auctions",
                     name = "Failed to fetch auctions from: ${url}",
