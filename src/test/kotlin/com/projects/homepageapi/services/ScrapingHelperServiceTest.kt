@@ -2,6 +2,7 @@ package com.projects.homepageapi.services
 
 import com.projects.homepageapi.Constants
 import com.projects.homepageapi.models.Event
+import com.projects.homepageapi.models.GamesPerDate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -11,6 +12,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.time.LocalDate
 
 internal class ScrapingHelperServiceTest {
     @Mock
@@ -24,11 +26,14 @@ internal class ScrapingHelperServiceTest {
 
     private val date = "Wednesday, November 23, 2022"
 
+    private val fixtureToday = LocalDate.of(2026, 8, 15)
+
     @BeforeEach
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         whenever(service.getCurrentDate()).thenReturn(date)
         whenever(service.isAfterOrEqualToToday(any(), any())).thenReturn(true)
+        whenever(service.today(any())).thenReturn(fixtureToday)
     }
 
     @Test
@@ -76,12 +81,22 @@ internal class ScrapingHelperServiceTest {
 
     @Test
     fun `should query a specific date when asking for today's games`() {
-        whenever(service.getCurrentDate(format = "yyyyMMdd")).thenReturn("20260816")
+        whenever(service.today(any())).thenReturn(LocalDate.of(2026, 8, 16))
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
 
         helper.parseGamesPerDateWebsite("Sunday, August 16", false)
 
         verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20260816")
+    }
+
+    @Test
+    fun `should only return the soonest upcoming date, not stale games from earlier in the response`() {
+        whenever(service.today(any())).thenReturn(LocalDate.of(2026, 8, 16))
+        whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
+
+        val result = helper.parseGamesPerDateWebsite("", false)
+
+        assertEquals(GamesPerDate(games = emptyList(), date = ""), result)
     }
 
     @Test

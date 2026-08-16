@@ -2,6 +2,8 @@ package com.projects.homepageapi.services
 
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 
@@ -14,6 +16,10 @@ class DateService(
 
         val formatter = DateTimeFormatter.ofPattern(format)
         return current.format(formatter)
+    }
+
+    fun today(zoneId: ZoneId = ZoneId.systemDefault()): LocalDate {
+        return localDateTimeService.today(zoneId)
     }
 
     fun isAfterOrEqualToToday(value: String, dateFormat: String): Boolean {

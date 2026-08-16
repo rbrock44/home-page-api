@@ -10,6 +10,7 @@ import org.jsoup.select.Elements
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -163,7 +164,7 @@ class ScrapingHelperService(
             val baseUrl = "https://site.api.espn.com/apis/site/v2/sports/$sport/$league/scoreboard"
 
             val url = if (formattedDate.isNotEmpty()) {
-                "$baseUrl?dates=${dateService.getCurrentDate(format = "yyyyMMdd")}"
+                "$baseUrl?dates=${todayEastern().format(DateTimeFormatter.ofPattern("yyyyMMdd"))}"
             } else {
                 baseUrl
             }
@@ -177,12 +178,27 @@ class ScrapingHelperService(
 
     private fun parseGamesFromApiJson(json: String, fallbackDate: String): GamesPerDate {
         val events = ObjectMapper().readTree(json).path("events")
-        val games = mutableListOf<Game>()
-        var date = ""
+        val today = todayEastern()
 
+        // ESPN's default (no `dates` param) scoreboard response can span a whole week,
+        // including days already in the past - only keep the soonest date that's today or later.
+        val eventsWithDate = mutableListOf<Pair<JsonNode, LocalDate>>()
         val eventIterator = events.elements()
         while (eventIterator.hasNext()) {
             val event = eventIterator.next()
+            val eventDate = toEasternDate(event.path("date").asText()) ?: continue
+            if (!eventDate.isBefore(today)) {
+                eventsWithDate.add(event to eventDate)
+            }
+        }
+
+        val earliestDate = eventsWithDate.minOfOrNull { it.second }
+            ?: return GamesPerDate(games = emptyList(), date = fallbackDate)
+
+        val games = mutableListOf<Game>()
+        for ((event, eventDate) in eventsWithDate) {
+            if (eventDate != earliestDate) continue
+
             val competitors = event.path("competitions").path(0).path("competitors")
 
             var home: JsonNode? = null
@@ -210,14 +226,25 @@ class ScrapingHelperService(
                     time = getApiGameTime(event.path("competitions").path(0), home, away)
                 )
             )
-
-            if (date.isEmpty()) {
-                date = formatEventDate(event.path("date").asText()) +
-                    getSeasonSuffix(event.path("season").path("slug").asText())
-            }
         }
 
-        return GamesPerDate(games = games, date = date.ifEmpty { fallbackDate })
+        val firstEvent = eventsWithDate.first { it.second == earliestDate }.first
+        val date = formatEventDate(firstEvent.path("date").asText()) +
+            getSeasonSuffix(firstEvent.path("season").path("slug").asText())
+
+        return GamesPerDate(games = games, date = date)
+    }
+
+    private fun todayEastern(): LocalDate {
+        return dateService.today(ZoneId.of("America/New_York"))
+    }
+
+    private fun toEasternDate(isoDate: String): LocalDate? {
+        return try {
+            OffsetDateTime.parse(isoDate).atZoneSameInstant(ZoneId.of("America/New_York")).toLocalDate()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun getApiGameTime(competition: JsonNode, home: JsonNode, away: JsonNode): String {
