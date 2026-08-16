@@ -249,11 +249,14 @@ class ScrapingHelperService(
 
     private fun getApiGameTime(competition: JsonNode, home: JsonNode, away: JsonNode): String {
         val statusType = competition.path("status").path("type")
-        return if (statusType.path("completed").asBoolean(false)) {
-            "${away.path("team").path("abbreviation").asText()} ${away.path("score").asText()}, " +
-                "${home.path("team").path("abbreviation").asText()} ${home.path("score").asText()}"
-        } else {
-            statusType.path("shortDetail").asText().replaceFirst(Regex("^\\d{1,2}/\\d{1,2} - "), "")
+        return when {
+            statusType.path("completed").asBoolean(false) ->
+                "${away.path("team").path("abbreviation").asText()} ${away.path("score").asText()}, " +
+                    "${home.path("team").path("abbreviation").asText()} ${home.path("score").asText()}"
+            statusType.path("state").asText() == "pre" ->
+                competition.path("date").asText()
+            else ->
+                statusType.path("shortDetail").asText().replaceFirst(Regex("^\\d{1,2}/\\d{1,2} - "), "")
         }
     }
 

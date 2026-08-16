@@ -180,7 +180,7 @@ internal class Constants {
                     homeImageLink = "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/tor.png",
                     homeTeamLink = "https://www.espn.com/nba/team/_/name/tor/toronto-raptors",
                     homeRecord = "",
-                    time = "7:00 PM EDT"
+                    time = "2026-10-03T23:00Z"
                 )
             ),
             "Saturday, October 3, 2026 - Preseason"
