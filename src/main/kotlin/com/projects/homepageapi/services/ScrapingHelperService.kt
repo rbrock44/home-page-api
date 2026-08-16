@@ -177,7 +177,7 @@ class ScrapingHelperService(
             )
 
             val index = pair.first
-            val date = if (index == 0) tableDates[index].text() else pair.second
+            val date = (if (index == 0) tableDates[index].text() else pair.second) + getSeasonTypeSuffix(doc)
 
             if (index != -1) {
                 if (isBasketball) {
@@ -218,6 +218,15 @@ class ScrapingHelperService(
                 }
             }
             return Pair(-1, "")
+        }
+    }
+
+    private fun getSeasonTypeSuffix(doc: Document): String {
+        val label = doc.select("select[name=fake-datesDropdown] option").text().trim()
+        return when {
+            label.startsWith("Pre", ignoreCase = true) -> " - Preseason"
+            label.startsWith("Post", ignoreCase = true) -> " - Postseason"
+            else -> ""
         }
     }
 

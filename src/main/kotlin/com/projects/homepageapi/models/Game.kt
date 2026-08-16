@@ -33,7 +33,7 @@ data class Game(
 
         @JvmStatic
         fun getFootballData(doc: Document): Elements {
-            return  doc.getElementsByClass("table")
+            return  doc.getElementsByClass("ResponsiveTable")
         }
 
         @JvmStatic
@@ -48,7 +48,7 @@ data class Game(
 
         @JvmStatic
         fun getFootballName(elements: Element, index: Int): String {
-            val teams = elements.getElementsByClass("table__team")
+            val teams = elements.getElementsByClass("Table__Team")
             val value = teams[index]
             return if (value != null) {
                 val a = value.getElementsByTag("a")
@@ -64,12 +64,7 @@ data class Game(
 
         @JvmStatic
         fun getFootballTime(elements: Element): String {
-            val values = elements.getElementsByAttribute("data-behavior");
-            return if (values.size > 2) {
-                values[2].attr("data-date")
-            } else {
-                ""
-            }
+            return elements.getElementsByClass("date__col").text()
         }
 
         @JvmStatic
