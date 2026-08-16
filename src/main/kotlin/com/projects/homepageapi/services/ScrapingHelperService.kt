@@ -16,6 +16,8 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+private val UPCOMING_WINDOW_DAYS_STEPS = listOf(21L, 180L)
+
 @Service
 class ScrapingHelperService(
     @Autowired private val dateService: DateService,
@@ -162,15 +164,27 @@ class ScrapingHelperService(
             val sport = if (isBasketball) "basketball" else "football"
             val league = if (isBasketball) "nba" else "nfl"
             val baseUrl = "https://site.api.espn.com/apis/site/v2/sports/$sport/$league/scoreboard"
+            val yyyyMMdd = DateTimeFormatter.ofPattern("yyyyMMdd")
+            val today = todayEastern()
 
-            val url = if (formattedDate.isNotEmpty()) {
-                "$baseUrl?dates=${todayEastern().format(DateTimeFormatter.ofPattern("yyyyMMdd"))}"
-            } else {
-                baseUrl
+            if (formattedDate.isNotEmpty()) {
+                val url = "$baseUrl?dates=${today.format(yyyyMMdd)}"
+                return parseGamesFromApiJson(json = jsoupService.getJson(url), fallbackDate = formattedDate)
             }
 
-            val json = jsoupService.getJson(url)
-            parseGamesFromApiJson(json = json, fallbackDate = formattedDate)
+            // ESPN's default (no `dates`) response is tied to the current week and can be
+            // entirely in the past once it's played out, with no lookahead to the next games -
+            // so explicitly widen the window instead of trusting the default. Try a normal
+            // in-season window first, then fall back to a much wider one for long off-season
+            // gaps (e.g. NBA's summer break before preseason starts).
+            for (windowDays in UPCOMING_WINDOW_DAYS_STEPS) {
+                val end = today.plusDays(windowDays)
+                val url = "$baseUrl?dates=${today.format(yyyyMMdd)}-${end.format(yyyyMMdd)}"
+                val result = parseGamesFromApiJson(json = jsoupService.getJson(url), fallbackDate = formattedDate)
+                if (result.games.isNotEmpty()) return result
+            }
+
+            GamesPerDate(games = emptyList(), date = formattedDate)
         } catch (e: IOException) {
             errorGamePerDate(message = e.message ?: "")
         }

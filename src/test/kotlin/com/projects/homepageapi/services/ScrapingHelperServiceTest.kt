@@ -67,7 +67,7 @@ internal class ScrapingHelperServiceTest {
 
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
         assertEquals(expected, helper.parseGamesPerDateWebsite("", false))
-        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard")
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20260815-20260905")
     }
 
     @Test
@@ -76,7 +76,7 @@ internal class ScrapingHelperServiceTest {
 
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nbaApiJson)
         assertEquals(expected, helper.parseGamesPerDateWebsite(""))
-        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard")
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20260815-20260905")
     }
 
     @Test
@@ -87,6 +87,21 @@ internal class ScrapingHelperServiceTest {
         helper.parseGamesPerDateWebsite("Sunday, August 16", false)
 
         verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20260816")
+    }
+
+    @Test
+    fun `should widen the search window when nothing is found in the near term`() {
+        val narrowUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20260815-20260905"
+        val wideUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20260815-20270211"
+
+        whenever(jsoupService.getJson(narrowUrl)).thenReturn("""{"events":[]}""")
+        whenever(jsoupService.getJson(wideUrl)).thenReturn(Constants.nbaApiJson)
+
+        val result = helper.parseGamesPerDateWebsite("")
+
+        assertEquals(Constants.nbaApiExpected, result)
+        verify(jsoupService).getJson(narrowUrl)
+        verify(jsoupService).getJson(wideUrl)
     }
 
     @Test
