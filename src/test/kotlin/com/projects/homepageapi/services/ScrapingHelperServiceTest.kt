@@ -85,6 +85,15 @@ internal class ScrapingHelperServiceTest {
     }
 
     @Test
+    fun `should parse nba2 website for games`() {
+        val expected = Constants.nba2Expected
+
+        whenever(jsoupService.connect(any())).thenReturn(Constants.nba2Document)
+        assertEquals(expected, helper.parseGamesPerDateWebsite(""))
+        verify(jsoupService).connect("https://www.espn.com/nba/schedule")
+    }
+
+    @Test
     fun `should parse gdq website for dates`() {
         val expected = Event(
             name = listOf("Winter", "Summer"),

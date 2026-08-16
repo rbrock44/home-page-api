@@ -278,6 +278,7 @@ class ScrapingHelperService(
     private fun parseBasketball(tables: Elements, index: Int, formattedDate: String): MutableList<Game> {
         val list = mutableListOf<Game>()
         val games = tables[index].getElementsByClass("Table__TR--sm")
+            .filter { it.getElementsByClass("Table__Team").isNotEmpty() }
 
         for (game in games) {
             val opponent: String = Game.getBasketballName(game, 0)
@@ -314,6 +315,7 @@ class ScrapingHelperService(
     private fun parseFootball(tables: Elements, index: Int): MutableList<Game> {
         val list = mutableListOf<Game>()
         val games = tables[index].getElementsByClass("Table__TR--sm")
+            .filter { it.getElementsByClass("Table__Team").isNotEmpty() }
 
         for (game in games) {
             val time: String = this.getGameTime(

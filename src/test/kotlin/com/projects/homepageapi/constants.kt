@@ -15,6 +15,8 @@ internal class Constants {
 
         val nbaDocument: Document = Jsoup.parse(File("src/test/resources/espn-nba.html").readText())
 
+        val nba2Document: Document = Jsoup.parse(File("src/test/resources/espn-nba2.html").readText())
+
         val nflDocument: Document = Jsoup.parse(File("src/test/resources/espn-nfl.html").readText())
 
         val nfl2Document: Document = Jsoup.parse(File("src/test/resources/espn-nfl2.html").readText())
@@ -419,6 +421,23 @@ internal class Constants {
                 )
             ),
             "Wednesday, November 23, 2022",
+        )
+
+        val nba2Expected: GamesPerDate = GamesPerDate(
+            listOf(
+                Game(
+                    opponent = "Miami",
+                    opponentImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/scoreboard/mia.png&w=40&h=40&scale=crop&cquality=40&location=origin",
+                    opponentTeamLink = "https://www.espn.com/nba/team/_/name/mia/miami-heat",
+                    opponentRecord = "",
+                    home = "Toronto",
+                    homeImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/scoreboard/tor.png&w=40&h=40&scale=crop&cquality=40&location=origin",
+                    homeTeamLink = "https://www.espn.com/nba/team/_/name/tor/toronto-raptors",
+                    homeRecord = "",
+                    time = "5:00 PM"
+                )
+            ),
+            "Saturday, October 3, 2026 - Preseason"
         )
     }
 }
