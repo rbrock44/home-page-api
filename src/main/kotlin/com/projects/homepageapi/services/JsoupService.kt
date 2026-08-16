@@ -20,6 +20,10 @@ class JsoupService() {
     }
 
     fun getJson(url: String): String {
-        return Jsoup.connect(url).ignoreContentType(true).execute().body()
+        return Jsoup.connect(url)
+            .userAgent("curl/8.7.1")
+            .ignoreContentType(true)
+            .execute()
+            .body()
     }
 }
