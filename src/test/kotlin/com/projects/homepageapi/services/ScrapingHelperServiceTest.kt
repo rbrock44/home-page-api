@@ -57,40 +57,31 @@ internal class ScrapingHelperServiceTest {
     }
 
     @Test
-    fun `should parse nfl website for games`() {
-        val expected = Constants.nflExpected
+    fun `should parse nfl api for upcoming games`() {
+        val expected = Constants.nflApiExpected
 
-        whenever(jsoupService.connect(any())).thenReturn(Constants.nflDocument)
+        whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
         assertEquals(expected, helper.parseGamesPerDateWebsite("", false))
-        verify(jsoupService).connect("https://www.espn.com/nfl/schedule")
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard")
     }
 
     @Test
-    fun `should parse nfl2 website for games`() {
-        val expected = Constants.nfl2Expected
+    fun `should parse nba api for upcoming games`() {
+        val expected = Constants.nbaApiExpected
 
-        whenever(jsoupService.connect(any())).thenReturn(Constants.nfl2Document)
-        assertEquals(expected, helper.parseGamesPerDateWebsite("", false))
-        verify(jsoupService).connect("https://www.espn.com/nfl/schedule")
-    }
-
-    @Test
-    fun `should parse nba website for games`() {
-        val expected = Constants.nbaExpected
-
-        val value = Constants.nbaDocument
-        whenever(jsoupService.connect(any())).thenReturn(value)
+        whenever(jsoupService.getJson(any())).thenReturn(Constants.nbaApiJson)
         assertEquals(expected, helper.parseGamesPerDateWebsite(""))
-        verify(jsoupService).connect("https://www.espn.com/nba/schedule")
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard")
     }
 
     @Test
-    fun `should parse nba2 website for games`() {
-        val expected = Constants.nba2Expected
+    fun `should query a specific date when asking for today's games`() {
+        whenever(service.getCurrentDate(format = "yyyyMMdd")).thenReturn("20260816")
+        whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
 
-        whenever(jsoupService.connect(any())).thenReturn(Constants.nba2Document)
-        assertEquals(expected, helper.parseGamesPerDateWebsite(""))
-        verify(jsoupService).connect("https://www.espn.com/nba/schedule")
+        helper.parseGamesPerDateWebsite("Sunday, August 16", false)
+
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20260816")
     }
 
     @Test

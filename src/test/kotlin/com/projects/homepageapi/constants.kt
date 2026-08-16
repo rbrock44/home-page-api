@@ -13,126 +13,10 @@ internal class Constants {
         val mmaDocument: Document = Jsoup.parse(File("src/test/resources/mma.html").readText())
         val mma2Document: Document = Jsoup.parse(File("src/test/resources/mma2.html").readText())
 
-        val nbaDocument: Document = Jsoup.parse(File("src/test/resources/espn-nba.html").readText())
-
-        val nba2Document: Document = Jsoup.parse(File("src/test/resources/espn-nba2.html").readText())
-
-        val nflDocument: Document = Jsoup.parse(File("src/test/resources/espn-nfl.html").readText())
-
-        val nfl2Document: Document = Jsoup.parse(File("src/test/resources/espn-nfl2.html").readText())
-
         val gdqDocument: Document = Jsoup.parse(File("src/test/resources/gdq.html").readText())
 
-        val nflExpected: GamesPerDate = GamesPerDate(
-            listOf(
-                Game(
-                    opponent = "Buffalo",
-                    opponentImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/buf/buffalo-bills",
-                    opponentRecord = "",
-                    home = "Detroit",
-                    homeImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/det/detroit-lions",
-                    homeRecord = "",
-                    time = "11:30 AM"
-                ),
-                Game(
-                    opponent = "New York",
-                    opponentImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/nyg/new-york-giants",
-                    opponentRecord = "",
-                    home = "Dallas",
-                    homeImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/dal/dallas-cowboys",
-                    homeRecord = "",
-                    time = "3:30 PM"
-                ),
-                Game(
-                    opponent = "New England",
-                    opponentImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/ne/new-england-patriots",
-                    opponentRecord = "",
-                    home = "Minnesota",
-                    homeImageLink = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/min/minnesota-vikings",
-                    homeRecord = "",
-                    time = "7:20 PM"
-                )
-            ),
-            "Thursday, November 24, 2022"
-        )
-
-        val nfl2Expected: GamesPerDate = GamesPerDate(
-            listOf(
-                Game(
-                    opponent = "Detroit",
-                    opponentImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/det.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/det/detroit-lions",
-                    opponentRecord = "",
-                    home = "Cincinnati",
-                    homeImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/cin.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/cin/cincinnati-bengals",
-                    homeRecord = "",
-                    time = "CIN 16, DET 14"
-                ),
-                Game(
-                    opponent = "Green Bay",
-                    opponentImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/gb.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/gb/green-bay-packers",
-                    opponentRecord = "",
-                    home = "Pittsburgh",
-                    homeImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/pit.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/pit/pittsburgh-steelers",
-                    homeRecord = "",
-                    time = "PIT 28, GB 9"
-                ),
-                Game(
-                    opponent = "Indianapolis",
-                    opponentImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/ind.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/ind/indianapolis-colts",
-                    opponentRecord = "",
-                    home = "New England",
-                    homeImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/ne.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/ne/new-england-patriots",
-                    homeRecord = "",
-                    time = "IND 13, NE 13"
-                ),
-                Game(
-                    opponent = "Arizona",
-                    opponentImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/ari.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/ari/arizona-cardinals",
-                    opponentRecord = "",
-                    home = "Las Vegas",
-                    homeImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/lv.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/lv/las-vegas-raiders",
-                    homeRecord = "",
-                    time = "ARI 27, LV 14"
-                ),
-                Game(
-                    opponent = "Los Angeles",
-                    opponentImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/lac.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/lac/los-angeles-chargers",
-                    opponentRecord = "",
-                    home = "Houston",
-                    homeImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/hou.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/hou/houston-texans",
-                    homeRecord = "",
-                    time = "LAC 27, HOU 7"
-                ),
-                Game(
-                    opponent = "Tennessee",
-                    opponentImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/ten.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/ten/tennessee-titans",
-                    opponentRecord = "",
-                    home = "San Francisco",
-                    homeImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/scoreboard/sf.png&w=40&h=40&scale=crop&cquality=40&location=origin",
-                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/sf/san-francisco-49ers",
-                    homeRecord = "",
-                    time = "TEN 19, SF 13"
-                )
-            ),
-            "Thursday, August 13, 2026 - Preseason"
-        )
+        val nbaApiJson: String = File("src/test/resources/espn-nba-scoreboard.json").readText()
+        val nflApiJson: String = File("src/test/resources/espn-nfl-scoreboard.json").readText()
 
         val mmaExpected: FightCard = FightCard(
             listOf(
@@ -285,159 +169,203 @@ internal class Constants {
             "https://www.mmafighting.com/fight-card/453877/ufc-323-dvalishvili-vs-yan-2"
         )
 
-        val nbaExpected: GamesPerDate = GamesPerDate(
+        val nbaApiExpected: GamesPerDate = GamesPerDate(
             listOf(
                 Game(
-                    "Philadelphia",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/phi/philadelphia-76ers",
-                    "",
-                    "Charlotte",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/cha/charlotte-hornets",
-                    "",
-                    "CHA 107, PHI 101"
-                ),
-                Game(
-                    "Portland",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/por/portland-trail-blazers",
-                    "",
-                    "Cleveland",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/cle/cleveland-cavaliers",
-                    "",
-                    "CLE 114, POR 96"
-                ),
-                Game(
-                    "Minnesota",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/min/minnesota-timberwolves",
-                    "",
-                    "Indiana",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/ind/indiana-pacers",
-                    "",
-                    "MIN 115, IND 101"
-                ),
-                Game(
-                    "Sacramento",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/sac/sacramento-kings",
-                    "",
-                    "Atlanta",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/atl/atlanta-hawks",
-                    "",
-                    "ATL 115, SAC 106"
-                ),
-                Game(
-                    "Dallas",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/dal/dallas-mavericks",
-                    "",
-                    "Boston",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/bos/boston-celtics",
-                    "",
-                    "BOS 125, DAL 112"
-                ),
-                Game(
-                    "Washington",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/wsh/washington-wizards",
-                    "",
-                    "Miami",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/mia/miami-heat",
-                    "",
-                    "MIA 113, WSH 105"
-                ),
-                Game(
-                    "Brooklyn",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/bkn/brooklyn-nets",
-                    "",
-                    "Toronto",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/tor/toronto-raptors",
-                    "",
-                    "BKN 112, TOR 98"
-                ),
-                Game(
-                    "Chicago",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/chi/chicago-bulls",
-                    "",
-                    "Milwaukee",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/mil/milwaukee-bucks",
-                    "",
-                    "CHI 118, MIL 113"
-                ),
-                Game(
-                    "Denver",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/den/denver-nuggets",
-                    "",
-                    "Oklahoma City",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/okc/oklahoma-city-thunder",
-                    "",
-                    "DEN 131, OKC 126 (OT)"
-                ),
-                Game(
-                    "New Orleans",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/no/new-orleans-pelicans",
-                    "",
-                    "San Antonio",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/sa/san-antonio-spurs",
-                    "",
-                    "NO 129, SA 110"
-                ),
-                Game(
-                    "Detroit",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/det/detroit-pistons",
-                    "",
-                    "Utah",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/utah/utah-jazz",
-                    "",
-                    "DET 125, UTAH 116"
-                ),
-                Game(
-                    "LA",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/lac/la-clippers",
-                    "",
-                    "Golden State",
-                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-                    "https://www.espn.com/nba/team/_/name/gs/golden-state-warriors",
-                    "",
-                    "GS 124, LAC 107"
-                )
-            ),
-            "Wednesday, November 23, 2022",
-        )
-
-        val nba2Expected: GamesPerDate = GamesPerDate(
-            listOf(
-                Game(
-                    opponent = "Miami",
-                    opponentImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/scoreboard/mia.png&w=40&h=40&scale=crop&cquality=40&location=origin",
+                    opponent = "Miami Heat",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/mia.png",
                     opponentTeamLink = "https://www.espn.com/nba/team/_/name/mia/miami-heat",
                     opponentRecord = "",
-                    home = "Toronto",
-                    homeImageLink = "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/scoreboard/tor.png&w=40&h=40&scale=crop&cquality=40&location=origin",
+                    home = "Toronto Raptors",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/tor.png",
                     homeTeamLink = "https://www.espn.com/nba/team/_/name/tor/toronto-raptors",
                     homeRecord = "",
-                    time = "5:00 PM"
+                    time = "7:00 PM EDT"
                 )
             ),
             "Saturday, October 3, 2026 - Preseason"
+        )
+
+        val nflApiExpected: GamesPerDate = GamesPerDate(
+            listOf(
+                Game(
+                    opponent = "Dallas Cowboys",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/dal.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/dal/dallas-cowboys",
+                    opponentRecord = "",
+                    home = "Seattle Seahawks",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sea.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/sea/seattle-seahawks",
+                    homeRecord = "",
+                    time = "11:00 - 4th"
+                ),
+                Game(
+                    opponent = "Carolina Panthers",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/car.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/car/carolina-panthers",
+                    opponentRecord = "",
+                    home = "Buffalo Bills",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/buf.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/buf/buffalo-bills",
+                    homeRecord = "",
+                    time = "CAR 14, BUF 29"
+                ),
+                Game(
+                    opponent = "Cleveland Browns",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cle.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/cle/cleveland-browns",
+                    opponentRecord = "",
+                    home = "Chicago Bears",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/chi.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/chi/chicago-bears",
+                    homeRecord = "",
+                    time = "CLE 10, CHI 34"
+                ),
+                Game(
+                    opponent = "Minnesota Vikings",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/min.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/min/minnesota-vikings",
+                    opponentRecord = "",
+                    home = "New York Giants",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyg.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/nyg/new-york-giants",
+                    homeRecord = "",
+                    time = "MIN 13, NYG 10"
+                ),
+                Game(
+                    opponent = "Los Angeles Rams",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lar.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/lar/los-angeles-rams",
+                    opponentRecord = "",
+                    home = "Kansas City Chiefs",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/kc.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/kc/kansas-city-chiefs",
+                    homeRecord = "",
+                    time = "LAR 20, KC 12"
+                ),
+                Game(
+                    opponent = "Jacksonville Jaguars",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/jax.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/jax/jacksonville-jaguars",
+                    opponentRecord = "",
+                    home = "New Orleans Saints",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/no.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/no/new-orleans-saints",
+                    homeRecord = "",
+                    time = "JAX 24, NO 20"
+                ),
+                Game(
+                    opponent = "Philadelphia Eagles",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/phi.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/phi/philadelphia-eagles",
+                    opponentRecord = "",
+                    home = "Baltimore Ravens",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/bal.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/bal/baltimore-ravens",
+                    homeRecord = "",
+                    time = "PHI 7, BAL 24"
+                ),
+                Game(
+                    opponent = "Detroit Lions",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/det.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/det/detroit-lions",
+                    opponentRecord = "",
+                    home = "Cincinnati Bengals",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cin.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/cin/cincinnati-bengals",
+                    homeRecord = "",
+                    time = "DET 14, CIN 16"
+                ),
+                Game(
+                    opponent = "Green Bay Packers",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/gb.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/gb/green-bay-packers",
+                    opponentRecord = "",
+                    home = "Pittsburgh Steelers",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/pit.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/pit/pittsburgh-steelers",
+                    homeRecord = "",
+                    time = "GB 9, PIT 28"
+                ),
+                Game(
+                    opponent = "Indianapolis Colts",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ind.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/ind/indianapolis-colts",
+                    opponentRecord = "",
+                    home = "New England Patriots",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ne.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/ne/new-england-patriots",
+                    homeRecord = "",
+                    time = "IND 13, NE 13"
+                ),
+                Game(
+                    opponent = "Arizona Cardinals",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ari.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/ari/arizona-cardinals",
+                    opponentRecord = "",
+                    home = "Las Vegas Raiders",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lv.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/lv/las-vegas-raiders",
+                    homeRecord = "",
+                    time = "ARI 27, LV 14"
+                ),
+                Game(
+                    opponent = "Los Angeles Chargers",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lac.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/lac/los-angeles-chargers",
+                    opponentRecord = "",
+                    home = "Houston Texans",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/hou.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/hou/houston-texans",
+                    homeRecord = "",
+                    time = "LAC 27, HOU 7"
+                ),
+                Game(
+                    opponent = "Tennessee Titans",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ten.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/ten/tennessee-titans",
+                    opponentRecord = "",
+                    home = "San Francisco 49ers",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sf.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/sf/san-francisco-49ers",
+                    homeRecord = "",
+                    time = "TEN 19, SF 13"
+                ),
+                Game(
+                    opponent = "Denver Broncos",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/den.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/den/denver-broncos",
+                    opponentRecord = "",
+                    home = "Atlanta Falcons",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/atl.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/atl/atlanta-falcons",
+                    homeRecord = "",
+                    time = "DEN 27, ATL 7"
+                ),
+                Game(
+                    opponent = "Tampa Bay Buccaneers",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/tb.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/tb/tampa-bay-buccaneers",
+                    opponentRecord = "",
+                    home = "New York Jets",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyj.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/nyj/new-york-jets",
+                    homeRecord = "",
+                    time = "TB 24, NYJ 16"
+                ),
+                Game(
+                    opponent = "Miami Dolphins",
+                    opponentImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/mia.png",
+                    opponentTeamLink = "https://www.espn.com/nfl/team/_/name/mia/miami-dolphins",
+                    opponentRecord = "",
+                    home = "Washington Commanders",
+                    homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/wsh.png",
+                    homeTeamLink = "https://www.espn.com/nfl/team/_/name/wsh/washington-commanders",
+                    homeRecord = "",
+                    time = "MIA 7, WSH 20"
+                )
+            ),
+            "Saturday, August 15, 2026 - Preseason"
         )
     }
 }

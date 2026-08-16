@@ -10,9 +10,8 @@ import org.jsoup.select.Elements
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
-import java.net.URLEncoder
 import java.time.OffsetDateTime
-import java.time.LocalTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -158,43 +157,94 @@ class ScrapingHelperService(
     }
 
     fun parseGamesPerDateWebsite(formattedDate: String, isBasketball: Boolean = true): GamesPerDate {
-        try {
-            val url =
-                if (isBasketball) "https://www.espn.com/nba/schedule"
-                else "https://www.espn.com/nfl/schedule"
-            val doc: Document = jsoupService.connect(url)
-            val tables: Elements =
-                if (isBasketball) Game.getBasketballData(doc)
-                else Game.getFootballData(doc)
-            val tableDates: Elements =
-                if (isBasketball) Game.getDates(doc)
-                else Game.getFootballDates(doc)
-            val listOfGames: MutableList<Game> = mutableListOf()
+        return try {
+            val sport = if (isBasketball) "basketball" else "football"
+            val league = if (isBasketball) "nba" else "nfl"
+            val baseUrl = "https://site.api.espn.com/apis/site/v2/sports/$sport/$league/scoreboard"
 
-            val pair = getIndexAndDate(
-                formattedDate = formattedDate,
-                tableDates = tableDates
-            )
-
-            val index = pair.first
-            val date = (if (index == 0) tableDates[index].text() else pair.second) + getSeasonTypeSuffix(doc)
-
-            if (index != -1) {
-                if (isBasketball) {
-                    listOfGames.addAll(this.parseBasketball(tables, index, formattedDate))
-                } else {
-                    listOfGames.addAll(this.parseFootball(tables, index))
-                }
+            val url = if (formattedDate.isNotEmpty()) {
+                "$baseUrl?dates=${dateService.getCurrentDate(format = "yyyyMMdd")}"
+            } else {
+                baseUrl
             }
 
-            return GamesPerDate(
-                games = listOfGames,
-                date = date
+            val json = jsoupService.getJson(url)
+            parseGamesFromApiJson(json = json, fallbackDate = formattedDate)
+        } catch (e: IOException) {
+            errorGamePerDate(message = e.message ?: "")
+        }
+    }
+
+    private fun parseGamesFromApiJson(json: String, fallbackDate: String): GamesPerDate {
+        val events = ObjectMapper().readTree(json).path("events")
+        val games = mutableListOf<Game>()
+        var date = ""
+
+        val eventIterator = events.elements()
+        while (eventIterator.hasNext()) {
+            val event = eventIterator.next()
+            val competitors = event.path("competitions").path(0).path("competitors")
+
+            var home: JsonNode? = null
+            var away: JsonNode? = null
+            val competitorIterator = competitors.elements()
+            while (competitorIterator.hasNext()) {
+                val competitor = competitorIterator.next()
+                when (competitor.path("homeAway").asText()) {
+                    "home" -> home = competitor
+                    "away" -> away = competitor
+                }
+            }
+            if (home == null || away == null) continue
+
+            games.add(
+                Game(
+                    opponent = away.path("team").path("displayName").asText(),
+                    opponentImageLink = away.path("team").path("logo").asText(),
+                    opponentTeamLink = away.path("team").path("links").path(0).path("href").asText(),
+                    opponentRecord = "",
+                    home = home.path("team").path("displayName").asText(),
+                    homeImageLink = home.path("team").path("logo").asText(),
+                    homeTeamLink = home.path("team").path("links").path(0).path("href").asText(),
+                    homeRecord = "",
+                    time = getApiGameTime(event.path("competitions").path(0), home, away)
+                )
             )
 
-            // In case of any IO errors, we want the messages written to the console
-        } catch (e: IOException) {
-            return errorGamePerDate(message = e.printStackTrace().toString())
+            if (date.isEmpty()) {
+                date = formatEventDate(event.path("date").asText()) +
+                    getSeasonSuffix(event.path("season").path("slug").asText())
+            }
+        }
+
+        return GamesPerDate(games = games, date = date.ifEmpty { fallbackDate })
+    }
+
+    private fun getApiGameTime(competition: JsonNode, home: JsonNode, away: JsonNode): String {
+        val statusType = competition.path("status").path("type")
+        return if (statusType.path("completed").asBoolean(false)) {
+            "${away.path("team").path("abbreviation").asText()} ${away.path("score").asText()}, " +
+                "${home.path("team").path("abbreviation").asText()} ${home.path("score").asText()}"
+        } else {
+            statusType.path("shortDetail").asText().replaceFirst(Regex("^\\d{1,2}/\\d{1,2} - "), "")
+        }
+    }
+
+    private fun formatEventDate(isoDate: String): String {
+        return try {
+            OffsetDateTime.parse(isoDate).toInstant()
+                .atZone(ZoneId.of("America/New_York"))
+                .format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.ENGLISH))
+        } catch (e: Exception) {
+            isoDate
+        }
+    }
+
+    private fun getSeasonSuffix(slug: String): String {
+        return when (slug) {
+            "preseason" -> " - Preseason"
+            "postseason" -> " - Postseason"
+            else -> ""
         }
     }
 
@@ -221,42 +271,11 @@ class ScrapingHelperService(
         }
     }
 
-    private fun getSeasonTypeSuffix(doc: Document): String {
-        val label = doc.select("select[name=fake-datesDropdown] option").text().trim()
-        return when {
-            label.startsWith("Pre", ignoreCase = true) -> " - Preseason"
-            label.startsWith("Post", ignoreCase = true) -> " - Postseason"
-            else -> ""
-        }
-    }
-
     private fun errorGamePerDate(message: String): GamesPerDate {
         return GamesPerDate(
             games = emptyList(),
             date = "Error Parsing: $message"
         )
-    }
-
-    private fun getGameTime(game: Element, otherGameTime: String): String {
-        val a = game.getElementsByTag("a")
-        return if (a.size >= 4) {
-            val time = game.getElementsByTag("a")[4].text()
-            time.ifEmpty { otherGameTime }
-        } else {
-            otherGameTime
-        }
-
-    }
-
-    private fun shiftGameTimeBack(gameTime: String, hours: Long = 1): String {
-        return try {
-            val timeFormatter = DateTimeFormatter.ofPattern("h:mm a")
-            val localTime = LocalTime.parse(gameTime, timeFormatter)
-            val newLocalTime = localTime.minusHours(hours)
-            newLocalTime.format(timeFormatter)
-        } catch (e: Exception) {
-            gameTime
-        }
     }
 
     private fun addFightsToList(list: MutableList<Fight>, card: Elements) {
@@ -273,80 +292,6 @@ class ScrapingHelperService(
                 )
             )
         }
-    }
-
-    private fun parseBasketball(tables: Elements, index: Int, formattedDate: String): MutableList<Game> {
-        val list = mutableListOf<Game>()
-        val games = tables[index].getElementsByClass("Table__TR--sm")
-            .filter { it.getElementsByClass("Table__Team").isNotEmpty() }
-
-        for (game in games) {
-            val opponent: String = Game.getBasketballName(game, 0)
-            val home: String = Game.getBasketballName(game, 1)
-
-            //search google for time since espn has a script run over the webpage
-            val search = "$formattedDate $opponent vs $home"
-            val gameUrl = "https://www.google.com/search?q=${URLEncoder.encode(search, "UTF-8")}"
-            val searchDoc: Document = jsoupService.connect(gameUrl)
-            val gameTime = Game.getBasketballTime(searchDoc)
-            val time: String = getGameTime(
-                game = game,
-                otherGameTime = gameTime.substring(gameTime.indexOf(",") + 1).trim()
-            )
-
-            list.add(
-                Game(
-                    opponent = opponent,
-                    opponentImageLink = Game.getImage(game, 0),
-                    opponentTeamLink = Game.getTeamLink(game, 0),
-                    opponentRecord = "",
-                    home = home,
-                    homeImageLink = Game.getImage(game, 1),
-                    homeTeamLink = Game.getTeamLink(game, 2),
-                    homeRecord = "",
-                    time = shiftGameTimeBack(time)
-                )
-            )
-        }
-
-        return list
-    }
-
-    private fun parseFootball(tables: Elements, index: Int): MutableList<Game> {
-        val list = mutableListOf<Game>()
-        val games = tables[index].getElementsByClass("Table__TR--sm")
-            .filter { it.getElementsByClass("Table__Team").isNotEmpty() }
-
-        for (game in games) {
-            val time: String = this.getGameTime(
-                game = game,
-                otherGameTime = Game.getFootballTime(game)
-            )
-
-            val opponent: String = Game.getFootballName(game, 0)
-            val opponentImage: String = Game.getFootballImageLink(game, 0)
-            val opponentLink: String = Game.getTeamLink(game, 0)
-
-            val home: String = Game.getFootballName(game, 1)
-            val homeImage: String = Game.getFootballImageLink(game, 1)
-            val homeLink: String = Game.getTeamLink(game, 2)
-
-            list.add(
-                Game(
-                    opponent = opponent,
-                    opponentImageLink = opponentImage,
-                    opponentTeamLink = opponentLink,
-                    opponentRecord = "",
-                    home = home,
-                    homeTeamLink = homeLink,
-                    homeImageLink = homeImage,
-                    homeRecord = "",
-                    time = shiftGameTimeBack(time),
-                )
-            )
-        }
-
-        return list
     }
 
     private fun parseAuctions(auctions: Elements, isHibid: Boolean): MutableList<Auction> {
