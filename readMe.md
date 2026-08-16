@@ -25,11 +25,11 @@ This is a Kotlin + Spring Boot backend API that powers multiple frontend project
 
 Primary features include:
 
-- Cleaning schedule CRUD (H2-backed)
+- Cleaning schedule CRUD (H2-backed, API key protected on write operations)
 - Sports and event scraping (MMA, ESPN, GDQ, auction data)
 - Home media search + sync from remote source files
 - Flash card and spot price data endpoints
-- Pending recipe submission endpoints (with API key protection on write operations)
+- Pending recipe submission endpoints (API key protected), which trigger a GitHub `repository_dispatch` to [family-recipes](https://github.com/rbrock44/family-recipes) to kick off recipe processing
 
 ---
 
@@ -42,9 +42,9 @@ Common route groups:
 - `/cleaning-schedule`
   - `GET /cleaning-schedule/week?startDate=YYYY-MM-DD`
   - `GET /cleaning-schedule`
-  - `POST /cleaning-schedule/add`
-  - `POST /cleaning-schedule/edit`
-  - `DELETE /cleaning-schedule?id={id}`
+  - `POST /cleaning-schedule/add` (requires `X-API-Key` header)
+  - `POST /cleaning-schedule/edit` (requires `X-API-Key` header)
+  - `DELETE /cleaning-schedule?id={id}` (requires `X-API-Key` header)
 - `/games-per-date`
   - `GET /games-per-date/basketball/today`
   - `GET /games-per-date/basketball/upcoming`
@@ -66,10 +66,10 @@ Common route groups:
   - `GET /flash-cards`
 - `/spot-price`
   - `GET /spot-price`
-- `/recipe/pending`
+- `/recipe/pending` (all routes require `X-API-Key` header)
   - `GET /recipe/pending`
-  - `POST /recipe/pending` (requires `X-API-Key` header)
-  - `DELETE /recipe/pending/{id}` (requires `X-API-Key` header)
+  - `POST /recipe/pending`
+  - `DELETE /recipe/pending/{id}`
 
 Example:
 
@@ -91,7 +91,7 @@ curl -X POST "http://localhost:8090/recipe/pending" \
 ## 🛠 Technologies
 
 - Language: `Kotlin`
-- Framework: `Spring Boot 3`
+- Framework: `Spring Boot 4`
 - Build Tool: `Gradle (Kotlin DSL)`
 - Java Version: `21`
 - Database: `H2 (in-memory)`
@@ -106,9 +106,11 @@ curl -X POST "http://localhost:8090/recipe/pending" \
 - Install [Java 21](https://adoptium.net/)
 - Clone [repo](https://github.com/rbrock44/home-page-api)
 
-Optional environment variable for protected endpoints:
+Environment variables:
 
-- `API_KEY=your_secret_key`
+- `API_KEY=your_secret_key` — **required**, even locally; the app fails to start without it. Protects `/recipe/pending` (all routes)
+- `CLEANING_SCHEDULE_API_KEY=your_secret_key` — optional. Protects the write routes on `/cleaning-schedule`; if unset, those routes reject every request rather than being open
+- `GITHUB_DISPATCH_TOKEN=your_github_token` — optional. Enables the `repository_dispatch` sent to `family-recipes` on new recipe submissions; if unset, the dispatch is skipped (logged, not an error)
 
 ---
 
