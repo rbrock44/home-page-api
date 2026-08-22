@@ -16,6 +16,7 @@
   - [GitHub Hooks](#github-hooks)
   - [Build](#build)
   - [Deploy](#deploy)
+- [How to Contribute](#-how-to-contribute)
 
 ---
 
@@ -161,4 +162,11 @@ git push heroku master
 ```
 
 Heroku handles SSL for the deployed app.
+
+---
+
+## 🤝 How to Contribute
+
+Found a typo or a small, obvious fix? Open a PR directly.
+Want to change behavior or add something bigger? Open an issue first so we can talk it through before you put in the work.
 
