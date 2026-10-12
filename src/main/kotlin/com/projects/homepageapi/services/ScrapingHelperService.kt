@@ -16,7 +16,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-private val UPCOMING_WINDOW_DAYS_STEPS = listOf(21L, 180L)
+private const val UPCOMING_MONTHS_TO_SEARCH = 6L
 
 @Service
 class ScrapingHelperService(
@@ -173,13 +173,12 @@ class ScrapingHelperService(
             }
 
             // ESPN's default (no `dates`) response is tied to the current week and can be
-            // entirely in the past once it's played out, with no lookahead to the next games -
-            // so explicitly widen the window instead of trusting the default. Try a normal
-            // in-season window first, then fall back to a much wider one for long off-season
-            // gaps (e.g. NBA's summer break before preseason starts).
-            for (windowDays in UPCOMING_WINDOW_DAYS_STEPS) {
-                val end = today.plusDays(windowDays)
-                val url = "$baseUrl?dates=${today.format(yyyyMMdd)}-${end.format(yyyyMMdd)}"
+            // entirely in the past once it's played out, and date ranges are rejected - so query
+            // month by month, starting with the current one, until upcoming games turn up. The
+            // month cap covers long off-season gaps (e.g. NBA's summer break before preseason).
+            val yyyyMM = DateTimeFormatter.ofPattern("yyyyMM")
+            for (monthOffset in 0L until UPCOMING_MONTHS_TO_SEARCH) {
+                val url = "$baseUrl?dates=${today.plusMonths(monthOffset).format(yyyyMM)}"
                 val result = parseGamesFromApiJson(json = jsoupService.getJson(url), fallbackDate = formattedDate)
                 if (result.games.isNotEmpty()) return result
             }

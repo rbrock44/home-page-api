@@ -67,7 +67,7 @@ internal class ScrapingHelperServiceTest {
 
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
         assertEquals(expected, helper.parseGamesPerDateWebsite("", false))
-        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20260815-20260905")
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=202608")
     }
 
     @Test
@@ -76,7 +76,7 @@ internal class ScrapingHelperServiceTest {
 
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nbaApiJson)
         assertEquals(expected, helper.parseGamesPerDateWebsite(""))
-        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20260815-20260905")
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202608")
     }
 
     @Test
@@ -90,18 +90,18 @@ internal class ScrapingHelperServiceTest {
     }
 
     @Test
-    fun `should widen the search window when nothing is found in the near term`() {
-        val narrowUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20260815-20260905"
-        val wideUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20260815-20270211"
+    fun `should search the next month when nothing is found in the current month`() {
+        val currentMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202608"
+        val nextMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202609"
 
-        whenever(jsoupService.getJson(narrowUrl)).thenReturn("""{"events":[]}""")
-        whenever(jsoupService.getJson(wideUrl)).thenReturn(Constants.nbaApiJson)
+        whenever(jsoupService.getJson(currentMonthUrl)).thenReturn("""{"events":[]}""")
+        whenever(jsoupService.getJson(nextMonthUrl)).thenReturn(Constants.nbaApiJson)
 
         val result = helper.parseGamesPerDateWebsite("")
 
         assertEquals(Constants.nbaApiExpected, result)
-        verify(jsoupService).getJson(narrowUrl)
-        verify(jsoupService).getJson(wideUrl)
+        verify(jsoupService).getJson(currentMonthUrl)
+        verify(jsoupService).getJson(nextMonthUrl)
     }
 
     @Test
