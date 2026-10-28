@@ -423,6 +423,10 @@ class ScrapingHelperService(
         return parsePreciousMetalWebsite(platinumSpotOrigin)
     }
 
+    fun parsePalladiumWebsite(): PreciousMetalResult {
+        return parsePreciousMetalWebsite(palladiumSpotOrigin)
+    }
+
     fun parsePreciousMetalWebsite(url: String): PreciousMetalResult {
         var price = -1.0
         var description = ""

@@ -10,5 +10,6 @@ const val utilitiesOrigin = "https://utilities.ryan-brock.com"
 const val maxAge = 3600L
 
 const val platinumSpotOrigin = "https://www.kitco.com/charts/platinum"
+const val palladiumSpotOrigin = "https://www.kitco.com/charts/palladium"
 const val goldSpotOrigin = "https://www.kitco.com/charts/gold"
 const val silverSpotOrigin = "https://www.kitco.com/charts/silver"

@@ -27,12 +27,14 @@ internal class SpotPriceServiceTest {
         whenever(helper.parseGoldWebsite()).thenReturn(PreciousMetalResult(price = 2000.0))
         whenever(helper.parseSilverWebsite()).thenReturn(PreciousMetalResult(price = 25.0))
         whenever(helper.parsePlatinumWebsite()).thenReturn(PreciousMetalResult(price = 1000.0))
+        whenever(helper.parsePalladiumWebsite()).thenReturn(PreciousMetalResult(price = 950.0))
 
         val result = service.getSpotPrices()
 
         assertEquals(2000.0, result.gold)
         assertEquals(25.0, result.silver)
         assertEquals(1000.0, result.platinum)
+        assertEquals(950.0, result.palladium)
         assertEquals(4.0, result.goldback)
     }
 
@@ -41,6 +43,7 @@ internal class SpotPriceServiceTest {
         whenever(helper.parseGoldWebsite()).thenReturn(PreciousMetalResult(price = -1.0))
         whenever(helper.parseSilverWebsite()).thenReturn(PreciousMetalResult(price = 25.0))
         whenever(helper.parsePlatinumWebsite()).thenReturn(PreciousMetalResult(price = 1000.0))
+        whenever(helper.parsePalladiumWebsite()).thenReturn(PreciousMetalResult(price = 950.0))
 
         val result = service.getSpotPrices()
 
@@ -52,9 +55,10 @@ internal class SpotPriceServiceTest {
         whenever(helper.parseGoldWebsite()).thenReturn(PreciousMetalResult(price = 2000.0, description = "stale"))
         whenever(helper.parseSilverWebsite()).thenReturn(PreciousMetalResult(price = 25.0))
         whenever(helper.parsePlatinumWebsite()).thenReturn(PreciousMetalResult(price = 1000.0))
+        whenever(helper.parsePalladiumWebsite()).thenReturn(PreciousMetalResult(price = 950.0))
 
         val result = service.getSpotPrices()
 
-        assertEquals("Gold: stale, Silver: good, Platinum: good, Goldback: derived from gold spot", result.description)
+        assertEquals("Gold: stale, Silver: good, Platinum: good, Palladium: good, Goldback: derived from gold spot", result.description)
     }
 }

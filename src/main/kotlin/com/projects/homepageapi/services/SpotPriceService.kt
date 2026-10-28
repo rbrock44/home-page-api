@@ -12,6 +12,7 @@ class SpotPriceService(
         val goldResult = helper.parseGoldWebsite()
         val silverResult = helper.parseSilverWebsite()
         val platinumResult = helper.parsePlatinumWebsite()
+        val palladiumResult = helper.parsePalladiumWebsite()
         // Goldback spot tracks 1/1000 oz gold and doubles for one notes.
         val goldbackPrice = (goldResult.price / 1000.0) * 2.0
         val goldbackDescription = if (goldResult.price < 0) {
@@ -24,11 +25,13 @@ class SpotPriceService(
             gold = goldResult.price,
             silver = silverResult.price,
             platinum = platinumResult.price,
+            palladium = palladiumResult.price,
             goldback = goldbackPrice,
             description = listOf(
                 "Gold: ${if (goldResult.description.isEmpty()) "good" else goldResult.description}",
                 "Silver: ${if (silverResult.description.isEmpty()) "good" else silverResult.description}",
                 "Platinum: ${if (platinumResult.description.isEmpty()) "good" else platinumResult.description}",
+                "Palladium: ${if (palladiumResult.description.isEmpty()) "good" else palladiumResult.description}",
                 "Goldback: $goldbackDescription"
             ).joinToString(", ")
         )
