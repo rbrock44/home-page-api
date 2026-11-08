@@ -115,6 +115,47 @@ internal class ScrapingHelperServiceTest {
     }
 
     @Test
+    fun `should return the next game day after the given day`() {
+        whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
+
+        val result = helper.parseAdjacentGameDay("20260814", forward = true, isBasketball = false)
+
+        assertEquals(Constants.nflApiExpected, result)
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=202608")
+    }
+
+    @Test
+    fun `should return the previous game day before the given day`() {
+        whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
+
+        val result = helper.parseAdjacentGameDay("20260815", forward = false, isBasketball = false)
+
+        assertEquals("20260814", result.day)
+        assertEquals("Friday, August 14, 2026 - Preseason", result.date)
+    }
+
+    @Test
+    fun `should search the previous month when nothing is found before the given day`() {
+        val currentMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202611"
+        val previousMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202610"
+
+        whenever(jsoupService.getJson(currentMonthUrl)).thenReturn("""{"events":[]}""")
+        whenever(jsoupService.getJson(previousMonthUrl)).thenReturn(Constants.nbaApiJson)
+
+        val result = helper.parseAdjacentGameDay("20261105", forward = false)
+
+        assertEquals(Constants.nbaApiExpected, result)
+    }
+
+    @Test
+    fun `should return an error for a malformed day`() {
+        val result = helper.parseAdjacentGameDay("not-a-day", forward = true)
+
+        assertEquals(emptyList<Any>(), result.games)
+        assertEquals("Error Parsing: invalid day 'not-a-day', expected yyyyMMdd", result.date)
+    }
+
+    @Test
     fun `should parse gdq website for dates`() {
         val expected = Event(
             name = listOf("Winter", "Summer"),

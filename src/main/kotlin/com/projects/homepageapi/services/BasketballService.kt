@@ -16,6 +16,14 @@ class BasketballService(
         return parseWebsite()
     }
 
+    fun getNextGames(day: String): GamesPerDate {
+        return helper.parseAdjacentGameDay(day = day, forward = true, isBasketball = true)
+    }
+
+    fun getPreviousGames(day: String): GamesPerDate {
+        return helper.parseAdjacentGameDay(day = day, forward = false, isBasketball = true)
+    }
+
     private fun parseWebsite(formattedDate: String = ""): GamesPerDate {
         return helper.parseGamesPerDateWebsite(
             formattedDate = formattedDate

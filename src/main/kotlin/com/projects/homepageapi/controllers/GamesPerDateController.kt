@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -37,6 +38,16 @@ class GamesPerDateController(
         return basketballService.getUpcomingGames()
     }
 
+    @GetMapping("/basketball/next")
+    fun getBasketballGamesNext(@RequestParam day: String): GamesPerDate {
+        return basketballService.getNextGames(day)
+    }
+
+    @GetMapping("/basketball/previous")
+    fun getBasketballGamesPrevious(@RequestParam day: String): GamesPerDate {
+        return basketballService.getPreviousGames(day)
+    }
+
     @GetMapping("/football/today")
     fun getFootballGamesToday(): GamesPerDate {
         return footballService.getGamesToday()
@@ -45,5 +56,15 @@ class GamesPerDateController(
     @GetMapping("/football/upcoming")
     fun getFootballGamesUpcoming(): GamesPerDate {
         return footballService.getUpcomingGames()
+    }
+
+    @GetMapping("/football/next")
+    fun getFootballGamesNext(@RequestParam day: String): GamesPerDate {
+        return footballService.getNextGames(day)
+    }
+
+    @GetMapping("/football/previous")
+    fun getFootballGamesPrevious(@RequestParam day: String): GamesPerDate {
+        return footballService.getPreviousGames(day)
     }
 }

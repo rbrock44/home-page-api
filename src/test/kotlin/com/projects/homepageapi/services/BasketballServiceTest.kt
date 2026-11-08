@@ -39,4 +39,13 @@ internal class BasketballServiceTest {
         whenever(helper.parseGamesPerDateWebsite(any(), any())).thenReturn(expected)
         assertEquals(expected, service.getUpcomingGames())
     }
+
+    @Test
+    fun `should get the next and previous game days`() {
+        whenever(helper.parseAdjacentGameDay(any(), any(), any())).thenReturn(expected)
+        assertEquals(expected, service.getNextGames("20261108"))
+        assertEquals(expected, service.getPreviousGames("20261108"))
+        verify(helper).parseAdjacentGameDay("20261108", true, true)
+        verify(helper).parseAdjacentGameDay("20261108", false, true)
+    }
 }

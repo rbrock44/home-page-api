@@ -14,9 +14,11 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.Locale
 
 private const val UPCOMING_MONTHS_TO_SEARCH = 6L
+private val YYYY_MM_DD: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
 
 @Service
 class ScrapingHelperService(
@@ -161,56 +163,94 @@ class ScrapingHelperService(
 
     fun parseGamesPerDateWebsite(formattedDate: String, isBasketball: Boolean = true): GamesPerDate {
         return try {
-            val sport = if (isBasketball) "basketball" else "football"
-            val league = if (isBasketball) "nba" else "nfl"
-            val baseUrl = "https://site.api.espn.com/apis/site/v2/sports/$sport/$league/scoreboard"
-            val yyyyMMdd = DateTimeFormatter.ofPattern("yyyyMMdd")
+            val baseUrl = scoreboardUrl(isBasketball)
             val today = todayEastern()
 
             if (formattedDate.isNotEmpty()) {
-                val url = "$baseUrl?dates=${today.format(yyyyMMdd)}"
-                return parseGamesFromApiJson(json = jsoupService.getJson(url), fallbackDate = formattedDate)
+                val url = "$baseUrl?dates=${today.format(YYYY_MM_DD)}"
+                return parseGamesFromApiJson(json = jsoupService.getJson(url), fallbackDate = formattedDate) { dates ->
+                    dates.filter { !it.isBefore(today) }.minOrNull()
+                }
             }
 
             // ESPN's default (no `dates`) response is tied to the current week and can be
             // entirely in the past once it's played out, and date ranges are rejected - so query
             // month by month, starting with the current one, until upcoming games turn up. The
             // month cap covers long off-season gaps (e.g. NBA's summer break before preseason).
-            val yyyyMM = DateTimeFormatter.ofPattern("yyyyMM")
-            for (monthOffset in 0L until UPCOMING_MONTHS_TO_SEARCH) {
-                val url = "$baseUrl?dates=${today.plusMonths(monthOffset).format(yyyyMM)}"
-                val result = parseGamesFromApiJson(json = jsoupService.getJson(url), fallbackDate = formattedDate)
-                if (result.games.isNotEmpty()) return result
+            searchByMonth(baseUrl, today, forward = true, fallbackDate = formattedDate) { dates ->
+                dates.filter { !it.isBefore(today) }.minOrNull()
             }
-
-            GamesPerDate(games = emptyList(), date = formattedDate)
         } catch (e: IOException) {
             errorGamePerDate(message = e.message ?: "")
         }
     }
 
-    private fun parseGamesFromApiJson(json: String, fallbackDate: String): GamesPerDate {
-        val events = ObjectMapper().readTree(json).path("events")
-        val today = todayEastern()
+    // The nearest game day strictly after (forward) or before `day` (yyyyMMdd), searching
+    // month by month so off days and off-season gaps are skipped over.
+    fun parseAdjacentGameDay(day: String, forward: Boolean, isBasketball: Boolean = true): GamesPerDate {
+        val anchor = try {
+            LocalDate.parse(day, YYYY_MM_DD)
+        } catch (e: DateTimeParseException) {
+            return errorGamePerDate(message = "invalid day '$day', expected yyyyMMdd")
+        }
 
-        // ESPN's default (no `dates` param) scoreboard response can span a whole week,
-        // including days already in the past - only keep the soonest date that's today or later.
+        return try {
+            searchByMonth(scoreboardUrl(isBasketball), anchor, forward, fallbackDate = "") { dates ->
+                if (forward) dates.filter { it.isAfter(anchor) }.minOrNull()
+                else dates.filter { it.isBefore(anchor) }.maxOrNull()
+            }
+        } catch (e: IOException) {
+            errorGamePerDate(message = e.message ?: "")
+        }
+    }
+
+    private fun scoreboardUrl(isBasketball: Boolean): String {
+        val sport = if (isBasketball) "basketball" else "football"
+        val league = if (isBasketball) "nba" else "nfl"
+        return "https://site.api.espn.com/apis/site/v2/sports/$sport/$league/scoreboard"
+    }
+
+    private fun searchByMonth(
+        baseUrl: String,
+        start: LocalDate,
+        forward: Boolean,
+        fallbackDate: String,
+        pickDate: (List<LocalDate>) -> LocalDate?
+    ): GamesPerDate {
+        val yyyyMM = DateTimeFormatter.ofPattern("yyyyMM")
+        for (monthOffset in 0L until UPCOMING_MONTHS_TO_SEARCH) {
+            val month = if (forward) start.plusMonths(monthOffset) else start.minusMonths(monthOffset)
+            val url = "$baseUrl?dates=${month.format(yyyyMM)}"
+            val result = parseGamesFromApiJson(json = jsoupService.getJson(url), fallbackDate = fallbackDate, pickDate = pickDate)
+            if (result.games.isNotEmpty()) return result
+        }
+
+        return GamesPerDate(games = emptyList(), date = fallbackDate)
+    }
+
+    // ESPN responses can span many days (a week by default, a month with `dates=yyyyMM`) -
+    // `pickDate` chooses which single Eastern day's games to return.
+    private fun parseGamesFromApiJson(
+        json: String,
+        fallbackDate: String,
+        pickDate: (List<LocalDate>) -> LocalDate?
+    ): GamesPerDate {
+        val events = ObjectMapper().readTree(json).path("events")
+
         val eventsWithDate = mutableListOf<Pair<JsonNode, LocalDate>>()
         val eventIterator = events.elements()
         while (eventIterator.hasNext()) {
             val event = eventIterator.next()
             val eventDate = toEasternDate(event.path("date").asText()) ?: continue
-            if (!eventDate.isBefore(today)) {
-                eventsWithDate.add(event to eventDate)
-            }
+            eventsWithDate.add(event to eventDate)
         }
 
-        val earliestDate = eventsWithDate.minOfOrNull { it.second }
+        val targetDate = pickDate(eventsWithDate.map { it.second }.distinct())
             ?: return GamesPerDate(games = emptyList(), date = fallbackDate)
 
         val games = mutableListOf<Game>()
         for ((event, eventDate) in eventsWithDate) {
-            if (eventDate != earliestDate) continue
+            if (eventDate != targetDate) continue
 
             val competitors = event.path("competitions").path(0).path("competitors")
 
@@ -241,11 +281,11 @@ class ScrapingHelperService(
             )
         }
 
-        val firstEvent = eventsWithDate.first { it.second == earliestDate }.first
+        val firstEvent = eventsWithDate.first { it.second == targetDate }.first
         val date = formatEventDate(firstEvent.path("date").asText()) +
             getSeasonSuffix(firstEvent.path("season").path("slug").asText())
 
-        return GamesPerDate(games = games, date = date)
+        return GamesPerDate(games = games, date = date, day = targetDate.format(YYYY_MM_DD))
     }
 
     private fun todayEastern(): LocalDate {

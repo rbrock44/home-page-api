@@ -183,7 +183,8 @@ internal class Constants {
                     time = "2026-10-03T23:00Z"
                 )
             ),
-            "Saturday, October 3, 2026 - Preseason"
+            "Saturday, October 3, 2026 - Preseason",
+            "20261003"
         )
 
         val nflApiExpected: GamesPerDate = GamesPerDate(
@@ -266,7 +267,8 @@ internal class Constants {
                     time = "PHI 7, BAL 24"
                 )
             ),
-            "Saturday, August 15, 2026 - Preseason"
+            "Saturday, August 15, 2026 - Preseason",
+            "20260815"
         )
     }
 }

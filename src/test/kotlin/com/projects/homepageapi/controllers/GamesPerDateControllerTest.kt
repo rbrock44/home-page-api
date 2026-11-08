@@ -50,4 +50,20 @@ internal class GamesPerDateControllerTest {
         whenever(footballService.getUpcomingGames()).thenReturn(expected)
         kotlin.test.assertEquals(expected, controller.getFootballGamesUpcoming())
     }
+
+    @Test
+    fun `should get the next and previous basketball game days`() {
+        whenever(basketballService.getNextGames("20261108")).thenReturn(expected)
+        whenever(basketballService.getPreviousGames("20261108")).thenReturn(expected)
+        kotlin.test.assertEquals(expected, controller.getBasketballGamesNext("20261108"))
+        kotlin.test.assertEquals(expected, controller.getBasketballGamesPrevious("20261108"))
+    }
+
+    @Test
+    fun `should get the next and previous football game days`() {
+        whenever(footballService.getNextGames("20261108")).thenReturn(expected)
+        whenever(footballService.getPreviousGames("20261108")).thenReturn(expected)
+        kotlin.test.assertEquals(expected, controller.getFootballGamesNext("20261108"))
+        kotlin.test.assertEquals(expected, controller.getFootballGamesPrevious("20261108"))
+    }
 }
