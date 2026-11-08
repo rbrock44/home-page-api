@@ -15,4 +15,8 @@ class MmaService(
     fun getUpcomingCard(): FightCard {
         return helper.parseMmaWebsite()
     }
+
+    fun getAllCards(): List<FightCard> {
+        return helper.parseAllMmaCards()
+    }
 }

@@ -35,4 +35,10 @@ internal class FightCardControllerTest {
         whenever(service.getUpcomingCard()).thenReturn(expected)
         assertEquals(expected, controller.getUpcomingCard())
     }
+
+    @Test
+    fun `should get all fight cards`() {
+        whenever(service.getAllCards()).thenReturn(listOf(expected))
+        assertEquals(listOf(expected), controller.getAllCards())
+    }
 }

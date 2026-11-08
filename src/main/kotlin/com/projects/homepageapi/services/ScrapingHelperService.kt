@@ -19,6 +19,8 @@ import java.util.Locale
 
 private const val UPCOMING_MONTHS_TO_SEARCH = 6L
 private val YYYY_MM_DD: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+private const val MMA_SCHEDULE_URL = "https://www.mmafighting.com/schedule"
+private const val MMA_RESULTS_URL = "https://www.mmafighting.com/fight-results"
 
 @Service
 class ScrapingHelperService(
@@ -30,7 +32,7 @@ class ScrapingHelperService(
     }
 
     fun parseMmaWebsite(formattedDate: String = ""): FightCard {
-        val doc: Document = jsoupService.connect("https://www.mmafighting.com/schedule")
+        val doc: Document = jsoupService.connect(MMA_SCHEDULE_URL)
         val fightCard: Elements = FightCard.getCards(doc)
         val cardDates: Elements = FightCard.getDates(doc)
         val cardTitles: Elements = FightCard.getTitles(doc)
@@ -76,39 +78,54 @@ class ScrapingHelperService(
     }
 
     private fun parseMmaWebsiteFromNextData(doc: Document, formattedDate: String): FightCard? {
-        val nextData = doc.getElementById("__NEXT_DATA__")?.data() ?: return null
-        val root = ObjectMapper().readTree(nextData)
-        val responses = root.path("props").path("pageProps").path("hydration").path("responses")
-        var scheduleResponse: JsonNode? = null
-        val responseIterator = responses.elements()
-        while (responseIterator.hasNext()) {
-            val node = responseIterator.next()
-            if (node.path("operationName").asText() == "MMAScheduleResultsLayoutQuery") {
-                scheduleResponse = node
-                break
+        val targetEvent = getMmaEvents(doc).firstOrNull { event ->
+            formattedDate.isEmpty() || formatMmaEventDate(event.path("eventStartAt").asText()) == formattedDate
+        } ?: return null
+
+        return toFightCard(targetEvent)
+    }
+
+    // Recent results plus every upcoming card, oldest first, so the widget can page between them.
+    // Cards with no fights announced yet are left out, matching how the widget hides empty cards.
+    fun parseAllMmaCards(): List<FightCard> {
+        val events = listOf(MMA_RESULTS_URL, MMA_SCHEDULE_URL).flatMap { url ->
+            try {
+                getMmaEvents(jsoupService.connect(url))
+            } catch (e: IOException) {
+                emptyList()
             }
         }
-        if (scheduleResponse == null) return null
+
+        return events
+            .filter { it.path("mmaFights").path("nodes").size() > 0 }
+            .distinctBy { it.path("permalink").asText() }
+            .sortedBy { event ->
+                try {
+                    OffsetDateTime.parse(event.path("eventStartAt").asText()).toInstant()
+                } catch (e: Exception) {
+                    java.time.Instant.MAX
+                }
+            }
+            .map { toFightCard(it) }
+    }
+
+    private fun getMmaEvents(doc: Document): List<JsonNode> {
+        val nextData = doc.getElementById("__NEXT_DATA__")?.data() ?: return emptyList()
+        val responses = ObjectMapper().readTree(nextData)
+            .path("props").path("pageProps").path("hydration").path("responses")
+
+        val scheduleResponse = responses.firstOrNull {
+            it.path("operationName").asText() == "MMAScheduleResultsLayoutQuery"
+        } ?: return emptyList()
 
         val events = scheduleResponse.path("data").path("mmaEvents").path("nodes")
-        if (!events.isArray || events.isEmpty) return null
+        return if (events.isArray) events.toList() else emptyList()
+    }
 
-        var targetEvent: JsonNode? = null
-        val eventIterator = events.elements()
-        while (eventIterator.hasNext()) {
-            val event = eventIterator.next()
-            if (formattedDate.isEmpty() || formatMmaEventDate(event.path("eventStartAt").asText()) == formattedDate) {
-                targetEvent = event
-                break
-            }
-        }
-        if (targetEvent == null) return null
-
+    private fun toFightCard(event: JsonNode): FightCard {
         val main = mutableListOf<Fight>()
         val under = mutableListOf<Fight>()
-        val fightIterator = targetEvent.path("mmaFights").path("nodes").elements()
-        while (fightIterator.hasNext()) {
-            val fight = fightIterator.next()
+        for (fight in event.path("mmaFights").path("nodes")) {
             val parsedFight = Fight(
                 title = fight.path("title").asText(),
                 link = fight.path("permalink").asText(),
@@ -124,9 +141,9 @@ class ScrapingHelperService(
         return FightCard(
             main = main,
             under = under,
-            date = formatMmaEventDate(targetEvent.path("eventStartAt").asText()),
-            title = targetEvent.path("title").asText(),
-            titleLink = targetEvent.path("permalink").asText()
+            date = formatMmaEventDate(event.path("eventStartAt").asText()),
+            title = event.path("title").asText(),
+            titleLink = event.path("permalink").asText()
         )
     }
 

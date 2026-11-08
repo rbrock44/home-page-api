@@ -34,4 +34,9 @@ class FightCardController(
     fun getUpcomingCard(): FightCard {
         return mmaService.getUpcomingCard()
     }
+
+    @GetMapping("/all")
+    fun getAllCards(): List<FightCard> {
+        return mmaService.getAllCards()
+    }
 }

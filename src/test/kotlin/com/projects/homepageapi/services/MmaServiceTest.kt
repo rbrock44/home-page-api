@@ -39,4 +39,10 @@ internal class MmaServiceTest {
         whenever(helper.parseMmaWebsite(any())).thenReturn(expected)
         assertEquals(expected, service.getUpcomingCard())
     }
+
+    @Test
+    fun `should get all fight cards`() {
+        whenever(helper.parseAllMmaCards()).thenReturn(listOf(expected))
+        assertEquals(listOf(expected), service.getAllCards())
+    }
 }

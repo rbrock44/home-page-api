@@ -13,6 +13,9 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDate
+import java.io.File
+import java.io.IOException
+import org.jsoup.Jsoup
 
 internal class ScrapingHelperServiceTest {
     @Mock
@@ -59,6 +62,54 @@ internal class ScrapingHelperServiceTest {
         whenever(jsoupService.connect(any())).thenReturn(value)
         assertEquals(expected, helper.parseMmaWebsite())
         verify(jsoupService).connect("https://www.mmafighting.com/schedule")
+    }
+
+    @Test
+    fun `should list recent results and upcoming mma cards oldest first`() {
+        whenever(jsoupService.connect("https://www.mmafighting.com/fight-results"))
+            .thenReturn(Jsoup.parse(File("src/test/resources/mma-results.html").readText()))
+        whenever(jsoupService.connect("https://www.mmafighting.com/schedule"))
+            .thenReturn(Jsoup.parse(File("src/test/resources/mma-schedule.html").readText()))
+
+        val cards = helper.parseAllMmaCards()
+
+        // 3 results + 6 scheduled, minus UFC 336 which has no fights announced yet
+        assertEquals(
+            listOf(
+                "UFC 333: Volkanovski vs. Evloev",
+                "UFC Vegas 123: Moicano vs. Nolan",
+                "UFC Vegas 124: Cortes-Acosta vs. Walker",
+                "UFC 334: Gane vs. Hokit",
+                "UFC Qatar: Prochazka vs. Stirling",
+                "UFC Saudi Arabia: Adesanya vs. Magomedov",
+                "UFC 335: Oliveira vs. Lopes",
+                "UFC Sydney: Salkilld vs. Saint Denis"
+            ),
+            cards.map { it.title }
+        )
+        val volkanovski = cards.first()
+        assertEquals("October 24, 2026", volkanovski.date)
+        assertEquals("https://www.mmafighting.com/fight-card/505144/ufc-333-volkanovski-vs-evloev", volkanovski.titleLink)
+        assertEquals("Alexander Volkanovski vs Movsar Evloev", volkanovski.main.first().title)
+        assertEquals(true, volkanovski.main.first().isTitleFight)
+        assertEquals(14, volkanovski.main.size + volkanovski.under.size)
+    }
+
+    @Test
+    fun `should still list upcoming mma cards when results fail to load`() {
+        whenever(jsoupService.connect("https://www.mmafighting.com/fight-results")).thenAnswer { throw IOException("down") }
+        whenever(jsoupService.connect("https://www.mmafighting.com/schedule"))
+            .thenReturn(Jsoup.parse(File("src/test/resources/mma-schedule.html").readText()))
+
+        assertEquals(5, helper.parseAllMmaCards().size)
+    }
+
+    @Test
+    fun `should not repeat an mma card listed on both pages`() {
+        val results = Jsoup.parse(File("src/test/resources/mma-results.html").readText())
+        whenever(jsoupService.connect(any())).thenReturn(results)
+
+        assertEquals(3, helper.parseAllMmaCards().size)
     }
 
     @Test
