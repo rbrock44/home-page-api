@@ -38,6 +38,14 @@ data class Auction(
             return name.replace("View Photo Gallery", "", ignoreCase = true).trim()
         }
 
+        // brucker titles are generic ("Auction"), so append the address to tell them apart
+        @JvmStatic
+        fun getDisplayName(name: String, service: String, location: String): String {
+            if (!service.contains("brucker", ignoreCase = true)) return name
+            if (location.isBlank() || name.contains(location, ignoreCase = true)) return name
+            return if (name.isBlank()) location else "$name - $location"
+        }
+
         @JvmStatic
         fun getHibidUrl(element: Element): String {
             val title = element.getElementsByClass("auction-header-title").firstOrNull() ?: return ""

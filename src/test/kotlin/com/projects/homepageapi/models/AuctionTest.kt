@@ -38,6 +38,33 @@ class AuctionTest {
     }
 
     @Test
+    fun `display name should append location for brucker`() {
+        assertEquals(
+            "Auction - 123 Main St, Jackson, MO",
+            Auction.getDisplayName("Auction", "Brucker Auction Service", "123 Main St, Jackson, MO")
+        )
+    }
+
+    @Test
+    fun `display name should leave other services alone`() {
+        assertEquals("Estate Sale", Auction.getDisplayName("Estate Sale", "Other Auctions", "123 Main St"))
+    }
+
+    @Test
+    fun `display name should not append blank or duplicate location`() {
+        assertEquals("Auction", Auction.getDisplayName("Auction", "Brucker Auction Service", ""))
+        assertEquals(
+            "Auction at 123 Main St",
+            Auction.getDisplayName("Auction at 123 Main St", "Brucker Auction Service", "123 Main St")
+        )
+    }
+
+    @Test
+    fun `display name should use location when brucker name is blank`() {
+        assertEquals("123 Main St", Auction.getDisplayName("", "Brucker Auction Service", "123 Main St"))
+    }
+
+    @Test
     fun `zip name and service should be empty when missing`() {
         val element = Jsoup.parse("<div></div>").body().child(0)
         assertEquals("", Auction.getZipName(element))

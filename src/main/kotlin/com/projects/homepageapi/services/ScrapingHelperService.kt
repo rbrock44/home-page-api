@@ -398,12 +398,13 @@ class ScrapingHelperService(
         val list = mutableListOf<Auction>()
 
         for (auction in auctions) {
-            val name = if (isHibid) Auction.getHibidName(auction) else Auction.getZipName(auction)
             val service = if (isHibid) Auction.getHibidService(auction) else Auction.getZipService(auction)
             val url = if (isHibid) Auction.getHibidUrl(auction) else Auction.getZipUrl(auction)
             val startDate = if (isHibid) Auction.getHibidStartDate(auction) else Auction.getZipStartDate(auction)
             val endDate = if (isHibid) Auction.getHibidEndDate(auction) else ""
             val location = if (isHibid) Auction.getHibidLocation(auction) else Auction.getZipLocation(auction)
+            val rawName = if (isHibid) Auction.getHibidName(auction) else Auction.getZipName(auction)
+            val name = Auction.getDisplayName(name = rawName, service = service, location = location)
             val note = if (isHibid) Auction.getHibidNote(auction) else ""
             val internetBidding = if (isHibid) Auction.getHibidInternetBidding(auction) else false
 
