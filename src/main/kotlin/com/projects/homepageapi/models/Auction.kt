@@ -33,8 +33,9 @@ data class Auction(
 
         @JvmStatic
         fun getZipName(element: Element): String {
-            val name = element.getElementsByClass("az_title_href")
-            return if (name.isNullOrEmpty()) "" else name.text()
+            // the title class is shared with the "View Photo Gallery" links, so read only the first match
+            val name = element.getElementsByClass("az_title_href").firstOrNull()?.text() ?: return ""
+            return name.replace("View Photo Gallery", "", ignoreCase = true).trim()
         }
 
         @JvmStatic
@@ -58,8 +59,8 @@ data class Auction(
 
         @JvmStatic
         fun getZipService(element: Element): String {
-            val service = element.getElementsByClass("az-ListOfLlisting__company--title")
-            return if (service.isNullOrEmpty()) "" else service.text()
+            // the company title is rendered more than once per listing, so read only the first match
+            return element.getElementsByClass("az-ListOfLlisting__company--title").firstOrNull()?.text() ?: ""
         }
 
         @JvmStatic
