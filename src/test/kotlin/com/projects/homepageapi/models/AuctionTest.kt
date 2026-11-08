@@ -64,6 +64,30 @@ class AuctionTest {
         assertEquals("123 Main St", Auction.getDisplayName("", "Brucker Auction Service", "123 Main St"))
     }
 
+    private fun zipDateListing(): Element {
+        val html = """
+            <div class="az-ListOfLlisting__Container">
+              <div class="az-ListOfLlisting__date">
+                <b style="margin-right: 4px;">Sat&nbsp;Nov&nbsp;21&nbsp;-&nbsp;09:30AM - Cape Girardeau,&nbsp;<span style="text-transform: uppercase;">Mo</span></b><span id="listyear" style="display:none;">2026</span>
+              </div>
+              <div class="az-ListOfLlisting__date">
+                <b style="margin-right: 4px;">Sat&nbsp;Nov&nbsp;21&nbsp;-&nbsp;09:30AM Cape Girardeau,&nbsp;<span style="text-transform: uppercase;">Mo</span></b><span id="listyear" style="display:none;">2026</span>
+              </div>
+            </div>
+        """.trimIndent()
+        return Jsoup.parse(html).getElementsByClass("az-ListOfLlisting__Container").first()!!
+    }
+
+    @Test
+    fun `zip location should drop the hidden year and uppercase the state`() {
+        assertEquals("Cape Girardeau, MO", Auction.getZipLocation(zipDateListing()))
+    }
+
+    @Test
+    fun `zip start date should read the date before the time`() {
+        assertEquals("Sat Nov 21", Auction.getZipStartDate(zipDateListing()))
+    }
+
     @Test
     fun `zip name and service should be empty when missing`() {
         val element = Jsoup.parse("<div></div>").body().child(0)

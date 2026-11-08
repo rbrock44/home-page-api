@@ -138,11 +138,15 @@ data class Auction(
             return dates.getOrNull(index) ?: "Invalid index"
         }
         private fun getZipEventDetail(element: Element, index: Int): String {
-            val input = element.getElementsByClass("az-ListOfLlisting__date")[0].text()
+            val date = element.getElementsByClass("az-ListOfLlisting__date").firstOrNull() ?: return ""
+            // the year sits in a hidden span after the <b>, so read only the <b> to keep it off the location
+            val input = (date.selectFirst("b") ?: date).text().replace(' ', ' ')
             val splitParts = input.split(" - ", limit = 3)
             return when (index) {
                 0 -> splitParts.getOrNull(0)?.trim() ?: ""
-                1 -> splitParts.getOrNull(2)?.trim() ?: ""
+                // the state is lowercase in the markup and only shown uppercase via css
+                1 -> splitParts.getOrNull(2)?.trim()
+                    ?.replace(Regex(",\\s*([A-Za-z]{2})$")) { ", ${it.groupValues[1].uppercase()}" } ?: ""
                 else -> throw IllegalArgumentException("Index must be 0 or 1")
             }
         }
