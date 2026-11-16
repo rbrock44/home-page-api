@@ -23,6 +23,8 @@ class JsoupService() {
         return Jsoup.connect(url)
             .userAgent("curl/8.7.1")
             .ignoreContentType(true)
+            // ESPN's month scoreboards run past Jsoup's 2MB default and get cut off mid-JSON
+            .maxBodySize(0)
             .execute()
             .body()
     }

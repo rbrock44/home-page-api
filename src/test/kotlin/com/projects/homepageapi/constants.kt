@@ -198,7 +198,8 @@ internal class Constants {
                     homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sea.png",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/sea/seattle-seahawks",
                     homeRecord = "",
-                    time = "11:00 - 4th"
+                    time = "11:00 - 4th",
+                    live = true
                 ),
                 Game(
                     opponent = "Carolina Panthers",

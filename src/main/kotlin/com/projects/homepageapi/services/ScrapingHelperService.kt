@@ -293,7 +293,8 @@ class ScrapingHelperService(
                     homeImageLink = home.path("team").path("logo").asText(),
                     homeTeamLink = home.path("team").path("links").path(0).path("href").asText(),
                     homeRecord = "",
-                    time = getApiGameTime(event.path("competitions").path(0), home, away)
+                    time = getApiGameTime(event.path("competitions").path(0), home, away),
+                    live = event.path("competitions").path(0).path("status").path("type").path("state").asText() == "in"
                 )
             )
         }

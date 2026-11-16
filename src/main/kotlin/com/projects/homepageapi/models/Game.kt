@@ -9,5 +9,7 @@ data class Game(
     val homeImageLink: String,
     val homeTeamLink: String,
     val homeRecord: String,
-    val time: String
+    val time: String,
+    // the game is being played right now
+    val live: Boolean = false
 )
