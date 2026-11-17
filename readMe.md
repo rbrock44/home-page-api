@@ -38,6 +38,14 @@ Primary features include:
 
 Run the API, then call endpoints from your frontend or via cURL/Postman.
 
+Interactive docs (Swagger UI), generated from the controllers so they never drift:
+
+- Local: http://localhost:8090/swagger-ui.html
+- Live: https://home-page-api.ryan-brock.com/swagger-ui.html
+- Raw OpenAPI JSON: `/v3/api-docs`
+
+Routes protected by `X-API-Key` show a lock; use **Authorize** to send the key.
+
 Common route groups:
 
 - `/cleaning-schedule`
@@ -47,13 +55,15 @@ Common route groups:
   - `POST /cleaning-schedule/edit` (requires `X-API-Key` header)
   - `DELETE /cleaning-schedule?id={id}` (requires `X-API-Key` header)
 - `/games-per-date`
-  - `GET /games-per-date/basketball/today`
   - `GET /games-per-date/basketball/upcoming`
-  - `GET /games-per-date/football/today`
+  - `GET /games-per-date/basketball/next?day=yyyyMMdd`
+  - `GET /games-per-date/basketball/previous?day=yyyyMMdd`
   - `GET /games-per-date/football/upcoming`
+  - `GET /games-per-date/football/next?day=yyyyMMdd`
+  - `GET /games-per-date/football/previous?day=yyyyMMdd`
 - `/fight-card`
-  - `GET /fight-card/today`
   - `GET /fight-card/upcoming`
+  - `GET /fight-card/all`
 - `/gdq`
   - `GET /gdq/upcoming`
 - `/auction`
@@ -97,6 +107,7 @@ curl -X POST "http://localhost:8090/recipe/pending" \
 - Java Version: `21`
 - Database: `H2 (in-memory)`
 - Parsing/Scraping: `Jsoup`
+- API Docs: `springdoc-openapi` (OpenAPI 3 + Swagger UI)
 - Testing: `JUnit 5`, `Spring Boot Test`, `Mockito`
 - Deployment: `Heroku`
 
