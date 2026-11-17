@@ -28,11 +28,6 @@ class GamesPerDateController(
     @Autowired private val basketballService: BasketballService,
     @Autowired private val footballService: FootballService
 ) {
-    @GetMapping("/basketball/today")
-    fun getBasketballGamesToday(): GamesPerDate {
-        return basketballService.getGamesToday()
-    }
-
     @GetMapping("/basketball/upcoming")
     fun getBasketballGamesUpcoming(): GamesPerDate {
         return basketballService.getUpcomingGames()
@@ -46,11 +41,6 @@ class GamesPerDateController(
     @GetMapping("/basketball/previous")
     fun getBasketballGamesPrevious(@RequestParam day: String): GamesPerDate {
         return basketballService.getPreviousGames(day)
-    }
-
-    @GetMapping("/football/today")
-    fun getFootballGamesToday(): GamesPerDate {
-        return footballService.getGamesToday()
     }
 
     @GetMapping("/football/upcoming")

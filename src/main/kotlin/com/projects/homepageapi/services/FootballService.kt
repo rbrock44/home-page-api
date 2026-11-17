@@ -8,12 +8,8 @@ import org.springframework.stereotype.Service
 class FootballService(
     @Autowired private val helper: ScrapingHelperService,
 ) {
-    fun getGamesToday(): GamesPerDate {
-        return parseWebsite(formattedDate = helper.getCurrentDate())
-    }
-
     fun getUpcomingGames(): GamesPerDate {
-        return parseWebsite()
+        return helper.parseGamesPerDateWebsite(isBasketball = false)
     }
 
     fun getNextGames(day: String): GamesPerDate {
@@ -22,12 +18,5 @@ class FootballService(
 
     fun getPreviousGames(day: String): GamesPerDate {
         return helper.parseAdjacentGameDay(day = day, forward = false, isBasketball = false)
-    }
-
-    private fun parseWebsite(formattedDate: String = ""): GamesPerDate {
-        return helper.parseGamesPerDateWebsite(
-            formattedDate = formattedDate,
-            isBasketball = false
-        )
     }
 }

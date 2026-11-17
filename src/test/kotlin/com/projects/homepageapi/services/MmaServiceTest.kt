@@ -25,14 +25,6 @@ internal class MmaServiceTest {
         MockitoAnnotations.openMocks(this)
     }
 
-    @Test
-    fun `should get fights for today`() {
-        val value = "value"
-        whenever(helper.getCurrentDate()).thenReturn(value)
-        whenever(helper.parseMmaWebsite(any())).thenReturn(expected)
-        assertEquals(expected, service.getFightsToday())
-        verify(helper).parseMmaWebsite(value)
-    }
 
     @Test
     fun `should get the upcoming fights`() {

@@ -179,23 +179,16 @@ class ScrapingHelperService(
 
     }
 
-    fun parseGamesPerDateWebsite(formattedDate: String, isBasketball: Boolean = true): GamesPerDate {
+    fun parseGamesPerDateWebsite(isBasketball: Boolean = true): GamesPerDate {
         return try {
             val baseUrl = scoreboardUrl(isBasketball)
             val today = todayEastern()
-
-            if (formattedDate.isNotEmpty()) {
-                val url = "$baseUrl?dates=${today.format(YYYY_MM_DD)}"
-                return parseGamesFromApiJson(json = jsoupService.getJson(url), fallbackDate = formattedDate) { dates ->
-                    dates.filter { !it.isBefore(today) }.minOrNull()
-                }
-            }
 
             // ESPN's default (no `dates`) response is tied to the current week and can be
             // entirely in the past once it's played out, and date ranges are rejected - so query
             // month by month, starting with the current one, until upcoming games turn up. The
             // month cap covers long off-season gaps (e.g. NBA's summer break before preseason).
-            searchByMonth(baseUrl, today, forward = true, fallbackDate = formattedDate) { dates ->
+            searchByMonth(baseUrl, today, forward = true, fallbackDate = "") { dates ->
                 dates.filter { !it.isBefore(today) }.minOrNull()
             }
         } catch (e: IOException) {

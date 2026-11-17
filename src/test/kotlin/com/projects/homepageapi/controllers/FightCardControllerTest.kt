@@ -24,11 +24,6 @@ internal class FightCardControllerTest {
         MockitoAnnotations.openMocks(this)
     }
 
-    @Test
-    fun `should get all fights for today`() {
-        whenever(service.getFightsToday()).thenReturn(expected)
-        assertEquals(expected, controller.getFightsToday())
-    }
 
     @Test
     fun `should get all upcoming fights`() {

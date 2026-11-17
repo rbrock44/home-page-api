@@ -25,18 +25,10 @@ internal class BasketballServiceTest {
         MockitoAnnotations.openMocks(this)
     }
 
-    @Test
-    fun `should get games for today`() {
-        val value = "value"
-        whenever(helper.getCurrentDate()).thenReturn(value)
-        whenever(helper.parseGamesPerDateWebsite(any(), any())).thenReturn(expected)
-        assertEquals(expected, service.getGamesToday())
-        verify(helper).parseGamesPerDateWebsite(value)
-    }
 
     @Test
     fun `should get the upcoming games`() {
-        whenever(helper.parseGamesPerDateWebsite(any(), any())).thenReturn(expected)
+        whenever(helper.parseGamesPerDateWebsite(any())).thenReturn(expected)
         assertEquals(expected, service.getUpcomingGames())
     }
 

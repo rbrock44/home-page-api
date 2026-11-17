@@ -27,11 +27,6 @@ internal class GamesPerDateControllerTest {
         MockitoAnnotations.openMocks(this)
     }
 
-    @Test
-    fun `should get all basketball games for today`() {
-        whenever(basketballService.getGamesToday()).thenReturn(expected)
-        kotlin.test.assertEquals(expected, controller.getBasketballGamesToday())
-    }
 
     @Test
     fun `should get all upcoming basketball games`() {
@@ -39,11 +34,6 @@ internal class GamesPerDateControllerTest {
         kotlin.test.assertEquals(expected, controller.getBasketballGamesUpcoming())
     }
 
-    @Test
-    fun `should get all football games for today`() {
-        whenever(footballService.getGamesToday()).thenReturn(expected)
-        kotlin.test.assertEquals(expected, controller.getFootballGamesToday())
-    }
 
     @Test
     fun `should get all upcoming football games`() {

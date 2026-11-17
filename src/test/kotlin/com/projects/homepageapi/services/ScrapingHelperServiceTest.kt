@@ -117,7 +117,7 @@ internal class ScrapingHelperServiceTest {
         val expected = Constants.nflApiExpected
 
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
-        assertEquals(expected, helper.parseGamesPerDateWebsite("", false))
+        assertEquals(expected, helper.parseGamesPerDateWebsite(false))
         verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=202608&limit=1000")
     }
 
@@ -126,19 +126,10 @@ internal class ScrapingHelperServiceTest {
         val expected = Constants.nbaApiExpected
 
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nbaApiJson)
-        assertEquals(expected, helper.parseGamesPerDateWebsite(""))
+        assertEquals(expected, helper.parseGamesPerDateWebsite())
         verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202608&limit=1000")
     }
 
-    @Test
-    fun `should query a specific date when asking for today's games`() {
-        whenever(service.today(any())).thenReturn(LocalDate.of(2026, 8, 16))
-        whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
-
-        helper.parseGamesPerDateWebsite("Sunday, August 16", false)
-
-        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20260816")
-    }
 
     @Test
     fun `should search the next month when nothing is found in the current month`() {
@@ -148,7 +139,7 @@ internal class ScrapingHelperServiceTest {
         whenever(jsoupService.getJson(currentMonthUrl)).thenReturn("""{"events":[]}""")
         whenever(jsoupService.getJson(nextMonthUrl)).thenReturn(Constants.nbaApiJson)
 
-        val result = helper.parseGamesPerDateWebsite("")
+        val result = helper.parseGamesPerDateWebsite()
 
         assertEquals(Constants.nbaApiExpected, result)
         verify(jsoupService).getJson(currentMonthUrl)
@@ -160,7 +151,7 @@ internal class ScrapingHelperServiceTest {
         whenever(service.today(any())).thenReturn(LocalDate.of(2026, 8, 16))
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
 
-        val result = helper.parseGamesPerDateWebsite("", false)
+        val result = helper.parseGamesPerDateWebsite(false)
 
         assertEquals(GamesPerDate(games = emptyList(), date = ""), result)
     }
