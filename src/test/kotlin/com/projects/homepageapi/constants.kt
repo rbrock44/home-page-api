@@ -180,7 +180,8 @@ internal class Constants {
                     homeImageLink = "https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/tor.png",
                     homeTeamLink = "https://www.espn.com/nba/team/_/name/tor/toronto-raptors",
                     homeRecord = "",
-                    time = "2026-10-03T23:00Z"
+                    time = "2026-10-03T23:00Z",
+                    gameLink = "https://www.espn.com/nba/game/_/gameId/401902644/heat-raptors"
                 )
             ),
             "Saturday, October 3, 2026 - Preseason",
@@ -210,7 +211,8 @@ internal class Constants {
                     homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/buf.png",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/buf/buffalo-bills",
                     homeRecord = "",
-                    time = "CAR 14, BUF 29"
+                    time = "CAR 14, BUF 29",
+                    gameLink = "https://www.espn.com/nfl/game/_/gameId/401873282/panthers-bills"
                 ),
                 Game(
                     opponent = "Cleveland Browns",
@@ -221,7 +223,8 @@ internal class Constants {
                     homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/chi.png",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/chi/chicago-bears",
                     homeRecord = "",
-                    time = "CLE 10, CHI 34"
+                    time = "CLE 10, CHI 34",
+                    gameLink = "https://www.espn.com/nfl/game/_/gameId/401874393/browns-bears"
                 ),
                 Game(
                     opponent = "Minnesota Vikings",
@@ -232,7 +235,8 @@ internal class Constants {
                     homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyg.png",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/nyg/new-york-giants",
                     homeRecord = "",
-                    time = "MIN 13, NYG 10"
+                    time = "MIN 13, NYG 10",
+                    gameLink = "https://www.espn.com/nfl/game/_/gameId/401873280/vikings-giants"
                 ),
                 Game(
                     opponent = "Los Angeles Rams",
@@ -243,7 +247,8 @@ internal class Constants {
                     homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/kc.png",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/kc/kansas-city-chiefs",
                     homeRecord = "",
-                    time = "LAR 20, KC 12"
+                    time = "LAR 20, KC 12",
+                    gameLink = "https://www.espn.com/nfl/game/_/gameId/401873283/rams-chiefs"
                 ),
                 Game(
                     opponent = "Jacksonville Jaguars",
@@ -254,7 +259,8 @@ internal class Constants {
                     homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/no.png",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/no/new-orleans-saints",
                     homeRecord = "",
-                    time = "JAX 24, NO 20"
+                    time = "JAX 24, NO 20",
+                    gameLink = "https://www.espn.com/nfl/game/_/gameId/401873281/jaguars-saints"
                 ),
                 Game(
                     opponent = "Philadelphia Eagles",
@@ -265,7 +271,8 @@ internal class Constants {
                     homeImageLink = "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/bal.png",
                     homeTeamLink = "https://www.espn.com/nfl/team/_/name/bal/baltimore-ravens",
                     homeRecord = "",
-                    time = "PHI 7, BAL 24"
+                    time = "PHI 7, BAL 24",
+                    gameLink = "https://www.espn.com/nfl/game/_/gameId/401873284/eagles-ravens"
                 )
             ),
             "Saturday, August 15, 2026 - Preseason",

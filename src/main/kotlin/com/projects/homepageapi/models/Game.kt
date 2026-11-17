@@ -11,5 +11,7 @@ data class Game(
     val homeRecord: String,
     val time: String,
     // the game is being played right now
-    val live: Boolean = false
+    val live: Boolean = false,
+    // ESPN's page for this matchup; empty when ESPN doesn't list one
+    val gameLink: String = ""
 )

@@ -296,7 +296,8 @@ class ScrapingHelperService(
                     homeTeamLink = home.path("team").path("links").path(0).path("href").asText(),
                     homeRecord = "",
                     time = getApiGameTime(event.path("competitions").path(0), home, away),
-                    live = event.path("competitions").path(0).path("status").path("type").path("state").asText() == "in"
+                    live = event.path("competitions").path(0).path("status").path("type").path("state").asText() == "in",
+                    gameLink = getGameLink(event)
                 )
             )
         }
@@ -318,6 +319,12 @@ class ScrapingHelperService(
         } catch (e: Exception) {
             null
         }
+    }
+
+    private fun getGameLink(event: JsonNode): String {
+        return event.path("links").firstOrNull { link ->
+            link.path("rel").any { it.asText() == "summary" }
+        }?.path("href")?.asText() ?: ""
     }
 
     private fun getApiGameTime(competition: JsonNode, home: JsonNode, away: JsonNode): String {
