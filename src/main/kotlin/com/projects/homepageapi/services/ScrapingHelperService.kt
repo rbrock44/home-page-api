@@ -18,6 +18,7 @@ import java.time.format.DateTimeParseException
 import java.util.Locale
 
 private const val UPCOMING_MONTHS_TO_SEARCH = 6L
+private const val MONTH_EVENT_LIMIT = 1000
 private val YYYY_MM_DD: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
 private const val MMA_SCHEDULE_URL = "https://www.mmafighting.com/schedule"
 private const val MMA_RESULTS_URL = "https://www.mmafighting.com/fight-results"
@@ -237,7 +238,8 @@ class ScrapingHelperService(
         val yyyyMM = DateTimeFormatter.ofPattern("yyyyMM")
         for (monthOffset in 0L until UPCOMING_MONTHS_TO_SEARCH) {
             val month = if (forward) start.plusMonths(monthOffset) else start.minusMonths(monthOffset)
-            val url = "$baseUrl?dates=${month.format(yyyyMM)}"
+            // ESPN caps responses at 100 events by default, which cuts a busy NBA month off mid-way
+            val url = "$baseUrl?dates=${month.format(yyyyMM)}&limit=$MONTH_EVENT_LIMIT"
             val result = parseGamesFromApiJson(json = jsoupService.getJson(url), fallbackDate = fallbackDate, pickDate = pickDate)
             if (result.games.isNotEmpty()) return result
         }

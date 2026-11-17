@@ -118,7 +118,7 @@ internal class ScrapingHelperServiceTest {
 
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nflApiJson)
         assertEquals(expected, helper.parseGamesPerDateWebsite("", false))
-        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=202608")
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=202608&limit=1000")
     }
 
     @Test
@@ -127,7 +127,7 @@ internal class ScrapingHelperServiceTest {
 
         whenever(jsoupService.getJson(any())).thenReturn(Constants.nbaApiJson)
         assertEquals(expected, helper.parseGamesPerDateWebsite(""))
-        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202608")
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202608&limit=1000")
     }
 
     @Test
@@ -142,8 +142,8 @@ internal class ScrapingHelperServiceTest {
 
     @Test
     fun `should search the next month when nothing is found in the current month`() {
-        val currentMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202608"
-        val nextMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202609"
+        val currentMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202608&limit=1000"
+        val nextMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202609&limit=1000"
 
         whenever(jsoupService.getJson(currentMonthUrl)).thenReturn("""{"events":[]}""")
         whenever(jsoupService.getJson(nextMonthUrl)).thenReturn(Constants.nbaApiJson)
@@ -172,7 +172,7 @@ internal class ScrapingHelperServiceTest {
         val result = helper.parseAdjacentGameDay("20260814", forward = true, isBasketball = false)
 
         assertEquals(Constants.nflApiExpected, result)
-        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=202608")
+        verify(jsoupService).getJson("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=202608&limit=1000")
     }
 
     @Test
@@ -187,8 +187,8 @@ internal class ScrapingHelperServiceTest {
 
     @Test
     fun `should search the previous month when nothing is found before the given day`() {
-        val currentMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202611"
-        val previousMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202610"
+        val currentMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202611&limit=1000"
+        val previousMonthUrl = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=202610&limit=1000"
 
         whenever(jsoupService.getJson(currentMonthUrl)).thenReturn("""{"events":[]}""")
         whenever(jsoupService.getJson(previousMonthUrl)).thenReturn(Constants.nbaApiJson)
